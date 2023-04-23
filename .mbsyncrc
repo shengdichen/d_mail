@@ -1,3 +1,5 @@
+SyncState *
+
 # outlook {{{
 IMAPAccount OUTLOOK_ACCOUNT
 Host outlook.office365.com
@@ -18,21 +20,18 @@ Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "INBOX"
 Create Both
-SyncState *
 
 Channel OUTLOOK_X
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "x/*"
 Create Both
-SyncState *
 
 Channel OUTLOOK_MISC
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "Deleted"
 Create Both
-SyncState *
 
 Group OUTLOOK_ALL
 Channel OUTLOOK_INBOX
@@ -62,21 +61,18 @@ Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "INBOX"
 Create Both
-SyncState *
 
 Channel ETH_X
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "x/*"
 Create Both
-SyncState *
 
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "Trash"
 Create Both
-SyncState *
 
 Group ETH_ALL
 Channel ETH_INBOX

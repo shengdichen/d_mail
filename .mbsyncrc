@@ -1,0 +1,87 @@
+# outlook {{{
+IMAPAccount OUTLOOK_ACCOUNT
+Host outlook.office365.com
+Port 993
+SSLType IMAPS
+User shengdi@outlook.de
+PassCmd "gpg -dq ~/mail/pw/outlook.gpg"
+
+IMAPStore OUTLOOK_REMOTE
+Account OUTLOOK_ACCOUNT
+
+MaildirStore OUTLOOK_LOCAL
+SubFolders Maildir++
+Inbox ~/mail/raw/outlook/
+
+Channel OUTLOOK_INBOX
+Far :OUTLOOK_REMOTE:
+Near :OUTLOOK_LOCAL:
+Patterns "INBOX"
+Create Both
+SyncState *
+
+Channel OUTLOOK_X
+Far :OUTLOOK_REMOTE:
+Near :OUTLOOK_LOCAL:
+Patterns "x/*"
+Create Both
+SyncState *
+
+Channel OUTLOOK_MISC
+Far :OUTLOOK_REMOTE:
+Near :OUTLOOK_LOCAL:
+Patterns "Deleted"
+Create Both
+SyncState *
+
+Group OUTLOOK_ALL
+Channel OUTLOOK_INBOX
+Channel OUTLOOK_X
+Channel OUTLOOK_MISC
+# }}}
+
+# eth {{{
+IMAPAccount ETH_ACCOUNT
+Host mail.ethz.ch
+Port 993
+SSLType IMAPS
+User shenchen@ethz.ch
+PassCmd "gpg -dq ~/mail/pw/eth.gpg"
+# bypass NTLM-authentication
+AuthMech LOGIN
+
+IMAPStore ETH_REMOTE
+Account ETH_ACCOUNT
+
+MaildirStore ETH_LOCAL
+SubFolders Maildir++
+Inbox ~/mail/raw/eth/
+
+Channel ETH_INBOX
+Far :ETH_REMOTE:
+Near :ETH_LOCAL:
+Patterns "INBOX"
+Create Both
+SyncState *
+
+Channel ETH_X
+Far :ETH_REMOTE:
+Near :ETH_LOCAL:
+Patterns "x/*"
+Create Both
+SyncState *
+
+Channel ETH_MISC
+Far :ETH_REMOTE:
+Near :ETH_LOCAL:
+Patterns "Trash"
+Create Both
+SyncState *
+
+Group ETH_ALL
+Channel ETH_INBOX
+Channel ETH_X
+Channel ETH_MISC
+# }}}
+
+# vim: filetype=conf foldmethod=marker

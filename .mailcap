@@ -1,0 +1,2 @@
+text/*; nvim -R;
+text/*; cat -n; copiousoutput;

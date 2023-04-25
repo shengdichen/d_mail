@@ -3,3 +3,9 @@ text/html; w3m -T text/html -dump | cat -n; copiousoutput;
 
 text/*; nvim -R;
 text/*; cat -n; copiousoutput;
+
+application/pdf; zathura %s 1>/dev/null 2>&1 &;
+
+image/*; imv %s & 1>/dev/null 2>&1;
+audio/*; mpv %s & 1>/dev/null 2>&1;
+video/*; mpv %s & 1>/dev/null 2>&1;

@@ -28,4 +28,8 @@ set sort_aux = date
 # }}}
 # }}}
 
+# read {{{
+auto_view text/plain text/html
+# }}}
+
 # vim: filetype=neomuttrc foldmethod=marker

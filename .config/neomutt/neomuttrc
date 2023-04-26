@@ -18,6 +18,14 @@ set sidebar_new_mail_only = no
 set sidebar_width = 25
 set sidebar_divider_char = '|'
 # }}}
+
+# index {{{
+set use_threads = "threads"
+# newer threads are higher
+set sort = reverse-last-date
+# newer messages of a thread are lower
+set sort_aux = date
+# }}}
 # }}}
 
 # vim: filetype=neomuttrc foldmethod=marker

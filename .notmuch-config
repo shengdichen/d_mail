@@ -11,6 +11,7 @@
 # configured here named ".notmuch".
 #
 [database]
+path=/home/main/mail/raw
 
 # User configuration
 #

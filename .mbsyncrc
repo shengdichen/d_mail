@@ -11,15 +11,19 @@ PassCmd "gpg -dq ~/mail/pw/outlook.gpg"
 IMAPStore OUTLOOK_REMOTE
 Account OUTLOOK_ACCOUNT
 
-MaildirStore OUTLOOK_LOCAL
+MaildirStore OUTLOOK_LOCAL_INBOX
 SubFolders Maildir++
-Inbox ~/mail/raw/outlook/
+Inbox ~/mail/raw/outlook/.INBOX/
 
 Channel OUTLOOK_INBOX
 Far :OUTLOOK_REMOTE:
-Near :OUTLOOK_LOCAL:
+Near :OUTLOOK_LOCAL_INBOX:
 Patterns "INBOX"
 Create Both
+
+MaildirStore OUTLOOK_LOCAL
+SubFolders Maildir++
+Inbox ~/mail/raw/outlook/
 
 Channel OUTLOOK_X
 Far :OUTLOOK_REMOTE:
@@ -52,13 +56,17 @@ AuthMech LOGIN
 IMAPStore ETH_REMOTE
 Account ETH_ACCOUNT
 
+MaildirStore ETH_LOCAL_INBOX
+SubFolders Maildir++
+Inbox ~/mail/raw/eth/.INBOX/
+
 MaildirStore ETH_LOCAL
 SubFolders Maildir++
 Inbox ~/mail/raw/eth/
 
 Channel ETH_INBOX
 Far :ETH_REMOTE:
-Near :ETH_LOCAL:
+Near :ETH_LOCAL_INBOX:
 Patterns "INBOX"
 Create Both
 

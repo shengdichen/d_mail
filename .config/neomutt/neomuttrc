@@ -8,11 +8,16 @@ source "~/.config/neomutt/box/outlook"
 folder-hook $folder 'source ~/.config/neomutt/box/outlook'
 # }}}
 
+# visual {{{
+# automatically load stats at startup
+set mail_check_stats = yes
+
 # sidebar {{{
 set sidebar_visible = yes
 set sidebar_new_mail_only = no
 set sidebar_width = 25
 set sidebar_divider_char = '|'
+# }}}
 # }}}
 
 # vim: filetype=neomuttrc foldmethod=marker

@@ -1,0 +1,7 @@
+set nm_default_url = "notmuch:///home/main/mail/raw"
+
+virtual-mailboxes \
+    "NM_UNREAD" "notmuch://?query=tag:unread" \
+    "NM_INBOX" "notmuch://?query=tag:inbox"
+
+# vim: filetype=neomuttrc foldmethod=marker

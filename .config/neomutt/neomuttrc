@@ -34,6 +34,10 @@ auto_view text/plain text/html
 
 # send {{{
 set editor = "nvim"
+
+# do NOT prompt for recipient & subject; edit together with message instead
+set auto_edit = yes
+set edit_headers = yes
 # }}}
 
 # vim: filetype=neomuttrc foldmethod=marker

@@ -1,0 +1,24 @@
+# box {{{
+set mbox_type = Maildir
+set folder = "~/mail/raw/eth/"
+
+named-mailboxes \
+    "ETH_INBOX" "~/mail/raw/eth/.INBOX/" \
+    "ETH_DEL" "~/mail/raw/eth/.Trash/"
+# }}}
+
+# write {{{
+set real_name = "Shengdi 'shc' Chen"
+set from = "shenchen@ethz.ch"
+
+unmy_hdr *
+my_hdr OS: `uname -s` `uname -r`
+my_hdr Lang: en,fr(ch),de(ch),ru,sv,it,sp,ar,zh,jp,pt
+my_hdr reply-to: "shenchen@ethz.ch"
+
+set sendmail = "msmtp -a eth"
+set record = "+Sent"
+set postponed = "+Drafts"
+# }}}
+
+# vim: filetype=neomuttrc foldmethod=marker

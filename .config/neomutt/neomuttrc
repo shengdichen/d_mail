@@ -32,4 +32,8 @@ set sort_aux = date
 auto_view text/plain text/html
 # }}}
 
+# send {{{
+set editor = "nvim"
+# }}}
+
 # vim: filetype=neomuttrc foldmethod=marker

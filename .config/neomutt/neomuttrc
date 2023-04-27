@@ -30,6 +30,12 @@ set index_format = " \
 %4cr  %{$date_format} \
 "
 
+set status_format = " \
+%D = (#%m, ~%l) \
+%* \
+%r (N:%n, O:%o)->[D:%d, F:%F, T:%t, P:%p]  %P \
+"
+
 set use_threads = "threads"
 # newer threads are higher
 set sort = reverse-last-date

@@ -115,6 +115,29 @@ bind pager ae edit-type
 
 bind pager q exit
 # }}}
+
+# generic {{{
+bind generic l select-entry
+bind generic <Enter> select-entry
+bind generic <Return> select-entry
+
+bind generic k previous-entry
+bind generic j next-entry
+macro generic K kkkk "4k"
+macro generic J jjjj "4j"
+bind generic u half-up
+bind generic d half-down
+bind generic g first-entry
+bind generic G last-entry
+
+macro generic : "<enter-command>exec " "exec: command"
+bind generic ! shell-escape
+bind generic / search
+bind generic n search-next
+bind generic N search-opposite
+
+bind generic q exit
+# }}}
 # }}}
 
 # vim: filetype=neomuttrc foldmethod=marker

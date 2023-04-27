@@ -168,6 +168,16 @@ bind index aa view-attachments
 bind index at view-raw-message
 bind index ae edit-type
 # }}}
+
+# attachment {{{
+bind attach t view-text
+
+bind attach l view-mailcap
+bind attach <Enter> view-mailcap
+bind attach <Return> view-mailcap
+
+bind attach s save-entry
+# }}}
 # }}}
 # }}}
 

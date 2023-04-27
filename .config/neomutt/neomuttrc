@@ -116,6 +116,7 @@ bind pager ae edit-type
 bind pager q exit
 # }}}
 
+# menu-like {{{
 # generic {{{
 bind generic l select-entry
 bind generic <Enter> select-entry
@@ -137,6 +138,31 @@ bind generic n search-next
 bind generic N search-opposite
 
 bind generic q exit
+# }}}
+
+# index {{{
+# must escape semi-colon
+bind index \; limit
+macro index cd "<change-folder>?" "change-box"
+
+bind index mm mail
+bind index mb bounce-message
+bind index mf forward-message
+bind index mr reply
+
+bind index l display-message
+bind index <Enter> display-message
+bind index <Return> display-message
+
+bind index za collapse-thread
+bind index zA collapse-all
+bind index H previous-thread
+bind index L next-thread
+
+bind index aa view-attachments
+bind index at view-raw-message
+bind index ae edit-type
+# }}}
 # }}}
 # }}}
 

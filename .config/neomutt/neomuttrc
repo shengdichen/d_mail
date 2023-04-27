@@ -93,8 +93,8 @@ bind pager k previous-line
 bind pager j next-line
 macro pager K kkkk "4k"
 macro pager J jjjj "4j"
-bind pager u half-up
-bind pager d half-down
+macro pager u KKKK "16k"
+macro pager d JJJJ "16j"
 bind pager g top
 bind pager G bottom
 
@@ -126,8 +126,8 @@ bind generic k previous-entry
 bind generic j next-entry
 macro generic K kkkk "4k"
 macro generic J jjjj "4j"
-bind generic u half-up
-bind generic d half-down
+macro generic u KKKK "16k"
+macro generic d JJJJ "16j"
 bind generic g first-entry
 bind generic G last-entry
 

@@ -64,4 +64,9 @@ set auto_edit = yes
 set edit_headers = yes
 # }}}
 
+# binds {{{
+unbind *
+unmacro *
+# }}}
+
 # vim: filetype=neomuttrc foldmethod=marker

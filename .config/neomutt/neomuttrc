@@ -89,6 +89,8 @@ bind editor \ck kill-eol
 # }}}
 
 # pager {{{
+bind pager cc sidebar-toggle-visible
+
 bind pager k previous-line
 bind pager j next-line
 macro pager K kkkk "4k"
@@ -141,6 +143,7 @@ bind generic q exit
 # }}}
 
 # index {{{
+bind index cc sidebar-toggle-visible
 macro index cd "<change-folder>?" "change-box"
 bind index <Enter> sidebar-open
 bind index <Return> sidebar-open

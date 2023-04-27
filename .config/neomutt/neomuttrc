@@ -30,6 +30,7 @@ set index_format = " \
 %4cr  %{$date_format} \
 "
 
+set status_chars = " +xA"
 set status_format = " \
 %D = (#%m, ~%l) \
 %* \

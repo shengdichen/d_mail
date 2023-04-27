@@ -12,6 +12,8 @@ folder-hook $folder 'source ~/.config/neomutt/box/outlook'
 # automatically load stats at startup
 set mail_check_stats = yes
 
+set date_format = "%Y.%b.%d-%T"
+
 # sidebar {{{
 set sidebar_visible = yes
 set sidebar_new_mail_only = no
@@ -22,6 +24,12 @@ set sidebar_format = " %D %* %?N?%N&-?/%S "
 # }}}
 
 # index {{{
+set index_format = " \
+%03C  [%Z]   %-59.59s     %-39.39L \
+%* \
+%4cr  %{$date_format} \
+"
+
 set use_threads = "threads"
 # newer threads are higher
 set sort = reverse-last-date

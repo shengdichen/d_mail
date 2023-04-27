@@ -67,6 +67,26 @@ set edit_headers = yes
 # binds {{{
 unbind *
 unmacro *
+
+# editor (command-line) {{{
+bind editor <Tab> complete
+bind editor \cp history-up
+bind editor \cn history-down
+
+bind editor \ch backward-char
+bind editor \cl forward-char
+bind editor \cb backward-word
+bind editor \cf forward-word
+bind editor \ca bol
+bind editor \ce eol
+
+bind editor <Backspace> backspace
+bind editor <Delete> delete-char
+bind editor \cw kill-word
+bind editor \cd kill-eow
+bind editor \cj kill-line
+bind editor \ck kill-eol
+# }}}
 # }}}
 
 # vim: filetype=neomuttrc foldmethod=marker

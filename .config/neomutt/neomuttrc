@@ -141,6 +141,7 @@ bind generic q exit
 # }}}
 
 # index {{{
+macro index cd "<change-folder>?" "change-box"
 bind index <Enter> sidebar-open
 bind index <Return> sidebar-open
 bind index \cp sidebar-prev
@@ -150,7 +151,6 @@ macro index \cj "\cn\cn\cn\cn" "box-jjjj"
 
 # must escape semi-colon
 bind index \; limit
-macro index cd "<change-folder>?" "change-box"
 
 bind index mm mail
 bind index mb bounce-message

@@ -141,6 +141,13 @@ bind generic q exit
 # }}}
 
 # index {{{
+bind index <Enter> sidebar-open
+bind index <Return> sidebar-open
+bind index \cp sidebar-prev
+bind index \cn sidebar-next
+macro index \ck "\cp\cp\cp\cp" "box-kkkk"
+macro index \cj "\cn\cn\cn\cn" "box-jjjj"
+
 # must escape semi-colon
 bind index \; limit
 macro index cd "<change-folder>?" "change-box"
@@ -151,8 +158,6 @@ bind index mf forward-message
 bind index mr reply
 
 bind index l display-message
-bind index <Enter> display-message
-bind index <Return> display-message
 
 bind index za collapse-thread
 bind index zA collapse-all

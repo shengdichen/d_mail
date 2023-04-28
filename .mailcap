@@ -1,4 +1,7 @@
 text/html; firefox-developer-edition --private-window %s 1>/dev/null 2>&1 &;
+#   text/html; firefox --private-window %s 1>/dev/null 2>&1 &;
+#   text/html; chromium --incognito --new-window %s 1>/dev/null 2>&1 &;
+#   text/html; w3m -T text/html -dump | nvim -R;
 text/html; w3m -T text/html -dump | cat -n; copiousoutput;
 
 text/*; nvim -R;

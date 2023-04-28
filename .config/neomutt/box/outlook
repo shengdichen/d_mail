@@ -12,10 +12,8 @@ named-mailboxes \
 set real_name = "Shengdi 'shc' Chen"
 set from = "shengdi@outlook.de"
 
-unmy_hdr *
-my_hdr OS: `uname -s` `uname -r`
-my_hdr Lang: en,fr(ch),de(ch),ru,sv,it,sp,ar,zh,jp,pt
-my_hdr reply-to: "shengdi@outlook.de"
+source ~/.config/neomutt/common/header
+my_hdr Reply-To: "shengdi@outlook.de"
 
 set sendmail = "msmtp -a outlook"
 set record = "+Sent"

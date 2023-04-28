@@ -1,6 +1,6 @@
 unmy_hdr *
 my_hdr X-OS: `uname -s` [`uname -r`]
 my_hdr X-Mailer: `msmtp --version | head -n 1 | sed -e 's/version \(.*\)/[\1]/'`
-my_hdr Content-Language: en,fr(ch),de(ch),ru,sv,it,sp,ar,zh,jp,pt
+my_hdr Content-Language: en,fr-CH,de-CH,ru,sv,it,sp-ES,ar-EG,zh-CN,zh-HK,jp,pt-PT
 
 # vim: filetype=neomuttrc foldmethod=marker

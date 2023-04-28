@@ -52,6 +52,8 @@ set sort_aux = date
 
 # read {{{
 auto_view text/plain text/html
+
+alternative_order text/plain text/* image/*
 # }}}
 
 # send {{{

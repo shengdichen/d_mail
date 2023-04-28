@@ -8,47 +8,7 @@ source "~/.config/neomutt/box/outlook"
 folder-hook $folder 'source ~/.config/neomutt/box/outlook'
 # }}}
 
-# visual {{{
-# scroll at boundaries, NOT jump-page
-set menu_scroll = yes
-# number of context-lines when scrolling
-set menu_context = 2
-
-# automatically load stats at startup
-set mail_check_stats = yes
-
-set date_format = "%Y.%b.%d-%T"
-
-# sidebar {{{
-set sidebar_visible = yes
-set sidebar_new_mail_only = no
-set sidebar_width = 29
-set sidebar_divider_char = '|'
-
-set sidebar_format = " %D %* %?N?%N&-?/%S "
-# }}}
-
-# index {{{
-set index_format = " \
-%03C  [%Z]   %-59.59s     %-39.39L \
-%* \
-%4cr  %{$date_format} \
-"
-
-set status_chars = " +xA"
-set status_format = " \
-%D = (#%m, ~%l) \
-%* \
-%r (N:%n, O:%o)->[D:%d, F:%F, T:%t, P:%p]  %P \
-"
-
-set use_threads = "threads"
-# newer threads are higher
-set sort = reverse-last-date
-# newer messages of a thread are lower
-set sort_aux = date
-# }}}
-# }}}
+source "~/.config/neomutt/conf/visual.conf"
 
 source "~/.config/neomutt/conf/read.conf"
 

@@ -111,6 +111,11 @@ bind pager / search
 bind pager n search-next
 bind pager N search-opposite
 
+bind pager mm mail
+bind pager mb bounce-message
+bind pager mf forward-message
+bind pager mr reply
+
 bind pager aa view-attachments
 bind pager at view-raw-message
 bind pager ae edit-type

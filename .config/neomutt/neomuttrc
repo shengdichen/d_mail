@@ -1,12 +1,4 @@
-# box {{{
-source "~/.config/neomutt/box/notmuch"
-
-source "~/.config/neomutt/box/eth"
-folder-hook $folder 'source ~/.config/neomutt/box/eth'
-
-source "~/.config/neomutt/box/outlook"
-folder-hook $folder 'source ~/.config/neomutt/box/outlook'
-# }}}
+source "~/.config/neomutt/box/box.conf"
 
 source "~/.config/neomutt/conf/visual.conf"
 

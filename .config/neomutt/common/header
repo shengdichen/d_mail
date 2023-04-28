@@ -1,0 +1,5 @@
+unmy_hdr *
+my_hdr OS: `uname -s` `uname -r`
+my_hdr Lang: en,fr(ch),de(ch),ru,sv,it,sp,ar,zh,jp,pt
+
+# vim: filetype=neomuttrc foldmethod=marker

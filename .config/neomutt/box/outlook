@@ -13,7 +13,7 @@ set real_name = "Shengdi 'shc' Chen"
 set from = "shengdi@outlook.de"
 
 source ~/.config/neomutt/common/header
-my_hdr reply-to: "shengdi@outlook.de"
+my_hdr Reply-To: "shengdi@outlook.de"
 
 set sendmail = "msmtp -a outlook"
 set record = "+Sent"

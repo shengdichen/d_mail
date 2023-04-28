@@ -12,7 +12,7 @@ set real_name = "Shengdi 'shc' Chen"
 set from = "shenchen@ethz.ch"
 
 source ~/.config/neomutt/common/header
-my_hdr reply-to: "shenchen@ethz.ch"
+my_hdr Reply-To: "shenchen@ethz.ch"
 
 set sendmail = "msmtp -a eth"
 set record = "+Sent"

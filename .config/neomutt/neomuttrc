@@ -50,11 +50,7 @@ set sort_aux = date
 # }}}
 # }}}
 
-# read {{{
-auto_view text/plain text/html
-
-alternative_order text/plain text/* image/*
-# }}}
+source "~/.config/neomutt/conf/read.conf"
 
 source "~/.config/neomutt/conf/send.conf"
 

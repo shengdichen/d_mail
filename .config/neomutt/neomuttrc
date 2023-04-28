@@ -56,13 +56,7 @@ auto_view text/plain text/html
 alternative_order text/plain text/* image/*
 # }}}
 
-# send {{{
-set editor = "nvim"
-
-# do NOT prompt for recipient & subject; edit together with message instead
-set auto_edit = yes
-set edit_headers = yes
-# }}}
+source "~/.config/neomutt/conf/send.conf"
 
 source "~/.config/neomutt/conf/bind.conf"
 

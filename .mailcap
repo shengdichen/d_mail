@@ -2,7 +2,7 @@ text/html; firefox-developer-edition --private-window %s 1>/dev/null 2>&1 &;
 text/html; w3m -T text/html -dump | cat -n; copiousoutput;
 
 text/*; nvim -R;
-text/*; cat -n; copiousoutput;
+text/*; fold -w 119 -s | cat -n; copiousoutput;
 
 application/pdf; zathura %s 1>/dev/null 2>&1 &;
 

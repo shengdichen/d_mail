@@ -204,6 +204,13 @@ bind compose dd detach-file
 bind compose < move-up
 bind compose > move-down
 # }}}
+
+# (file-)browser {{{
+bind browser h goto-parent
+
+bind browser <Enter> view-file
+bind browser <Return> view-file
+# }}}
 # }}}
 # }}}
 

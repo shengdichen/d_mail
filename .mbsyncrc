@@ -95,7 +95,7 @@ Expunge Both
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
-Patterns "Trash"
+Patterns "Skickat" "Trash"
 Create Both
 Expunge Both
 

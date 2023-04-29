@@ -39,7 +39,7 @@ Expunge Both
 Channel OUTLOOK_MISC
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
-Patterns "Sent" "Deleted"
+Patterns "Sent" "Deleted" "Drafts"
 Create Both
 Expunge Both
 
@@ -95,7 +95,7 @@ Expunge Both
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
-Patterns "Trash"
+Patterns "Skickat" "Trash" "Drafts"
 Create Both
 Expunge Both
 

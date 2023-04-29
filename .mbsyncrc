@@ -47,6 +47,10 @@ Group OUTLOOK_ALL
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_X
 Channel OUTLOOK_MISC
+
+Group OUTLOOK_SYS
+Channel OUTLOOK_INBOX
+Channel OUTLOOK_MISC
 # }}}
 # }}}
 
@@ -98,6 +102,10 @@ Expunge Both
 Group ETH_ALL
 Channel ETH_INBOX
 Channel ETH_X
+Channel ETH_MISC
+
+Group ETH_SYS
+Channel ETH_INBOX
 Channel ETH_MISC
 # }}}
 # }}}

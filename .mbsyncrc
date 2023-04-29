@@ -1,6 +1,7 @@
 SyncState *
 
 # outlook {{{
+# remote {{{
 IMAPAccount OUTLOOK_ACCOUNT
 Host outlook.office365.com
 Port 993
@@ -10,7 +11,9 @@ PassCmd "gpg -dq ~/mail/pw/outlook.gpg"
 
 IMAPStore OUTLOOK_REMOTE
 Account OUTLOOK_ACCOUNT
+# }}}
 
+# local {{{
 MaildirStore OUTLOOK_LOCAL_INBOX
 SubFolders Maildir++
 Inbox ~/mail/raw/outlook/.INBOX/
@@ -20,6 +23,7 @@ Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL_INBOX:
 Patterns "INBOX"
 Create Both
+Expunge Both
 
 MaildirStore OUTLOOK_LOCAL
 SubFolders Maildir++
@@ -30,20 +34,28 @@ Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "x/*"
 Create Both
+Expunge Both
 
 Channel OUTLOOK_MISC
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
-Patterns "Deleted"
+Patterns "Sent" "Deleted"
 Create Both
+Expunge Both
 
 Group OUTLOOK_ALL
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_X
 Channel OUTLOOK_MISC
+
+Group OUTLOOK_SYS
+Channel OUTLOOK_INBOX
+Channel OUTLOOK_MISC
+# }}}
 # }}}
 
 # eth {{{
+# remote {{{
 IMAPAccount ETH_ACCOUNT
 Host mail.ethz.ch
 Port 993
@@ -55,7 +67,9 @@ AuthMech LOGIN
 
 IMAPStore ETH_REMOTE
 Account ETH_ACCOUNT
+# }}}
 
+# local {{{
 MaildirStore ETH_LOCAL_INBOX
 SubFolders Maildir++
 Inbox ~/mail/raw/eth/.INBOX/
@@ -69,23 +83,31 @@ Far :ETH_REMOTE:
 Near :ETH_LOCAL_INBOX:
 Patterns "INBOX"
 Create Both
+Expunge Both
 
 Channel ETH_X
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "x/*"
 Create Both
+Expunge Both
 
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "Trash"
 Create Both
+Expunge Both
 
 Group ETH_ALL
 Channel ETH_INBOX
 Channel ETH_X
 Channel ETH_MISC
+
+Group ETH_SYS
+Channel ETH_INBOX
+Channel ETH_MISC
+# }}}
 # }}}
 
 # vim: filetype=conf foldmethod=marker

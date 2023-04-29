@@ -23,6 +23,7 @@ Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL_INBOX:
 Patterns "INBOX"
 Create Both
+Expunge Both
 
 MaildirStore OUTLOOK_LOCAL
 SubFolders Maildir++
@@ -33,12 +34,14 @@ Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "x/*"
 Create Both
+Expunge Both
 
 Channel OUTLOOK_MISC
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "Sent" "Deleted"
 Create Both
+Expunge Both
 
 Group OUTLOOK_ALL
 Channel OUTLOOK_INBOX
@@ -76,18 +79,21 @@ Far :ETH_REMOTE:
 Near :ETH_LOCAL_INBOX:
 Patterns "INBOX"
 Create Both
+Expunge Both
 
 Channel ETH_X
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "x/*"
 Create Both
+Expunge Both
 
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "Trash"
 Create Both
+Expunge Both
 
 Group ETH_ALL
 Channel ETH_INBOX

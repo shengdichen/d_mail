@@ -1,0 +1,15 @@
++_ATTACHMENT -attachment -- tag:attachment
++_SIGNED -signed -- tag:signed
++_ENCRYPTED -encrypted -- tag:encrypted
+
+# remove completely
+-inbox -- tag:inbox
+
+# these builtin tags are left as is:
+#   unread
+#   flagged
+#   draft
+#   replied
+#   passed
+
+# vim: filetype=conf

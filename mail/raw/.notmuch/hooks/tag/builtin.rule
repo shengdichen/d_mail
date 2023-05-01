@@ -2,8 +2,10 @@
 +_SIGNED -signed -- tag:signed
 +_ENCRYPTED -encrypted -- tag:encrypted
 
+# remove completely
+-inbox -- tag:inbox
+
 # these builtin tags are left as is:
-#   inbox
 #   unread
 #   flagged
 #   draft

@@ -4,7 +4,10 @@ firefox-developer-edition --private-window %s 1>/dev/null 2>&1 &;
 #   chromium --incognito --new-window %s 1>/dev/null 2>&1 &;
 #   w3m -T text/html -dump | nvim -R;
 text/html; \
-w3m -T text/html -dump | cat -n; \
+w3m -T text/html -dump | \
+cat -n | \
+sed -r -e 's/^\\s*([0-9]*)\\s*/\\1  /' | \
+sed -r -e 's/^([0-9] )/0\\1/'; \
 copiousoutput;
 
 text/*; \

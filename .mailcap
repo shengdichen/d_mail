@@ -1,3 +1,7 @@
+# NOTE:
+#   1.  (neo)mutt consumes the first level of backslash; thus, must use \\ (two
+#   consecutive ones) to indicate one literate backslash (crucial for regexes)
+
 text/html; \
 firefox-developer-edition --private-window %s 1>/dev/null 2>&1 &;
 #   firefox --private-window %s 1>/dev/null 2>&1 &;

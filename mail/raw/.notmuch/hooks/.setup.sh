@@ -1,1 +1,3 @@
-chmod +x post-new.sh
+#!/usr/bin/env bash
+
+chmod +x "./post-new"

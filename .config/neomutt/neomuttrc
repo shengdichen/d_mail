@@ -9,6 +9,7 @@ source "~/.config/neomutt/box/specific/set_unset.conf"
 source "~/.config/neomutt/box/specific/eth/bind.conf"
 source "~/.config/neomutt/box/specific/outlook/bind.conf"
 
+source "~/.config/neomutt/box/common/notmuch.conf"
 source "~/.config/neomutt/box/source.conf"
 
 # vim: filetype=neomuttrc foldmethod=marker

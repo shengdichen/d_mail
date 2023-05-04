@@ -8,7 +8,7 @@ source "~/.config/neomutt/conf/bind.conf"
 source "~/.config/neomutt/box/specific/set_unset.conf"
 source "~/.config/neomutt/box/specific/eth/auto.conf"
 source "~/.config/neomutt/box/specific/outlook/auto.conf"
-source "~/.config/neomutt/box/specific/xyz/hook.conf"
+source "~/.config/neomutt/box/specific/xyz/auto.conf"
 
 source "~/.config/neomutt/box/common/notmuch.conf"
 

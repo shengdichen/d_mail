@@ -1,4 +1,6 @@
 SyncState *
+Create Both
+Expunge Both
 
 # xyz {{{
 # remote {{{
@@ -24,8 +26,6 @@ Channel XYZ_INBOX
 Far :XYZ_REMOTE:
 Near :XYZ_LOCAL_INBOX:
 Patterns "INBOX"
-Create Both
-Expunge Both
 
 MaildirStore XYZ_LOCAL
 SubFolders Maildir++
@@ -35,15 +35,11 @@ Channel XYZ_X
 Far :XYZ_REMOTE:
 Near :XYZ_LOCAL:
 Patterns "Folders/*"
-Create Both
-Expunge Both
 
 Channel XYZ_MISC
 Far :XYZ_REMOTE:
 Near :XYZ_LOCAL:
 Patterns "Sent" "Trash" "Drafts"
-Create Both
-Expunge Both
 
 Group XYZ_ALL
 Channel XYZ_INBOX
@@ -78,8 +74,6 @@ Channel OUTLOOK_INBOX
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL_INBOX:
 Patterns "INBOX"
-Create Both
-Expunge Both
 
 MaildirStore OUTLOOK_LOCAL
 SubFolders Maildir++
@@ -89,15 +83,11 @@ Channel OUTLOOK_X
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "x/*"
-Create Both
-Expunge Both
 
 Channel OUTLOOK_MISC
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
 Patterns "Sent" "Deleted" "Drafts"
-Create Both
-Expunge Both
 
 Group OUTLOOK_ALL
 Channel OUTLOOK_INBOX
@@ -138,22 +128,16 @@ Channel ETH_INBOX
 Far :ETH_REMOTE:
 Near :ETH_LOCAL_INBOX:
 Patterns "INBOX"
-Create Both
-Expunge Both
 
 Channel ETH_X
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "x/*"
-Create Both
-Expunge Both
 
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "Skickat" "Trash" "Drafts"
-Create Both
-Expunge Both
 
 Group ETH_ALL
 Channel ETH_INBOX

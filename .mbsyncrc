@@ -1,5 +1,61 @@
 SyncState *
 
+# xyz {{{
+# remote {{{
+IMAPAccount XYZ_ACCOUNT
+Host 127.0.0.1
+Port 1143
+SSLType IMAPS
+User me@shengdichen.xyz
+PassCmd "gpg -dq ~/mail/pw/xyz.gpg"
+SSLType None
+AuthMech LOGIN
+
+IMAPStore XYZ_REMOTE
+Account XYZ_ACCOUNT
+# }}}
+
+# local {{{
+MaildirStore XYZ_LOCAL_INBOX
+SubFolders Maildir++
+Inbox ~/mail/raw/xyz/.INBOX/
+
+Channel XYZ_INBOX
+Far :XYZ_REMOTE:
+Near :XYZ_LOCAL_INBOX:
+Patterns "INBOX"
+Create Both
+Expunge Both
+
+MaildirStore XYZ_LOCAL
+SubFolders Maildir++
+Inbox ~/mail/raw/xyz/
+
+Channel XYZ_X
+Far :XYZ_REMOTE:
+Near :XYZ_LOCAL:
+Patterns "Folders/*"
+Create Both
+Expunge Both
+
+Channel XYZ_MISC
+Far :XYZ_REMOTE:
+Near :XYZ_LOCAL:
+Patterns "Sent" "Trash" "Drafts"
+Create Both
+Expunge Both
+
+Group XYZ_ALL
+Channel XYZ_INBOX
+Channel XYZ_X
+Channel XYZ_MISC
+
+Group XYZ_SYS
+Channel XYZ_INBOX
+Channel XYZ_MISC
+# }}}
+# }}}
+
 # outlook {{{
 # remote {{{
 IMAPAccount OUTLOOK_ACCOUNT

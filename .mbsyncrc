@@ -1,5 +1,6 @@
 SyncState *
 Create Both
+Remove Both
 Expunge Both
 
 # xyz {{{

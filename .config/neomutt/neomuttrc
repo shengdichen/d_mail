@@ -6,6 +6,7 @@ source "~/.config/neomutt/conf/send.conf"
 
 source "~/.config/neomutt/conf/bind.conf"
 
+source "~/.config/neomutt/box/common/box.conf"
 source "~/.config/neomutt/box/common/notmuch.conf"
 source "~/.config/neomutt/box/specific/multi.conf"
 source "~/.config/neomutt/box/specific/eth/auto.conf"

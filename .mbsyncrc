@@ -82,7 +82,7 @@ Inbox ~/mail/raw/outlook/
 Channel OUTLOOK_X
 Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL:
-Patterns "x/*"
+Patterns "x"
 
 Channel OUTLOOK_MISC
 Far :OUTLOOK_REMOTE:
@@ -132,7 +132,7 @@ Patterns "INBOX"
 Channel ETH_X
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
-Patterns "x/*"
+Patterns "x"
 
 Channel ETH_MISC
 Far :ETH_REMOTE:

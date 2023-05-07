@@ -1,4 +1,4 @@
-+_SYS -- not folder:/\.x\./
-+_X -- folder:/\.x\./
++_SYS -_X -- not folder:/\.x$/
++_X -_SYS -- folder:/\.x$/
 
 # vim: filetype=conf

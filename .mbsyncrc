@@ -151,4 +151,17 @@ Channel ETH_MISC
 # }}}
 # }}}
 
+# all {{{
+Group ALL
+Channel XYZ_INBOX
+Channel XYZ_X
+Channel XYZ_MISC
+Channel ETH_INBOX
+Channel ETH_X
+Channel ETH_MISC
+Channel OUTLOOK_INBOX
+Channel OUTLOOK_X
+Channel OUTLOOK_MISC
+# }}}
+
 # vim: filetype=conf foldmethod=marker

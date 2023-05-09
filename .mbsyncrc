@@ -35,7 +35,7 @@ Inbox ~/mail/raw/xyz/
 Channel XYZ_X
 Far :XYZ_REMOTE:
 Near :XYZ_LOCAL:
-Patterns "Folders/*"
+Patterns "Folders/x"
 
 Channel XYZ_MISC
 Far :XYZ_REMOTE:

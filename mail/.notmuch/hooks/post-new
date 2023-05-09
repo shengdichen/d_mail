@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-tag_scripts_dir=~/mail/raw/.notmuch/hooks/tag/
+tag_scripts_dir=~/mail/.notmuch/hooks/tag/
 notmuch tag --batch < "${tag_scripts_dir}/builtin.rule"
 notmuch tag --batch < "${tag_scripts_dir}/archive.rule"
 notmuch tag --batch < "${tag_scripts_dir}/sent.rule"

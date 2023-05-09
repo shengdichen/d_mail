@@ -35,7 +35,7 @@ Inbox ~/mail/raw/xyz/
 Channel XYZ_X
 Far :XYZ_REMOTE:
 Near :XYZ_LOCAL:
-Patterns "Folders/*"
+Patterns "Folders/x"
 
 Channel XYZ_MISC
 Far :XYZ_REMOTE:
@@ -149,6 +149,19 @@ Group ETH_SYS
 Channel ETH_INBOX
 Channel ETH_MISC
 # }}}
+# }}}
+
+# all {{{
+Group ALL
+Channel XYZ_INBOX
+Channel XYZ_X
+Channel XYZ_MISC
+Channel ETH_INBOX
+Channel ETH_X
+Channel ETH_MISC
+Channel OUTLOOK_INBOX
+Channel OUTLOOK_X
+Channel OUTLOOK_MISC
 # }}}
 
 # vim: filetype=conf foldmethod=marker

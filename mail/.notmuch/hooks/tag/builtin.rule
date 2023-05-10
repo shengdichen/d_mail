@@ -5,6 +5,9 @@
 # remove completely
 -inbox -- tag:inbox
 
++draft -- folder:/all\/\.draft$/
+-draft -- not folder:/all\/\.draft$/
+
 # these builtin tags are left as is:
 #   unread
 #   flagged

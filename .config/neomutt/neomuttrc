@@ -13,4 +13,6 @@ source "~/.config/neomutt/box/specific/xyz/auto.conf"
 source "~/.config/neomutt/box/specific/outlook/auto.conf"
 source "~/.config/neomutt/box/specific/eth/auto.conf"
 
+source "~/.config/neomutt/conf/start.conf"
+
 # vim: filetype=neomuttrc foldmethod=marker

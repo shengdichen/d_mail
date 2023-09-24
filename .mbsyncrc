@@ -10,7 +10,7 @@ Host 127.0.0.1
 Port 1143
 SSLType IMAPS
 User me@shengdichen.xyz
-PassCmd "gpg -dq ~/mail/pw/xyz.gpg"
+PassCmd "pass Dox/mail/protonbridge | head -n 1"
 SSLType None
 AuthMech LOGIN
 
@@ -60,7 +60,7 @@ Host outlook.office365.com
 Port 993
 SSLType IMAPS
 User shengdi@outlook.de
-PassCmd "gpg -dq ~/mail/pw/outlook.gpg"
+PassCmd "pass Dox/mail/outlook_app | head -n 1"
 
 IMAPStore OUTLOOK_REMOTE
 Account OUTLOOK_ACCOUNT
@@ -108,7 +108,7 @@ Host mail.ethz.ch
 Port 993
 SSLType IMAPS
 User shenchen@ethz.ch
-PassCmd "gpg -dq ~/mail/pw/eth.gpg"
+PassCmd "pass Dox/ace/eth/admin | head -n 1"
 # bypass NTLM-authentication
 AuthMech LOGIN
 

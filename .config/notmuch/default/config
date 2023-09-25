@@ -1,0 +1,13 @@
+# REF:
+#   $ man notmuch-config
+
+[database]
+# ~/mail
+mail_root=mail
+
+[user]
+name=Shengdi Chen
+
+[new]
+[search]
+[maildir]

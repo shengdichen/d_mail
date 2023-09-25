@@ -9,7 +9,7 @@ host 127.0.0.1
 port 1025
 user me@shengdichen.xyz
 from me@shengdichen.xyz
-passwordeval gpg -dq ~/mail/pw/xyz.gpg
+passwordeval pass Dox/mail/protonbridge | head -n 1
 tls_certcheck off
 auth login
 # }}}
@@ -20,7 +20,7 @@ host smtp-mail.outlook.com
 port 587
 user shengdi@outlook.de
 from shengdi@outlook.de
-passwordeval gpg -dq ~/mail/pw/outlook.gpg
+passwordeval pass Dox/mail/outlook_app | head -n 1
 # }}}
 
 # eth {{{
@@ -29,7 +29,7 @@ host mail.ethz.ch
 port 587
 user shenchen
 from shenchen@ethz.ch
-passwordeval gpg -dq ~/mail/pw/eth.gpg
+passwordeval pass Dox/ace/eth/admin | head -n 1
 # }}}
 
 account default: outlook

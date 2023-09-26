@@ -35,9 +35,11 @@ action "print"
 # }}}
 
 # the undesirables {{{
-# NOTE:
-# 1. (vim-)convert raw-addresses to criteria
-#   :'<,'>sm/\./\\./g || :'<,'>sm/\(.*\)/    "^From:.*[\\\\s<]\1" in headers or/
+# NOTE: (vim-)convert to pattern-criteria
+# 1. specific address
+#   :'<,'>sm/\./\\./g || :'<,'>sm/^\s*\(\S.*\)$/    "^From:.*[\\\\s<]\1" in headers or/
+# 2. entire domain
+#   :'<,'>sm/\./\\./g || :'<,'>sm/^\s*\(\S.*\)\(@.*\)$/    "^From:.*\2" in headers or/
 
 # move to trash {{{
 match

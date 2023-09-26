@@ -44,11 +44,17 @@ match
     "^From:.*paypal@mail\.paypal\.de" in headers or
     "^From:.*ubs_switzerland@mailing\.ubs\.com" in headers or
     "^From:.*hello@mail\.plex\.tv" in headers or
+    "^From:.*no-reply@swissid\.ch" in headers or
+    "^From:.*support@nordvpn\.com" in headers or
+    "^From:.*@ipvanish\.com" in headers or
     #
     "^From:.*no-reply@accounts\.google\.com" in headers or
+    "^From:.*notification@facebookmail\.com" in headers or
+    "^From:.*charlotte@comm\.tutti\.ch" in headers or
     "^From:.*@\.*instagram\.*" in headers or
     "^From:.*kuiper\.sina@bcg\.com" in headers or
     "^From:.*treffpunkt@sl\.ethz\.ch" in headers or
+    "^From:.*ims@schlosstorgelow\.de" in headers or
     #
     "^From:.*email\.campaign@sg\.booking\.com" in headers or
     "^From:.*mail@e\.milesandmore\.com" in headers or

@@ -1,7 +1,11 @@
 Respectfully yours,
-Salutations distinguées,
-Freundliche Grüsse,
 Shengdi Chen (Mr.)
+
+Salutations distinguées,
+Shengdi Chen (M.)
+
+Freundliche Grüsse,
+Shengdi Chen (Herr)
 
     此致
 敬礼!

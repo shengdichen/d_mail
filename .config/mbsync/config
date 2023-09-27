@@ -135,11 +135,6 @@ Far :ETH_REMOTE:
 Near :ETH_LOCAL:
 Patterns "x"
 
-Channel ETH_Z
-Far :ETH_REMOTE:
-Near :ETH_LOCAL:
-Patterns "z"
-
 Channel ETH_MISC
 Far :ETH_REMOTE:
 Near :ETH_LOCAL:
@@ -148,7 +143,6 @@ Patterns "Skickat" "Trash" "Drafts"
 Group ETH_ALL
 Channel ETH_INBOX
 Channel ETH_X
-Channel ETH_Z
 Channel ETH_MISC
 
 Group ETH_SYS
@@ -164,7 +158,6 @@ Channel XYZ_X
 Channel XYZ_MISC
 Channel ETH_INBOX
 Channel ETH_X
-Channel ETH_Z
 Channel ETH_MISC
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_X

@@ -10,6 +10,10 @@ Shengdi Chen (Herr)
 Freundliche Grüße,
 Shengdi Chen (Herr)
 
+С уважением,
+Шэнди Чэнь (господин)
+Shengdi Chen (Mr.)
+
 順頌 時祺
 陳聖棣 (先生)
 

@@ -49,20 +49,27 @@ match
     "^From:.*[\\s<]no-reply@swissid\.ch" in headers or
     "^From:.*[\\s<]support@nordvpn\.com" in headers or
     "^From:.*@ipvanish\.com" in headers or
+    "^From:.*[\\s<]no-reply@.*\.proton\.me" in headers or
+    "^From:.*[\\s<]contact@protonmail\.com" in headers or
     #
     "^From:.*[\\s<]no-reply@accounts\.google\.com" in headers or
+    "^From:.*[\\s<]cloud-noreply@google\.com" in headers or
     "^From:.*[\\s<]notification@facebookmail\.com" in headers or
     "^From:.*[\\s<]charlotte@comm\.tutti\.ch" in headers or
+    "^From:.*[\\s<]hilfe@tutti\.ch" in headers or
     "^From:.*@\.*instagram\.*" in headers or
+    "^From:.*@mail\.blinkist\.com" in headers or
     "^From:.*[\\s<]kuiper\.sina@bcg\.com" in headers or
     "^From:.*[\\s<]treffpunkt@sl\.ethz\.ch" in headers or
     "^From:.*[\\s<]ims@schlosstorgelow\.de" in headers or
+    "^From:.*[\\s<]noreply@discord\.com" in headers or
     #
     "^From:.*[\\s<]email\.campaign@sg\.booking\.com" in headers or
     "^From:.*[\\s<]mail@e\.milesandmore\.com" in headers or
     "^From:.*[\\s<]mail@mailing\.milesandmore\.com" in headers or
     "^From:.*[\\s<]newsletter@mailing\.milesandmore\.com" in headers or
     "^From:.*[\\s<]newsletter@your\.lufthansa-group\.com" in headers or
+    "^From:.*[\\s<]notice@info\.aliexpress\.com" in headers or
     #
     "^From:.*[\\s<]no-reply@business\.amazon\.com" in headers or
     "^From:.*[\\s<]store-news@amazon\.com" in headers or
@@ -83,6 +90,8 @@ match
     "^From:.*[\\s<]didaktischeausbildung@ethz\.ch" in headers or
     "^From:.*[\\s<]evasys@let\.ethz\.ch" in headers or
     "^From:.*[\\s<]noreply@moodle-app2\.let\.ethz\.ch" in headers or
+    "^From:.*[\\s<]treffpunkt@news\.ethz\.ch" in headers or
+    "^From:.*[\\s<]MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern\.ethz\.ch" in headers or
     "^From:.*[\\s<]no-reply@piazza\.com" in headers
     #
     action "move_all_trash"
@@ -114,6 +123,10 @@ match
     "^From:.*@.*didareshop\.com.*" in headers or
     "^From:.*@.*catpro\.io.*" in headers or
     "^From:.*@.*mozart\.livingopera\.org.*" in headers or
+    "^From:.*@vr7uallms\.com" in headers or
+    "^From:.*@caboardroom\.com\.sg" in headers or
+    "^From:.*@esrtech\.io" in headers or
+    "^From:.*@watts\.com" in headers or
     #
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or

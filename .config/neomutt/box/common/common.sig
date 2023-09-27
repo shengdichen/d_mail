@@ -7,6 +7,9 @@ Shengdi Chen (M.)
 Freundliche Grüsse,
 Shengdi Chen (Herr)
 
+Freundliche Grüße,
+Shengdi Chen (Herr)
+
 順頌 時祺
 陳聖棣 (先生)
 

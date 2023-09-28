@@ -1,4 +1,4 @@
 .local/share/mail/*
-.local/share/notmuch/*/*
+.local/share/notmuch/*
 
 .cache/neomutt/*

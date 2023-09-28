@@ -72,24 +72,18 @@ Far :OUTLOOK_REMOTE:
 Near :OUTLOOK_LOCAL_INBOX:
 Patterns "INBOX"
 
-MaildirStore OUTLOOK_LOCAL
+MaildirStore OUTLOOK_LOCAL_ELSE
 SubFolders Maildir++
 Inbox ~/.local/share/mail/raw/outlook/
 
-Channel OUTLOOK_X
+Channel OUTLOOK_ELSE
 Far :OUTLOOK_REMOTE:
-Near :OUTLOOK_LOCAL:
-Patterns "x"
-
-Channel OUTLOOK_MISC
-Far :OUTLOOK_REMOTE:
-Near :OUTLOOK_LOCAL:
-Patterns "Sent" "Deleted" "Drafts"
+Near :OUTLOOK_LOCAL_ELSE:
+Patterns * !"INBOX"
 
 Group OUTLOOK
 Channel OUTLOOK_INBOX
-Channel OUTLOOK_X
-Channel OUTLOOK_MISC
+Channel OUTLOOK_ELSE
 # }}}
 # }}}
 
@@ -148,8 +142,7 @@ Channel ETH_INBOX
 Channel ETH_X
 Channel ETH_MISC
 Channel OUTLOOK_INBOX
-Channel OUTLOOK_X
-Channel OUTLOOK_MISC
+Channel OUTLOOK_ELSE
 # }}}
 
 # vim: filetype=conf foldmethod=marker

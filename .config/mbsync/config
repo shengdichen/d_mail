@@ -35,7 +35,7 @@ Inbox ~/.local/share/mail/raw/xyz/
 Channel XYZ_ELSE
 Far :XYZ_REMOTE:
 Near :XYZ_LOCAL_ELSE:
-Patterns * !"INBOX"
+Patterns * !"INBOX" !"All Mail"
 
 Group XYZ
 Channel XYZ_INBOX

@@ -92,6 +92,13 @@ match
     "^From:.*[\\s<]noreply@moodle-app2\.let\.ethz\.ch" in headers or
     "^From:.*[\\s<]treffpunkt@news\.ethz\.ch" in headers or
     "^From:.*[\\s<]MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern\.ethz\.ch" in headers or
+    "^From:.*@hk\.ethz\.ch" in headers or
+    "^From:.*[\\s<]president@ethz\.ch" in headers or
+    "^From:.*[\\s<]sgu_training@ethz\.ch" in headers or
+    "^From:.*[\\s<]mathbib@math\.ethz\.ch" in headers or
+    "^From:.*@sts\.ethz\.ch" in headers or
+    "^From:.*@projektneptun\.ch" in headers or
+    "^From:.*@sprachen\.uzh\.ch" in headers or
     "^From:.*[\\s<]no-reply@piazza\.com" in headers
     #
     action "move_all_trash"

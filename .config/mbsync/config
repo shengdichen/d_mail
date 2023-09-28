@@ -28,24 +28,18 @@ Far :XYZ_REMOTE:
 Near :XYZ_LOCAL_INBOX:
 Patterns "INBOX"
 
-MaildirStore XYZ_LOCAL
+MaildirStore XYZ_LOCAL_ELSE
 SubFolders Maildir++
 Inbox ~/.local/share/mail/raw/xyz/
 
-Channel XYZ_X
+Channel XYZ_ELSE
 Far :XYZ_REMOTE:
-Near :XYZ_LOCAL:
-Patterns "Folders/x"
-
-Channel XYZ_MISC
-Far :XYZ_REMOTE:
-Near :XYZ_LOCAL:
-Patterns "Sent" "Trash" "Drafts"
+Near :XYZ_LOCAL_ELSE:
+Patterns * !"INBOX"
 
 Group XYZ
 Channel XYZ_INBOX
-Channel XYZ_X
-Channel XYZ_MISC
+Channel XYZ_ELSE
 # }}}
 # }}}
 
@@ -130,8 +124,7 @@ Channel ETH_ELSE
 # all {{{
 Group ALL
 Channel XYZ_INBOX
-Channel XYZ_X
-Channel XYZ_MISC
+Channel XYZ_ELSE
 Channel ETH_INBOX
 Channel ETH_ELSE
 Channel OUTLOOK_INBOX

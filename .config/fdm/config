@@ -8,15 +8,21 @@ $raw_dir = "${base_dir}/raw/"
 
 $path_xyz = "${raw_dir}/xyz"
 account "xyz"
-    maildirs "${path_xyz}/.INBOX/"
+    maildirs {
+        "${path_xyz}/.INBOX/"
+    }
 
 $path_eth = "${raw_dir}/eth"
 account "eth"
-    maildirs "${path_eth}/.INBOX/"
+    maildirs {
+        "${path_eth}/.INBOX/"
+    }
 
 $path_outlook = "${raw_dir}/outlook"
 account "outlook"
-    maildirs "${path_outlook}/.INBOX/"
+    maildirs {
+        "${path_outlook}/.INBOX/"
+    }
 # }}}
 # }}}
 
@@ -102,11 +108,13 @@ match
     "^From:.*@sprachen\.uzh\.ch" in headers or
     "^From:.*[\\s<]no-reply@piazza\.com" in headers
     #
-    action "move_all_trash"
+    actions {
+        "move_all_trash"
+    }
 
 match
     "^Subject:.*Test Mail.*" in headers
-    action "move_all_trash"
+    actions "move_all_trash"
 # }}}
 
 # direct deletion {{{
@@ -152,13 +160,17 @@ match
     "^From:.*[\\s<]Ashish.Biswas@icar\.gov\.in" in headers or
     "^From:.*[\\s<]apis@tisknise\.cz" in headers
     #
-    action "delete"
+    actions {
+        "delete"
+    }
 # }}}
 # }}}
 
 # catch all
 match
     all
-    action "keep"
+    actions {
+        "keep"
+    }
 
 # vim: filetype=conf foldmethod=marker

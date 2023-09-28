@@ -107,29 +107,23 @@ MaildirStore ETH_LOCAL_INBOX
 SubFolders Maildir++
 Inbox ~/.local/share/mail/raw/eth/.INBOX/
 
-MaildirStore ETH_LOCAL
-SubFolders Maildir++
-Inbox ~/.local/share/mail/raw/eth/
-
 Channel ETH_INBOX
 Far :ETH_REMOTE:
 Near :ETH_LOCAL_INBOX:
 Patterns "INBOX"
 
-Channel ETH_X
-Far :ETH_REMOTE:
-Near :ETH_LOCAL:
-Patterns "x"
+MaildirStore ETH_LOCAL_ELSE
+SubFolders Maildir++
+Inbox ~/.local/share/mail/raw/eth/
 
-Channel ETH_MISC
+Channel ETH_ELSE
 Far :ETH_REMOTE:
-Near :ETH_LOCAL:
-Patterns "Skickat" "Trash" "Drafts"
+Near :ETH_LOCAL_ELSE:
+Patterns * !"INBOX"
 
 Group ETH
 Channel ETH_INBOX
-Channel ETH_X
-Channel ETH_MISC
+Channel ETH_ELSE
 # }}}
 # }}}
 
@@ -139,8 +133,7 @@ Channel XYZ_INBOX
 Channel XYZ_X
 Channel XYZ_MISC
 Channel ETH_INBOX
-Channel ETH_X
-Channel ETH_MISC
+Channel ETH_ELSE
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_ELSE
 # }}}

@@ -27,6 +27,9 @@ account "outlook"
 # }}}
 
 # action {{{
+action "hold"
+    maildir "${all_dir}/.hold"
+
 action "move_all_trash"
     maildir "${all_dir}/.trash"
 

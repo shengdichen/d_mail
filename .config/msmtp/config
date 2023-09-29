@@ -32,6 +32,13 @@ from shenchen@ethz.ch
 passwordeval pass Dox/ace/eth/admin | head -n 1
 # }}}
 
+account gmail
+host smtp.gmail.com
+port 587
+user shengdishcchen
+from shengdishcchen@gmail.com
+passwordeval pass Dox/mail/gmail_shengdishcchen_app | head -n 1
+
 account default: outlook
 
 # vim: filetype=conf foldmethod=marker

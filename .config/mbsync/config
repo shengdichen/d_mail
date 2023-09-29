@@ -121,6 +121,40 @@ Channel ETH_ELSE
 # }}}
 # }}}
 
+# test: gmail {{{
+# remote {{{
+IMAPAccount GMAIL_ACCOUNT
+Host imap.gmail.com
+Port 993
+SSLType IMAPS
+User shengdishcchen@gmail.com
+PassCmd "pass Dox/mail/gmail_shengdishcchen_app | head -n 1"
+
+IMAPStore GMAIL_REMOTE
+Account GMAIL_ACCOUNT
+# }}}
+
+# local {{{
+MaildirStore GMAIL_LOCAL_INBOX
+SubFolders Maildir++
+Inbox ~/.local/share/mail/raw/gmail/.INBOX/
+
+Channel GMAIL_INBOX
+Far :GMAIL_REMOTE:
+Near :GMAIL_LOCAL_INBOX:
+Patterns "INBOX"
+
+MaildirStore GMAIL_LOCAL_ELSE
+SubFolders Maildir++
+Inbox ~/.local/share/mail/raw/gmail/
+
+Channel GMAIL_ELSE
+Far :GMAIL_REMOTE:
+Near :GMAIL_LOCAL_ELSE:
+Patterns * !"INBOX"
+# }}}
+# }}}
+
 # all {{{
 Group ALL
 Channel XYZ_INBOX
@@ -129,6 +163,8 @@ Channel ETH_INBOX
 Channel ETH_ELSE
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_ELSE
+Channel GMAIL_INBOX
+Channel GMAIL_ELSE
 # }}}
 
 # vim: filetype=conf foldmethod=marker

@@ -143,6 +143,7 @@ match
     "^From:.*@caboardroom\.com\.sg" in headers or
     "^From:.*@esrtech\.io" in headers or
     "^From:.*@watts\.com" in headers or
+    "^From:.*@myfolio\.im" in headers or
     #
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or

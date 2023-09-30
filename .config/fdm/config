@@ -169,7 +169,7 @@ match
 match
     account "target"
     actions {
-        "keep"
+        "hold"
     }
 
 # vim: filetype=conf foldmethod=marker

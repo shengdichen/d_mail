@@ -1,11 +1,9 @@
 # setup {{{
-# mail-directories {{{
 $base_dir = "%h/.local/share/mail/"
 $all_dir = "${base_dir}/all/"
-
-# account-specific {{{
 $raw_dir = "${base_dir}/raw/"
 
+# account {{{
 $path_xyz = "${raw_dir}/xyz"
 $path_eth = "${raw_dir}/eth"
 $path_outlook = "${raw_dir}/outlook"
@@ -20,7 +18,6 @@ account "target"
         "${path_gmail}/.INBOX/"
         "${path_gmail}/.[Gmail].E-mails enviados/"
     }
-# }}}
 # }}}
 
 # action {{{
@@ -114,7 +111,9 @@ match
 
 match
     "^Subject:.*Test Mail.*" in headers
-    actions "move_all_trash"
+    actions {
+        "move_all_trash"
+    }
 # }}}
 
 # direct deletion {{{

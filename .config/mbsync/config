@@ -163,8 +163,6 @@ Channel ETH_INBOX
 Channel ETH_ELSE
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_ELSE
-Channel GMAIL_INBOX
-Channel GMAIL_ELSE
 # }}}
 
 # vim: filetype=conf foldmethod=marker

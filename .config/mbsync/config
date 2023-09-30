@@ -152,6 +152,10 @@ Channel GMAIL_ELSE
 Far :GMAIL_REMOTE:
 Near :GMAIL_LOCAL_ELSE:
 Patterns * !"INBOX"
+
+Group GMAIL
+Channel GMAIL_INBOX
+Channel GMAIL_ELSE
 # }}}
 # }}}
 

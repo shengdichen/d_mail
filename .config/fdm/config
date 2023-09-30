@@ -21,17 +21,18 @@ account "target"
 # }}}
 
 # action {{{
-action "hold"
-    maildir "${all_dir}/.hold"
+# in descending order of animosity
+action "delete"
+    drop
 
 action "trash"
     maildir "${all_dir}/.trash"
 
+action "hold"
+    maildir "${all_dir}/.hold"
+
 action "keep"
     keep
-
-action "delete"
-    drop
 
 action "print"
     stdout

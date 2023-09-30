@@ -121,7 +121,7 @@ Channel ETH_ELSE
 # }}}
 # }}}
 
-# test: gmail {{{
+# gmail {{{
 # remote {{{
 IMAPAccount GMAIL_ACCOUNT
 Host imap.gmail.com
@@ -159,7 +159,6 @@ Channel GMAIL_ELSE
 # }}}
 # }}}
 
-# all {{{
 Group ALL
 Channel XYZ_INBOX
 Channel XYZ_ELSE
@@ -167,6 +166,7 @@ Channel ETH_INBOX
 Channel ETH_ELSE
 Channel OUTLOOK_INBOX
 Channel OUTLOOK_ELSE
-# }}}
+Channel GMAIL_INBOX
+Channel GMAIL_ELSE
 
 # vim: filetype=conf foldmethod=marker

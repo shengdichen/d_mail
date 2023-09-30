@@ -1,18 +1,17 @@
-source "~/.config/neomutt/conf/visual.conf"
+source "~/.config/neomutt/definition.conf"
 
-source "~/.config/neomutt/conf/read.conf"
+source "$my_conf_neomutt/conf/visual.conf"
+source "$my_conf_neomutt/conf/read.conf"
+source "$my_conf_neomutt/conf/send.conf"
+source "$my_conf_neomutt/conf/bind.conf"
 
-source "~/.config/neomutt/conf/send.conf"
+source "$my_conf_neomutt/box/common/box.conf"
+source "$my_conf_neomutt/box/common/notmuch.conf"
+source "$my_conf_neomutt/box/specific/multi.conf"
+source "$my_conf_neomutt/box/specific/xyz/auto.conf"
+source "$my_conf_neomutt/box/specific/outlook/auto.conf"
+source "$my_conf_neomutt/box/specific/eth/auto.conf"
 
-source "~/.config/neomutt/conf/bind.conf"
-
-source "~/.config/neomutt/box/common/box.conf"
-source "~/.config/neomutt/box/common/notmuch.conf"
-source "~/.config/neomutt/box/specific/multi.conf"
-source "~/.config/neomutt/box/specific/xyz/auto.conf"
-source "~/.config/neomutt/box/specific/outlook/auto.conf"
-source "~/.config/neomutt/box/specific/eth/auto.conf"
-
-source "~/.config/neomutt/conf/start.conf"
+source "$my_conf_neomutt/conf/start.conf"
 
 # vim: filetype=neomuttrc foldmethod=marker

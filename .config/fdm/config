@@ -24,7 +24,7 @@ account "target"
 action "hold"
     maildir "${all_dir}/.hold"
 
-action "move_all_trash"
+action "trash"
     maildir "${all_dir}/.trash"
 
 action "keep"
@@ -106,13 +106,13 @@ match
     "^From:.*[\\s<]no-reply@piazza\.com" in headers
     #
     actions {
-        "move_all_trash"
+        "trash"
     }
 
 match
     "^Subject:.*Test Mail.*" in headers
     actions {
-        "move_all_trash"
+        "trash"
     }
 # }}}
 

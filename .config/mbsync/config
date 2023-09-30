@@ -21,7 +21,7 @@ Account XYZ_ACCOUNT
 # local {{{
 MaildirStore XYZ_LOCAL_INBOX
 SubFolders Maildir++
-Inbox ~/mail/raw/xyz/.INBOX/
+Inbox ~/.local/share/mail/raw/xyz/.INBOX/
 
 Channel XYZ_INBOX
 Far :XYZ_REMOTE:
@@ -30,7 +30,7 @@ Patterns "INBOX"
 
 MaildirStore XYZ_LOCAL
 SubFolders Maildir++
-Inbox ~/mail/raw/xyz/
+Inbox ~/.local/share/mail/raw/xyz/
 
 Channel XYZ_X
 Far :XYZ_REMOTE:
@@ -65,7 +65,7 @@ Account OUTLOOK_ACCOUNT
 # local {{{
 MaildirStore OUTLOOK_LOCAL_INBOX
 SubFolders Maildir++
-Inbox ~/mail/raw/outlook/.INBOX/
+Inbox ~/.local/share/mail/raw/outlook/.INBOX/
 
 Channel OUTLOOK_INBOX
 Far :OUTLOOK_REMOTE:
@@ -74,7 +74,7 @@ Patterns "INBOX"
 
 MaildirStore OUTLOOK_LOCAL
 SubFolders Maildir++
-Inbox ~/mail/raw/outlook/
+Inbox ~/.local/share/mail/raw/outlook/
 
 Channel OUTLOOK_X
 Far :OUTLOOK_REMOTE:
@@ -111,11 +111,11 @@ Account ETH_ACCOUNT
 # local {{{
 MaildirStore ETH_LOCAL_INBOX
 SubFolders Maildir++
-Inbox ~/mail/raw/eth/.INBOX/
+Inbox ~/.local/share/mail/raw/eth/.INBOX/
 
 MaildirStore ETH_LOCAL
 SubFolders Maildir++
-Inbox ~/mail/raw/eth/
+Inbox ~/.local/share/mail/raw/eth/
 
 Channel ETH_INBOX
 Far :ETH_REMOTE:

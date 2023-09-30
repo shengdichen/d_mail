@@ -3,7 +3,7 @@
 
 [database]
 # ~/mail
-mail_root=mail
+mail_root=.local/share/mail
 
 [user]
 name=Shengdi Chen

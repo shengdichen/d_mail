@@ -7,21 +7,17 @@ $all_dir = "${base_dir}/all/"
 $raw_dir = "${base_dir}/raw/"
 
 $path_xyz = "${raw_dir}/xyz"
-account "xyz"
+$path_eth = "${raw_dir}/eth"
+$path_outlook = "${raw_dir}/outlook"
+
+account "target"
     maildirs {
         "${path_xyz}/.INBOX/"
-    }
-
-$path_eth = "${raw_dir}/eth"
-account "eth"
-    maildirs {
+        "${path_xyz}/.Sent/"
         "${path_eth}/.INBOX/"
-    }
-
-$path_outlook = "${raw_dir}/outlook"
-account "outlook"
-    maildirs {
+        "${path_eth}/.Skickat/"
         "${path_outlook}/.INBOX/"
+        "${path_outlook}/.Sent/"
     }
 # }}}
 # }}}
@@ -170,9 +166,8 @@ match
 # }}}
 # }}}
 
-# catch all
 match
-    all
+    account "target"
     actions {
         "keep"
     }

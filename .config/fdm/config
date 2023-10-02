@@ -17,8 +17,10 @@ account "target"
         "${path_eth}/.Skickat/"
         "${path_outlook}/.INBOX/"
         "${path_outlook}/.Sent/"
+        "${path_outlook}/.Junk/"
         "${path_gmail}/.INBOX/"
         "${path_gmail}/.[Gmail].E-mails enviados/"
+        "${path_gmail}/.[Gmail].Spam/"
     }
 # }}}
 

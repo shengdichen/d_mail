@@ -57,21 +57,20 @@ match
     "^From:.*[\\s<]hello@mail\.plex\.tv" in headers or
     "^From:.*[\\s<]no-reply@swissid\.ch" in headers or
     "^From:.*[\\s<]support@nordvpn\.com" in headers or
-    "^From:.*@ipvanish\.com" in headers or
     "^From:.*[\\s<]no-reply@.*\.proton\.me" in headers or
     "^From:.*[\\s<]contact@protonmail\.com" in headers or
+    "^From:.*@ipvanish\.com" in headers or
     #
     "^From:.*[\\s<]no-reply@accounts\.google\.com" in headers or
     "^From:.*[\\s<]cloud-noreply@google\.com" in headers or
     "^From:.*[\\s<]notification@facebookmail\.com" in headers or
-    "^From:.*[\\s<]charlotte@comm\.tutti\.ch" in headers or
     "^From:.*[\\s<]hilfe@tutti\.ch" in headers or
-    "^From:.*@\.*instagram\.*" in headers or
-    "^From:.*@mail\.blinkist\.com" in headers or
     "^From:.*[\\s<]kuiper\.sina@bcg\.com" in headers or
-    "^From:.*[\\s<]treffpunkt@sl\.ethz\.ch" in headers or
     "^From:.*[\\s<]ims@schlosstorgelow\.de" in headers or
     "^From:.*[\\s<]noreply@discord\.com" in headers or
+    "^From:.*@comm\.tutti\.ch" in headers or
+    "^From:.*@mail\.blinkist\.com" in headers or
+    "^From:.*@.*\.instagram\..*" in headers or
     #
     "^From:.*[\\s<]email\.campaign@sg\.booking\.com" in headers or
     "^From:.*[\\s<]mail@e\.milesandmore\.com" in headers or
@@ -87,28 +86,31 @@ match
     "^From:.*[\\s<]marketplace-messages@amazon\.com" in headers or
     #
     "^From:.*[\\s<]noreply@productnews\.galaxus\.ch" in headers or
-    "^From:.*[\\s<]productnews@galaxus\.ch" in headers or
-    "^From:.*[\\s<]resale@galaxus\.ch" in headers or
     "^From:.*[\\s<]noreply@notifications\.galaxus\.ch" in headers or
     "^From:.*[\\s<]galaxus@community\.galaxus\.ch" in headers or
+    "^From:.*[\\s<]productnews@galaxus\.ch" in headers or
+    "^From:.*[\\s<]resale@galaxus\.ch" in headers or
     "^From:.*[\\s<]ux@digitecgalaxus\.ch" in headers or
     #
+    "^From:.*[\\s<]no-reply@piazza\.com" in headers or
     "^From:.*[\\s<]outgoing@office\.iaeste\.ch" in headers or
-    "^From:.*[\\s<]exchange@ethz\.ch" in headers or
     "^From:.*[\\s<]careercenter@news\.ethz\.ch" in headers or
-    "^From:.*[\\s<]didaktischeausbildung@ethz\.ch" in headers or
-    "^From:.*[\\s<]evasys@let\.ethz\.ch" in headers or
+    "^From:.*@btools\.ch" in headers or
+    "^From:.*@projektneptun\.ch" in headers or
+    "^From:.*@sprachen\.uzh\.ch" in headers or
+    #
     "^From:.*[\\s<]noreply@moodle-app2\.let\.ethz\.ch" in headers or
     "^From:.*[\\s<]treffpunkt@news\.ethz\.ch" in headers or
     "^From:.*[\\s<]MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern\.ethz\.ch" in headers or
-    "^From:.*@hk\.ethz\.ch" in headers or
+    "^From:.*[\\s<]mathbib@math\.ethz\.ch" in headers or
+    "^From:.*[\\s<]evasys@let\.ethz\.ch" in headers or
+    "^From:.*[\\s<]exchange@ethz\.ch" in headers or
     "^From:.*[\\s<]president@ethz\.ch" in headers or
     "^From:.*[\\s<]sgu_training@ethz\.ch" in headers or
-    "^From:.*[\\s<]mathbib@math\.ethz\.ch" in headers or
+    "^From:.*[\\s<]didaktischeausbildung@ethz\.ch" in headers or
+    "^From:.*@hk\.ethz\.ch" in headers or
     "^From:.*@sts\.ethz\.ch" in headers or
-    "^From:.*@projektneptun\.ch" in headers or
-    "^From:.*@sprachen\.uzh\.ch" in headers or
-    "^From:.*[\\s<]no-reply@piazza\.com" in headers
+    "^From:.*@sl\.ethz\.ch" in headers
     #
     actions {
         "trash"

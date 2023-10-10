@@ -68,6 +68,7 @@ match
     "^From:.*[\\s<]kuiper\.sina@bcg\.com" in headers or
     "^From:.*[\\s<]ims@schlosstorgelow\.de" in headers or
     "^From:.*[\\s<]noreply@discord\.com" in headers or
+    "^From:.*[\\s<]mozilla@email\.mozilla\.org" in headers or
     "^From:.*@comm\.tutti\.ch" in headers or
     "^From:.*@mail\.blinkist\.com" in headers or
     "^From:.*@.*\.instagram\..*" in headers or
@@ -78,6 +79,8 @@ match
     "^From:.*[\\s<]newsletter@mailing\.milesandmore\.com" in headers or
     "^From:.*[\\s<]newsletter@your\.lufthansa-group\.com" in headers or
     "^From:.*[\\s<]notice@info\.aliexpress\.com" in headers or
+    "^From:.*@newsletter\.swarovski\.com" in headers or
+    "^From:.*@news\.coop\.ch" in headers or
     #
     "^From:.*[\\s<]no-reply@business\.amazon\.com" in headers or
     "^From:.*[\\s<]store-news@amazon\.com" in headers or
@@ -98,6 +101,7 @@ match
     "^From:.*@btools\.ch" in headers or
     "^From:.*@projektneptun\.ch" in headers or
     "^From:.*@sprachen\.uzh\.ch" in headers or
+    "^From:.*@soziologie\.uzh\.ch" in headers or
     #
     "^From:.*[\\s<]noreply@moodle-app2\.let\.ethz\.ch" in headers or
     "^From:.*[\\s<]treffpunkt@news\.ethz\.ch" in headers or
@@ -151,6 +155,13 @@ match
     "^From:.*@watts\.com" in headers or
     "^From:.*@myfolio\.im" in headers or
     "^From:.*@wettbewerbeundgewinnspiele\.ch" in headers or
+    "^From:.*@domenca\.raviko\.com" in headers or
+    "^From:.*@ukrainianbeauty\.com" in headers or
+    "^From:.*@try2ascend\.com" in headers or
+    "^From:.*@glsthewinners4you\.com" in headers or
+    "^From:.*@neugiab\.com" in headers or
+    "^From:.*@ac-creteil\.fr" in headers or
+    "^From:.*@getaventura\.com" in headers or
     #
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or
@@ -159,6 +170,7 @@ match
     "^From:.*[\\s<]no-reply@flipboard\.com" in headers or
     "^From:.*[\\s<]support@help\.instapaper\.com" in headers or
     #
+    "^From:.*[\\s<]LYRIS-e\.m-2023\.10\.05-06\.16\.06@shadovn\.com" in headers or
     "^From:.*[\\s<]postmaster@smtp\.assessment\.gr" in headers or
     "^From:.*[\\s<]support@affiligate\.com" in headers or
     "^From:.*[\\s<]dw-1298858contact@insistglobal\.com" in headers or
@@ -166,6 +178,8 @@ match
     "^From:.*[\\s<]BDiduxHIFF@yellowdig\.net" in headers or
     "^From:.*[\\s<]ecotto@kenzahn\.com" in headers or
     "^From:.*[\\s<]Ashish.Biswas@icar\.gov\.in" in headers or
+    "^From:.*[\\s<]davidcostapro@gmail\.com" in headers or
+    "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]apis@tisknise\.cz" in headers
     #
     actions {

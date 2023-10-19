@@ -1,7 +1,13 @@
 # setup {{{
 $base_dir = "%h/.local/share/mail/"
 $all_dir = "${base_dir}/all/"
+$hold_dir = "${all_dir}/.hold/"
 $raw_dir = "${base_dir}/raw/"
+
+account "hold"
+    maildirs {
+        "${hold_dir}"
+    }
 
 # account {{{
 $path_xyz = "${raw_dir}/xyz"
@@ -33,7 +39,7 @@ action "trash"
     maildir "${all_dir}/.trash"
 
 action "hold"
-    maildir "${all_dir}/.hold"
+    maildir "${hold_dir}"
 
 action "keep"
     keep

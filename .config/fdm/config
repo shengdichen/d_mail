@@ -196,7 +196,9 @@ match
 # }}}
 
 match
-    account "target"
+    accounts {
+        "target"
+    }
     actions {
         "hold"
     }

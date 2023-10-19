@@ -1,6 +1,7 @@
 # setup {{{
 $base_dir = "%h/.local/share/mail/"
 $all_dir = "${base_dir}/all/"
+$trash_dir = "${all_dir}/.trash/"
 $hold_dir = "${all_dir}/.hold/"
 $raw_dir = "${base_dir}/raw/"
 
@@ -36,7 +37,7 @@ action "delete"
     drop
 
 action "trash"
-    maildir "${all_dir}/.trash"
+    maildir "${trash_dir}"
 
 action "hold"
     maildir "${hold_dir}"

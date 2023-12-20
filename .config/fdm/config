@@ -5,7 +5,7 @@ $trash_dir = "${all_dir}/.trash/"
 $hold_dir = "${all_dir}/.hold/"
 $raw_dir = "${base_dir}/raw/"
 
-account "hold"
+account "acc_hold"
     maildirs {
         "${hold_dir}"
     }
@@ -16,7 +16,7 @@ $path_eth = "${raw_dir}/eth"
 $path_outlook = "${raw_dir}/outlook"
 $path_gmail = "${raw_dir}/gmail"
 
-account "target"
+account "acc_targets"
     maildirs {
         "${path_xyz}/.INBOX/"
         "${path_xyz}/.Sent/"
@@ -218,10 +218,18 @@ match
 
 match
     accounts {
-        "target"
+        "acc_targets"
     }
     actions {
         "hold"
+    }
+
+match
+    accounts {
+        "acc_hold"
+    }
+    actions {
+        "keep"
     }
 
 # vim: filetype=conf foldmethod=marker

@@ -71,6 +71,21 @@ __stow() {
 }
 
 main() {
+    case "${1}" in
+        "sync")
+            __sync_all
+            ;;
+        "notmuch")
+            shift
+            __notmuch "${@}"
+            ;;
+        *)
+            __create_box
+            __fdm_conf
+            __stow
+            ;;
+    esac
+
     __create_box
     __fdm_conf
     __stow
@@ -78,5 +93,5 @@ main() {
     unset SCRIPT_PATH
     unset -f __create_box __fdm_conf __sync_all __notmuch __stow
 }
-main
+main "${@}"
 unset -f main

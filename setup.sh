@@ -17,23 +17,25 @@ __create_box() {
         if [ "${maildir}" ]; then
             for maild in "cur" "new"; do
                 mkdir -p "${target}/${maild}"
+                chmod 700 "${target}/${maild}"
             done
         fi
     }
 
-    local mailbox_root
-    mailbox_root="./.local/share/mail/"
+    (
+        cd "./.local/share/mail/" || exit 3
 
-    for d in "eth" "gmail" "outlook"; do
-        __f "${mailbox_root}/raw/${d}"
-    done
+        for d in "eth" "gmail" "outlook"; do
+            __f "./raw/${d}"
+        done
 
-    for d in "xyz/.INBOX" "xyz/.Sent"; do
-        __f --maildir "${mailbox_root}/raw/${d}"
-    done
-    for d in "draft" "hold" "trash" "x"; do
-        __f --maildir "${mailbox_root}/all/.${d}"
-    done
+        for d in "xyz/.INBOX" "xyz/.Sent"; do
+            __f --maildir "./raw/${d}"
+        done
+        for d in "draft" "hold" "trash" "x"; do
+            __f --maildir "./all/.${d}"
+        done
+    )
 
     unset -f __f
 }

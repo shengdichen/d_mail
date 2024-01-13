@@ -74,6 +74,7 @@ match
     "^From:.*[\\s<]hilfe@tutti\.ch" in headers or
     "^From:.*[\\s<]kuiper\.sina@bcg\.com" in headers or
     "^From:.*[\\s<]ims@schlosstorgelow\.de" in headers or
+    "^From:.*[\\s<]kirstenschreibt@schlosstorgelow\.de" in headers or
     "^From:.*[\\s<]noreply@discord\.com" in headers or
     "^From:.*[\\s<]mozilla@email\.mozilla\.org" in headers or
     "^From:.*@comm\.tutti\.ch" in headers or
@@ -122,6 +123,7 @@ match
     "^From:.*[\\s<]sgu_training@ethz\.ch" in headers or
     "^From:.*[\\s<]didaktischeausbildung@ethz\.ch" in headers or
     "^From:.*[\\s<]entrepreneurship@ethz\.ch" in headers or
+    "^From:.*[\\s<]nikola\.kovacevic@inf\.ethz\.ch" in headers or
     "^From:.*@hk\.ethz\.ch" in headers or
     "^From:.*@library\.ethz\.ch" in headers or
     "^From:.*@sts\.ethz\.ch" in headers or
@@ -141,7 +143,7 @@ match
 # direct deletion {{{
 # spam
 match
-    # bad domain
+    # 1. (bad domain, all accounts)
     "^From:.*@.*indiaplays\.com.*" in headers or
     "^From:.*@.*kraftangan\.gov\.my.*" in headers or
     "^From:.*@.*kollect\.ai.*" in headers or
@@ -188,14 +190,39 @@ match
     "^From:.*@citizenpath\.com" in headers or
     "^From:.*@doctorgenius\.com" in headers or
     "^From:.*@upscheckoutrotator\.com" in headers or
-    #
+    "^From:.*@gc-dienstleistungen\.de" in headers or
+    "^From:.*@degoldengeniecasinochrismas\.com" in headers or
+    "^From:.*@uporalbseriesdmdrogeriemarkt\.com" in headers or
+    "^From:.*@complicesdelsonidoradio\.com\.ar" in headers or
+    "^From:.*@veracity-trading\.com" in headers or
+    "^From:.*@deupscheckoutrotator\.com" in headers or
+    "^From:.*@deendurancerhctc\.com" in headers or
+    "^From:.*@defitsmartdiet\.com" in headers or
+    "^From:.*@vqfit\.com" in headers or
+    "^From:.*@otyavaf\.co\.uk" in headers or
+    "^From:.*@fl0ppfy\.co\.uk" in headers or
+    "^From:.*@irup5nr\.co\.uk" in headers or
+    "^From:.*@ss-exports\.in" in headers or
+    "^From:.*@devigamanver2foryou\.com" in headers or
+    "^From:.*@ecomproesurveys\.com" in headers or
+    "^From:.*@ukhermesebookiasts\.com" in headers or
+    "^From:.*@smokacevipangebote\.net" in headers or
+    "^From:.*@ecaprivatedelivery\.com" in headers or
+    "^From:.*@server\.cedarhallclinic\.uk" in headers or
+    "^From:.*@delidlgiftcard\.com" in headers or
+    "^From:.*@destanleytoolsetkaufland\.com" in headers or
+    "^From:.*@ukbootsjomaloneadventcalendar\.com" in headers or
+    "^From:.*@solidsunenergie\.cz" in headers or
+    "^From:.*@deupsblackpageverdelivery\.com" in headers or
+    # 2. (bad subdomain, all accounts)
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or
+    # 3. (good domain, bad account)
+    "^From:.*[\\s<]okabzne@hotmail\.com" in headers or
     "^From:.*[\\s<]diversity@ethz\.ch" in headers or
     "^From:.*[\\s<]gastro@news\.ethz\.ch" in headers or
     "^From:.*[\\s<]no-reply@flipboard\.com" in headers or
     "^From:.*[\\s<]support@help\.instapaper\.com" in headers or
-    #
     "^From:.*[\\s<]nhatnguyen31101993@gmail\.com" in headers or
     "^From:.*[\\s<]LYRIS-e\.m-2023\.10\.05-06\.16\.06@shadovn\.com" in headers or
     "^From:.*[\\s<]postmaster@smtp\.assessment\.gr" in headers or
@@ -207,7 +234,10 @@ match
     "^From:.*[\\s<]Ashish.Biswas@icar\.gov\.in" in headers or
     "^From:.*[\\s<]davidcostapro@gmail\.com" in headers or
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
-    "^From:.*[\\s<]apis@tisknise\.cz" in headers
+    "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or
+    "^From:.*[\\s<]apis@tisknise\.cz" in headers or
+    #
+    "^From:.*[\\s<]Fehler bei der Lieferadresse" in headers
     #
     actions {
         "delete"

@@ -51,6 +51,9 @@ __sync_all() {
 __notmuch() {
     local dump_file="notmuch.dump"
     case "${1}" in
+        "setup")
+            mkdir -p "./.local/share/notmuch/default"
+            ;;
         "export")
             notmuch dump --output="${dump_file}"
             ;;
@@ -82,6 +85,7 @@ main() {
         *)
             __create_box
             __fdm_conf
+            __notmuch setup
             __stow
             ;;
     esac

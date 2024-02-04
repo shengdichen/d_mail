@@ -41,7 +41,7 @@ __fdm_conf() {
 }
 
 __sync_all() {
-    mbsync -c "./config/mbsync/config" --all
+    mbsync -c "./.config/mbsync/config" --all
 }
 
 __notmuch() {

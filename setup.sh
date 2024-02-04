@@ -23,18 +23,14 @@ __create_box() {
     }
 
     (
-        cd "./.local/share/mail/" || exit 3
+        local _mail_path="./.local/share/mail/"
+        mkdir -p "${_mail_path}"
+        cd "${_mail_path}" || exit 3
 
-        for d in "eth" "gmail" "outlook"; do
-            __f "./raw/${d}"
-        done
-
-        for d in "xyz/.INBOX" "xyz/.Sent"; do
-            __f --maildir "./raw/${d}"
-        done
         for d in "draft" "hold" "trash" "x"; do
             __f --maildir "./all/.${d}"
         done
+        # account specific folders are auto-created with mbsync
     )
 
     unset -f __f
@@ -45,12 +41,15 @@ __fdm_conf() {
 }
 
 __sync_all() {
-    mbsync --all
+    mbsync -c "./config/mbsync/config" --all
 }
 
 __notmuch() {
     local dump_file="notmuch.dump"
     case "${1}" in
+        "setup")
+            mkdir -p "./.local/share/notmuch/default"
+            ;;
         "export")
             notmuch dump --output="${dump_file}"
             ;;
@@ -82,6 +81,7 @@ main() {
         *)
             __create_box
             __fdm_conf
+            __notmuch setup
             __stow
             ;;
     esac

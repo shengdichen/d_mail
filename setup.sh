@@ -30,7 +30,7 @@ __create_box() {
         for d in "draft" "hold" "trash" "x"; do
             __f --maildir "./all/.${d}"
         done
-        # account specific folders are auto-created with mbsync
+        # account-specific folders are auto-created with mbsync
     )
 
     unset -f __f
@@ -38,18 +38,25 @@ __create_box() {
 
 __fdm_conf() {
     chmod 600 "./.config/fdm/config"
+
+    case "${1}" in
+        "update")
+            fdm -f "./.config/fdm/config" fetch
+            ;;
+    esac
 }
 
-__sync_all() {
+__mbsync() {
+    # NOTE:
+    #   use mbsync to auto-create account-specific folders
     mbsync -c "./.config/mbsync/config" --all
 }
 
 __notmuch() {
+    mkdir -p "./.local/share/notmuch/default"
+
     local dump_file="notmuch.dump"
     case "${1}" in
-        "setup")
-            mkdir -p "./.local/share/notmuch/default"
-            ;;
         "export")
             notmuch dump --output="${dump_file}"
             ;;
@@ -57,8 +64,8 @@ __notmuch() {
             notmuch new
             notmuch restore --input="${dump_file}"
             ;;
-        *)
-            exit 3
+        "update")
+            notmuch new
             ;;
     esac
 }
@@ -72,26 +79,24 @@ __stow() {
 main() {
     case "${1}" in
         "sync")
-            __sync_all
+            __mbsync
             ;;
         "notmuch")
             shift
             __notmuch "${@}"
             ;;
         *)
-            __create_box
-            __fdm_conf
-            __notmuch setup
+            __create_box && __fdm_conf && __notmuch
             __stow
+            # try a few times to cater for random sync failures
+            for __ in $(seq 3); do __mbsync; done
+            __fdm_conf update
+            __notmuch update
             ;;
     esac
 
-    __create_box
-    __fdm_conf
-    __stow
-
     unset SCRIPT_PATH
-    unset -f __create_box __fdm_conf __sync_all __notmuch __stow
+    unset -f __create_box __fdm_conf __mbsync __notmuch __stow
 }
 main "${@}"
 unset -f main

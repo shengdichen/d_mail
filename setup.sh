@@ -23,7 +23,9 @@ __create_box() {
     }
 
     (
-        cd "./.local/share/mail/" || exit 3
+        local _mail_path="./.local/share/mail/"
+        mkdir -p "${_mail_path}"
+        cd "${_mail_path}" || exit 3
 
         for d in "draft" "hold" "trash" "x"; do
             __f --maildir "./all/.${d}"

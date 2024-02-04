@@ -1,15 +1,15 @@
-#!/usr/bin/env bash
+#!/usr/bin/env dash
 
-function tag() {
+tag() {
     local script_path
     script_path="$HOME/.config/notmuch/default/hooks/tag/"
 
-    notmuch tag --batch < "${script_path}/builtin.rule"
-    notmuch tag --batch < "${script_path}/archive.rule"
-    notmuch tag --batch < "${script_path}/sent.rule"
+    notmuch tag --batch <"${script_path}/builtin.rule"
+    notmuch tag --batch <"${script_path}/archive.rule"
+    notmuch tag --batch <"${script_path}/sent.rule"
 }
 
-function main() {
+main() {
     tag
 
     unset -f tag

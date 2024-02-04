@@ -25,16 +25,10 @@ __create_box() {
     (
         cd "./.local/share/mail/" || exit 3
 
-        for d in "eth" "gmail" "outlook"; do
-            __f "./raw/${d}"
-        done
-
-        for d in "xyz/.INBOX" "xyz/.Sent"; do
-            __f --maildir "./raw/${d}"
-        done
         for d in "draft" "hold" "trash" "x"; do
             __f --maildir "./all/.${d}"
         done
+        # account specific folders are auto-created with mbsync
     )
 
     unset -f __f

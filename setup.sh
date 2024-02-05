@@ -3,7 +3,10 @@
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 cd "${SCRIPT_PATH}" || exit 3
 
-__create_box() {
+__create_boxes_local() {
+    local _mail_path="./.local/share/mail/"
+    mkdir -p "${_mail_path}"
+
     __f() {
         local maildir=""
         if [ "${1}" = "--maildir" ]; then
@@ -23,32 +26,44 @@ __create_box() {
     }
 
     (
-        local _mail_path="./.local/share/mail/"
-        mkdir -p "${_mail_path}"
         cd "${_mail_path}" || exit 3
 
         for d in "draft" "hold" "trash" "x"; do
             __f --maildir "./all/.${d}"
         done
-        # account specific folders are auto-created with mbsync
+        # account-specific folders are auto-created with mbsync
     )
 
     unset -f __f
 }
 
-__fdm_conf() {
-    chmod 600 "./.config/fdm/config"
+__mbsync() {
+    # HACK:
+    #   use mbsync to implicitly auto-create account-specific folders
+
+    # try a few times to cater for random sync failures
+    for __ in $(seq 3); do
+        mbsync -c "./.config/mbsync/config" --all
+    done
 }
 
-__sync_all() {
-    mbsync -c "./config/mbsync/config" --all
+__fdm() {
+    chmod 600 "./.config/fdm/config"
+
+    case "${1}" in
+        "update")
+            fdm -f "./.config/fdm/config" fetch
+            ;;
+    esac
 }
 
 __notmuch() {
+    mkdir -p "./.local/share/notmuch/default"
+
     local dump_file="notmuch.dump"
     case "${1}" in
-        "setup")
-            mkdir -p "./.local/share/notmuch/default"
+        "update")
+            notmuch new
             ;;
         "export")
             notmuch dump --output="${dump_file}"
@@ -56,9 +71,6 @@ __notmuch() {
         "import")
             notmuch new
             notmuch restore --input="${dump_file}"
-            ;;
-        *)
-            exit 3
             ;;
     esac
 }
@@ -69,29 +81,38 @@ __stow() {
     )
 }
 
+__update() {
+    __mbsync
+    __fdm update
+    __notmuch update
+}
+
+__setup() {
+    __create_boxes_local
+    __fdm
+    __notmuch
+
+    __stow
+
+    __update
+}
+
 main() {
     case "${1}" in
-        "sync")
-            __sync_all
+        "update")
+            __update
             ;;
         "notmuch")
             shift
             __notmuch "${@}"
             ;;
         *)
-            __create_box
-            __fdm_conf
-            __notmuch setup
-            __stow
+            __setup
             ;;
     esac
 
-    __create_box
-    __fdm_conf
-    __stow
-
     unset SCRIPT_PATH
-    unset -f __create_box __fdm_conf __sync_all __notmuch __stow
+    unset -f __create_boxes_local __mbysnc __fdm __notmuch __stow __update __setup
 }
 main "${@}"
 unset -f main

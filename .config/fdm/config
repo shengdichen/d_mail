@@ -266,4 +266,4 @@ match
         "keep"
     }
 
-# vim: filetype=conf foldmethod=marker
+# vim: filetype=conf foldmethod=marker foldlevel=1

@@ -224,6 +224,10 @@ match
     "^From:.*@ukbootsjomaloneadventcalendar\.com" in headers or
     "^From:.*@solidsunenergie\.cz" in headers or
     "^From:.*@deupsblackpageverdelivery\.com" in headers or
+    "^From:.*@server\.light-review\.com" in headers or
+    "^From:.*@cc-aglyfenouilledes\.fr" in headers or
+    "^From:.*@renovatio\.uk\.com" in headers or
+    "^From:.*@cliqtechno\.com" in headers or
     # 2. (bad subdomain, all accounts)
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or

@@ -78,9 +78,14 @@ match
     "^From:.*@ipvanish\.com" in headers or
     "^From:.*@ifttt\.com" in headers or
     #
+    "^From:.*[\\s<]noreply-dmarc-support@google\.com" in headers or
     "^From:.*[\\s<]no-reply@accounts\.google\.com" in headers or
     "^From:.*[\\s<]cloud-noreply@google\.com" in headers or
     "^From:.*[\\s<]notification@facebookmail\.com" in headers or
+    "^From:.*[\\s<]friendupdates@facebookmail\.com" in headers or
+    "^From:.*[\\s<]reminders@facebookmail\.com" in headers or
+    "^From:.*[\\s<]friendsuggestion@facebookmail\.com" in headers or
+    "^From:.*@priority\.facebookmail\.com" in headers or
     "^From:.*[\\s<]hilfe@tutti\.ch" in headers or
     "^From:.*[\\s<]kuiper\.sina@bcg\.com" in headers or
     "^From:.*[\\s<]ims@schlosstorgelow\.de" in headers or
@@ -134,10 +139,13 @@ match
     "^From:.*[\\s<]didaktischeausbildung@ethz\.ch" in headers or
     "^From:.*[\\s<]entrepreneurship@ethz\.ch" in headers or
     "^From:.*[\\s<]nikola\.kovacevic@inf\.ethz\.ch" in headers or
+    "^From:.*[\\s<]compicampus@id\.ethz\.ch" in headers or
     "^From:.*@hk\.ethz\.ch" in headers or
     "^From:.*@library\.ethz\.ch" in headers or
     "^From:.*@sts\.ethz\.ch" in headers or
-    "^From:.*@sl\.ethz\.ch" in headers
+    "^From:.*@sl\.ethz\.ch" in headers or
+    #
+    "^From:.*DPD-Paket" in headers
     #
     actions {
         "trash"
@@ -224,6 +232,37 @@ match
     "^From:.*@ukbootsjomaloneadventcalendar\.com" in headers or
     "^From:.*@solidsunenergie\.cz" in headers or
     "^From:.*@deupsblackpageverdelivery\.com" in headers or
+    "^From:.*@server\.light-review\.com" in headers or
+    "^From:.*@cc-aglyfenouilledes\.fr" in headers or
+    "^From:.*@renovatio\.uk\.com" in headers or
+    "^From:.*@cliqtechno\.com" in headers or
+    "^From:.*@stnicholasprimaryschool\.org" in headers or
+    "^From:.*@sense28\.com" in headers or
+    "^From:.*@ueh\.edu\.vn" in headers or
+    "^From:.*@piecedrillset\.de" in headers or
+    "^From:.*@usekilo\.com" in headers or
+    "^From:.*@hadiethshop\.nl" in headers or
+    "^From:.*@connect\.liveapps\.store" in headers or
+    "^From:.*@impactinglife\.co\.uk" in headers or
+    "^From:.*@wgo\.com\.br" in headers or
+    "^From:.*@host\.bkauk\.org\.uk" in headers or
+    "^From:.*@londontrucks\.co\.uk" in headers or
+    "^From:.*@asb-hamburg\.de" in headers or
+    "^From:.*@dfc\.discovery\.co\.za" in headers or
+    "^From:.*@riseinformatics\.com" in headers or
+    "^From:.*@ntf\.com" in headers or
+    "^From:.*@clikr\.com\.br" in headers or
+    "^From:.*@rplexelectrical\.in" in headers or
+    "^From:.*@mondrian-it\.io" in headers or
+    "^From:.*@capacityproviders\.com" in headers or
+    "^From:.*@davulga\.bel\.tr" in headers or
+    "^From:.*@myhoppophop\.fr" in headers or
+    "^From:.*@lv09\.katyjenkins\.shop" in headers or
+    "^From:.*@k4UBCPR8\.fr" in headers or
+    "^From:.*@vydehischool\.com" in headers or
+    "^From:.*@steibel\.be" in headers or
+    "^From:.*@tisknise\.cz" in headers or
+    "^From:.*@campaign\.eventbrite\.com" in headers or
     # 2. (bad subdomain, all accounts)
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or
@@ -245,7 +284,6 @@ match
     "^From:.*[\\s<]davidcostapro@gmail\.com" in headers or
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or
-    "^From:.*[\\s<]apis@tisknise\.cz" in headers or
     #
     "^From:.*[\\s<]Fehler bei der Lieferadresse" in headers
     #

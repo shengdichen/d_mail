@@ -1,3 +1,6 @@
+# do NOT add any |Received| tag
+set no-received
+
 # setup {{{
 $base_dir = "%h/.local/share/mail/"
 $all_dir = "${base_dir}/all/"

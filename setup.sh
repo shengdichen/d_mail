@@ -58,19 +58,20 @@ __fdm() {
 }
 
 __notmuch() {
-    mkdir -p "./.local/share/notmuch/default"
+    local _notmuch_path="./.local/share/notmuch/default/"
+    mkdir -p "${_notmuch_path}"
 
-    local dump_file="notmuch.dump"
+    local _dump_file="notmuch.dump"
     case "${1}" in
         "update")
             notmuch new
             ;;
         "export")
-            notmuch dump --output="${dump_file}"
+            notmuch dump --output="${_notmuch_path}/${_dump_file}"
             ;;
         "import")
             notmuch new
-            notmuch restore --input="${dump_file}"
+            notmuch restore --input="${_notmuch_path}/${_dump_file}"
             ;;
     esac
 }

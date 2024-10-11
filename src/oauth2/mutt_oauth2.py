@@ -75,6 +75,44 @@ registrations = {
             "https://outlook.office.com/SMTP.Send"
         ),
     },
+    # REF:
+    #   https://github.com/thunderbird/thunderbird-android/blob/main/app-thunderbird/src/
+    #   release/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt
+    "microsoft-mozilla": {
+        "authorize_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+        "devicecode_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/devicecode",
+        "token_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+        "redirect_uri": "https://localhost",
+        "tenant": "common",
+        "imap_endpoint": "outlook.office365.com",
+        "pop_endpoint": "outlook.office365.com",
+        "smtp_endpoint": "smtp.office365.com",
+        "sasl_method": "XOAUTH2",
+        "scope": (
+            "offline_access https://outlook.office.com/IMAP.AccessAsUser.All "
+            "https://outlook.office.com/POP.AccessAsUser.All "
+            "https://outlook.office.com/SMTP.Send"
+        ),
+    },
+    # REF:
+    #   https://github.com/thunderbird/thunderbird-android/blob/main/app-thunderbird/src/
+    #   release/kotlin/net/thunderbird/android/auth/TbOAuthConfigurationFactory.kt
+    "microsoft-thunderbird": {
+        "authorize_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+        "devicecode_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/devicecode",
+        "token_endpoint": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+        "redirect_uri": "msauth://net.thunderbird.android/S9nqeF27sTJcEfaInpC%2BDHzHuCY%3D",
+        "tenant": "common",
+        "imap_endpoint": "outlook.office365.com",
+        "pop_endpoint": "outlook.office365.com",
+        "smtp_endpoint": "smtp.office365.com",
+        "sasl_method": "XOAUTH2",
+        "scope": (
+            "offline_access https://outlook.office.com/IMAP.AccessAsUser.All "
+            "https://outlook.office.com/POP.AccessAsUser.All "
+            "https://outlook.office.com/SMTP.Send"
+        ),
+    },
 }
 
 ap = argparse.ArgumentParser(

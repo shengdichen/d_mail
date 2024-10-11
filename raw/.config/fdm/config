@@ -28,7 +28,7 @@ account "acc_raw_inbox"
 account "acc_raw_sent"
     maildirs {
         "${path_xyz}/.Sent/"
-        "${path_eth}/.Skickat/"
+        "${path_eth}/.Sent Items/"
         "${path_outlook}/.Sent/"
         "${path_gmail}/.[Gmail].E-mails enviados/"
     }

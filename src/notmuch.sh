@@ -4,7 +4,7 @@
 
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 
-DIR_NOTMUCH="$("${SCRIPT_PATH}/const.sh" DIR_NOTMUCH)"
+DIR_NOTMUCH="$("$(realpath "${SCRIPT_PATH}/..")/const.sh" DIR_NOTMUCH)"
 DIR_DUMP="${DIR_NOTMUCH}/default"
 
 __update() {

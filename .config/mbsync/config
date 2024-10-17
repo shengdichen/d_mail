@@ -8,11 +8,10 @@ Expunge Both
 IMAPAccount XYZ_ACCOUNT
 Host 127.0.0.1
 Port 1143
-SSLType IMAPS
+TLSType STARTTLS
+CertificateFile "~/.cert/protonmail/cert.pem"
 User me@shengdichen.xyz
 PassCmd "pass Dox/mail/protonbridge | head -n 1"
-SSLType None
-AuthMech LOGIN
 
 IMAPStore XYZ_REMOTE
 Account XYZ_ACCOUNT
@@ -48,9 +47,10 @@ Channel XYZ_ELSE
 IMAPAccount OUTLOOK_ACCOUNT
 Host outlook.office365.com
 Port 993
-SSLType IMAPS
+AuthMechs XOAUTH2
+TLSType IMAPS
 User shengdi@outlook.de
-PassCmd "pass Dox/mail/outlook_app | head -n 1"
+PassCmd "python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/shengdi@outlook.de.tokens.gpg"
 
 IMAPStore OUTLOOK_REMOTE
 Account OUTLOOK_ACCOUNT
@@ -83,14 +83,15 @@ Channel OUTLOOK_ELSE
 
 # eth {{{
 # remote {{{
+# REF:
+#   https://unlimited.ethz.ch/display/itkb/Thunderbird
 IMAPAccount ETH_ACCOUNT
-Host mail.ethz.ch
+Host outlook.office365.com
 Port 993
-SSLType IMAPS
+AuthMechs XOAUTH2
+TLSType IMAPS
 User shenchen@ethz.ch
-PassCmd "pass Dox/ace/eth/admin | head -n 1"
-# bypass NTLM-authentication
-AuthMech LOGIN
+PassCmd "python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/shenchen@ethz.ch.tokens.gpg"
 
 IMAPStore ETH_REMOTE
 Account ETH_ACCOUNT
@@ -126,7 +127,7 @@ Channel ETH_ELSE
 IMAPAccount GMAIL_ACCOUNT
 Host imap.gmail.com
 Port 993
-SSLType IMAPS
+TLSType IMAPS
 User shengdishcchen@gmail.com
 PassCmd "pass Dox/mail/gmail_shengdishcchen_app | head -n 1"
 

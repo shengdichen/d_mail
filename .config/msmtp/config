@@ -20,16 +20,18 @@ host smtp-mail.outlook.com
 port 587
 user shengdi@outlook.de
 from shengdi@outlook.de
-passwordeval pass Dox/mail/outlook_app | head -n 1
+auth xoauth2
+passwordeval python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/shengdi@outlook.de.tokens.gpg
 # }}}
 
 # eth {{{
 account eth
-host mail.ethz.ch
+host smtp.office365.com
 port 587
-user shenchen
+user shenchen@ethz.ch
 from shenchen@ethz.ch
-passwordeval pass Dox/ace/eth/admin | head -n 1
+auth xoauth2
+passwordeval python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/shenchen@ethz.ch.tokens.gpg
 # }}}
 
 account gmail

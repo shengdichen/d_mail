@@ -17,7 +17,7 @@ __make_config() {
     mkdir -p "${_dir_config}/msmtp"
     mkdir -p "${_dir_config}/neomutt"
 
-    (cd .. && stow -R "$(basename "${SCRIPT_PATH}")")
+    stow -R --target="${HOME}" "raw"
 
     "${SRC_PATH}/account.sh" config
 }

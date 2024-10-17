@@ -1,119 +1,51 @@
 #!/usr/bin/env dash
 
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
-cd "${SCRIPT_PATH}" || exit 3
+SRC_PATH="${SCRIPT_PATH}/src"
 
-__create_boxes_local() {
-    local _mail_path="./.local/share/mail/"
-    mkdir -p "${_mail_path}"
+DIR_MAIL="$("${SCRIPT_PATH}/const.sh" DIR_MAIL)"
+DIR_MAIL_BACKUP="$("${SCRIPT_PATH}/const.sh" DIR_MAIL_BACKUP)"
+DIR_MAIL_LOCAL="$("${SCRIPT_PATH}/const.sh" DIR_MAIL_LOCAL)"
 
-    __f() {
-        local maildir=""
-        if [ "${1}" = "--maildir" ]; then
-            maildir="yes"
-            shift
-        fi
-        local target="${1}"
+DIR_NOTMUCH="$("${SCRIPT_PATH}/const.sh" DIR_NOTMUCH)"
 
-        mkdir -p "${target}"
-        chmod 700 "${target}"
-        if [ "${maildir}" ]; then
-            for maild in "cur" "new"; do
-                mkdir -p "${target}/${maild}"
-                chmod 700 "${target}/${maild}"
-            done
-        fi
-    }
+__make_config() {
+    mkdir -p "${HOME}/.cache/neomutt/"
 
-    (
-        cd "${_mail_path}" || exit 3
+    local _dir_config="${HOME}/.config"
+    mkdir -p "${_dir_config}/mbsync"
+    mkdir -p "${_dir_config}/msmtp"
+    mkdir -p "${_dir_config}/neomutt"
 
-        for d in "draft" "hold" "trash" "x"; do
-            __f --maildir "./all/.${d}"
-        done
-        # account-specific folders are auto-created with mbsync
-    )
+    (cd .. && stow -R "$(basename "${SCRIPT_PATH}")")
 
-    unset -f __f
+    "${SRC_PATH}/account.sh" config
 }
 
-__mbsync() {
-    # HACK:
-    #   use mbsync to implicitly auto-create account-specific folders
+__mkdir_mail() {
+    mkdir -p "${DIR_MAIL}"
+    mkdir -p "${DIR_MAIL_BACKUP}"
 
-    # try a few times to cater for random sync failures
-    for __ in $(seq 3); do
-        mbsync -c "./.config/mbsync/config" --all
+    # NOTE:
+    #   no need to manually create remote maildirs; run mbsync instead
+
+    local _d _d_mail
+    for _d in "draft" "hold" "trash" "x"; do
+        _d="${DIR_MAIL_LOCAL}/.${_d}"
+        mkdir -p "${_d}"
+        chmod 700 "${_d}"
+        for _d_mail in "cur" "new" "tmp"; do
+            local _d_mail="${_d}/${_d_mail}"
+            mkdir -p "${_d_mail}"
+            chmod 700 "${_d_mail}"
+        done
     done
 }
 
-__fdm() {
-    chmod 600 "./.config/fdm/config"
-
-    case "${1}" in
-        "update")
-            fdm -f "./.config/fdm/config" fetch
-            ;;
-    esac
+__mkdir_notmuch() {
+    mkdir -p "${DIR_NOTMUCH}"
 }
 
-__notmuch() {
-    local _notmuch_path="./.local/share/notmuch/default/"
-    mkdir -p "${_notmuch_path}"
-
-    local _dump_file="notmuch.dump"
-    case "${1}" in
-        "update")
-            notmuch new
-            ;;
-        "export")
-            notmuch dump --output="${_notmuch_path}/${_dump_file}"
-            ;;
-        "import")
-            notmuch new
-            notmuch restore --input="${_notmuch_path}/${_dump_file}"
-            ;;
-    esac
-}
-
-__stow() {
-    (
-        cd .. && stow -R "$(basename "${SCRIPT_PATH}")"
-    )
-}
-
-__update() {
-    __mbsync
-    __fdm update
-    __notmuch update
-}
-
-__setup() {
-    __create_boxes_local
-    __fdm
-    __notmuch
-
-    __stow
-
-    __update
-}
-
-main() {
-    case "${1}" in
-        "update")
-            __update
-            ;;
-        "notmuch")
-            shift
-            __notmuch "${@}"
-            ;;
-        *)
-            __setup
-            ;;
-    esac
-
-    unset SCRIPT_PATH
-    unset -f __create_boxes_local __mbysnc __fdm __notmuch __stow __update __setup
-}
-main "${@}"
-unset -f main
+__make_config
+__mkdir_mail
+__mkdir_notmuch

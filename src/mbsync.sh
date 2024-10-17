@@ -89,7 +89,7 @@ STOP
         case "${1}" in
             "oauth")
                 shift
-                printf "PassCmd \"python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/%s.tokens.gpg\"" "${1}"
+                printf "PassCmd \"~/dot/dot/d_mail/src/oauth2/setup.sh get -- %s\"" "${1}"
                 ;;
             "pass")
                 shift

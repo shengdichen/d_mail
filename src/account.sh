@@ -29,15 +29,20 @@ STOP
     }
 
     __msmtp_config() {
-        cat <<STOP | "${SCRIPT_PATH}/msmtp.sh" config -- "${_account}"
+        {
+            cat <<STOP
 host 127.0.0.1
 port 1025
 auth login
+STOP
+            printf "\n"
 
+            cat <<STOP
 user me@shengdichen.xyz
 from me@shengdichen.xyz
-passwordeval pass Dox/mail/protonbridge | head -n 1
 STOP
+            "${SCRIPT_PATH}/msmtp.sh" config pass pass "protonbridge"
+        } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
     case "${1}" in
@@ -86,16 +91,22 @@ STOP
     }
 
     __msmtp_config() {
-        cat <<STOP | "${SCRIPT_PATH}/msmtp.sh" config -- "${_account}"
+        {
+            cat <<STOP
 host smtp-mail.outlook.com
 port 587
 tls on
 auth xoauth2
+STOP
+            printf "\n"
 
+            cat <<STOP
 user shengdi@outlook.de
 from shengdi@outlook.de
-passwordeval python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/shengdi@outlook.de.tokens.gpg
 STOP
+
+            "${SCRIPT_PATH}/msmtp.sh" config pass oauth "shengdi@outlook.de"
+        } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
     case "${1}" in
@@ -144,16 +155,21 @@ STOP
     }
 
     __msmtp_config() {
-        cat <<STOP | "${SCRIPT_PATH}/msmtp.sh" config -- "${_account}"
+        {
+            cat <<STOP
 host smtp.office365.com
 port 587
 tls on
 auth xoauth2
+STOP
+            printf "\n"
 
+            cat <<STOP
 user shenchen@ethz.ch
 from shenchen@ethz.ch
-passwordeval python ~/dot/dot/d_mail/src/oauth2/mutt_oauth2.py ~/.password-store/Dox/mail/shenchen@ethz.ch.tokens.gpg
 STOP
+            "${SCRIPT_PATH}/msmtp.sh" config pass oauth "shenchen@ethz.ch"
+        } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
     case "${1}" in
@@ -201,16 +217,21 @@ STOP
     }
 
     __msmtp_config() {
-        cat <<STOP | "${SCRIPT_PATH}/msmtp.sh" config -- "${_account}"
+        {
+            cat <<STOP
 host smtp.gmail.com
 port 587
 tls on
 auth on
+STOP
+            printf "\n"
 
+            cat <<STOP
 user shengdishcchen
 from shengdishcchen@gmail.com
-passwordeval pass Dox/mail/gmail_shengdishcchen_app | head -n 1
 STOP
+            "${SCRIPT_PATH}/msmtp.sh" config pass pass "gmail_shengdishcchen_app"
+        } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
     case "${1}" in

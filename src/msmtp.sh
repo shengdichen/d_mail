@@ -5,18 +5,43 @@
 DIR_MSMTP_CONFIG="${HOME}/.config/msmtp"
 
 __config() {
-    if [ "${1}" = "--" ]; then shift; fi
+    __commit() {
+        local _config="${DIR_MSMTP_CONFIG}/${1:-config}"
+        if [ "${#}" -eq 0 ]; then
+            _config="${DIR_MSMTP_CONFIG}/config"
+        else
+            _config="${DIR_MSMTP_CONFIG}/${1}"
+            true >"${_config}"
+        fi
 
-    local _config="${DIR_MSMTP_CONFIG}/${1:-config}"
-    if [ "${#}" -eq 0 ]; then
-        _config="${DIR_MSMTP_CONFIG}/config"
-    else
-        _config="${DIR_MSMTP_CONFIG}/${1}"
-        true >"${_config}"
-    fi
+        cat - >>"${_config}"
+        chmod 600 -- "${_config}"
+    }
 
-    cat - >>"${_config}"
-    chmod 600 -- "${_config}"
+    __passcmd() {
+        case "${1}" in
+            "oauth")
+                shift
+                printf "passwordeval ~/dot/dot/d_mail/src/oauth2/setup.sh get -- %s" "${1}"
+                ;;
+            "pass")
+                shift
+                printf "passwordeval pass Dox/mail/%s | head -n 1" "${1}"
+                ;;
+        esac
+        printf "\n"
+    }
+
+    case "${1}" in
+        "pass")
+            shift
+            __passcmd "${@}"
+            ;;
+        "commit")
+            shift
+            __commit "${@}"
+            ;;
+    esac
 }
 
 __msmtp() {

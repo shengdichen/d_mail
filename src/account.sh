@@ -4,6 +4,7 @@ SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 
 __xyz() {
     local _account="xyz"
+    local _addr="me@shengdichen.xyz"
 
     __mbsync_config() {
         {
@@ -14,10 +15,10 @@ __xyz() {
 Host 127.0.0.1
 Port 1143
 TLSType STARTTLS
-CertificateFile "~/.cert/protonmail/cert.pem"
-User me@shengdichen.xyz
+CertificateFile "~/.cert/protonmail/${_addr}.cert.pem"
+User ${_addr}
 STOP
-                "${SCRIPT_PATH}/mbsync.sh" config pass pass "protonbridge"
+                "${SCRIPT_PATH}/mbsync.sh" config pass pass "${_addr}.bridge"
             } | "${SCRIPT_PATH}/mbsync.sh" config remote
             printf "\n"
 
@@ -38,10 +39,10 @@ STOP
             printf "\n"
 
             cat <<STOP
-user me@shengdichen.xyz
-from me@shengdichen.xyz
+user ${_addr}
+from ${_addr}
 STOP
-            "${SCRIPT_PATH}/msmtp.sh" config pass pass "protonbridge"
+            "${SCRIPT_PATH}/msmtp.sh" config pass pass "${_addr}.bridge"
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
@@ -66,6 +67,7 @@ STOP
 
 __outlook() {
     local _account="outlook"
+    local _addr="shengdi@outlook.de"
 
     __mbsync_config() {
         {
@@ -77,9 +79,9 @@ Host outlook.office365.com
 Port 993
 AuthMechs XOAUTH2
 TLSType IMAPS
-User shengdi@outlook.de
+User ${_addr}
 STOP
-                "${SCRIPT_PATH}/mbsync.sh" config pass oauth "shengdi@outlook.de"
+                "${SCRIPT_PATH}/mbsync.sh" config pass oauth "${_addr}"
             } | "${SCRIPT_PATH}/mbsync.sh" config remote
             printf "\n"
 
@@ -101,11 +103,11 @@ STOP
             printf "\n"
 
             cat <<STOP
-user shengdi@outlook.de
-from shengdi@outlook.de
+user ${_addr}
+from ${_addr}
 STOP
 
-            "${SCRIPT_PATH}/msmtp.sh" config pass oauth "shengdi@outlook.de"
+            "${SCRIPT_PATH}/msmtp.sh" config pass oauth "${_addr}"
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
@@ -130,6 +132,7 @@ STOP
 
 __eth() {
     local _account="eth"
+    local _addr="shenchen@ethz.ch"
 
     __mbsync_config() {
         {
@@ -141,9 +144,9 @@ Host outlook.office365.com
 Port 993
 AuthMechs XOAUTH2
 TLSType IMAPS
-User shenchen@ethz.ch
+User ${_addr}
 STOP
-                "${SCRIPT_PATH}/mbsync.sh" config pass oauth "shenchen@ethz.ch"
+                "${SCRIPT_PATH}/mbsync.sh" config pass oauth "${_addr}"
             } | "${SCRIPT_PATH}/mbsync.sh" config remote
             printf "\n"
 
@@ -165,10 +168,10 @@ STOP
             printf "\n"
 
             cat <<STOP
-user shenchen@ethz.ch
-from shenchen@ethz.ch
+user ${_addr}
+from ${_addr}
 STOP
-            "${SCRIPT_PATH}/msmtp.sh" config pass oauth "shenchen@ethz.ch"
+            "${SCRIPT_PATH}/msmtp.sh" config pass oauth "${_addr}"
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
@@ -193,6 +196,7 @@ STOP
 
 __gmail() {
     local _account="gmail"
+    local _addr="shengdishcchen@gmail.com"
 
     __mbsync_config() {
         {
@@ -203,9 +207,9 @@ __gmail() {
 Host imap.gmail.com
 Port 993
 TLSType IMAPS
-User shengdishcchen@gmail.com
+User ${_addr}
 STOP
-                "${SCRIPT_PATH}/mbsync.sh" config pass pass "gmail_shengdishcchen_app"
+                "${SCRIPT_PATH}/mbsync.sh" config pass pass "${_addr}.app"
             } | "${SCRIPT_PATH}/mbsync.sh" config remote
             printf "\n"
 
@@ -227,10 +231,10 @@ STOP
             printf "\n"
 
             cat <<STOP
-user shengdishcchen
-from shengdishcchen@gmail.com
+user ${_addr}
+from ${_addr}
 STOP
-            "${SCRIPT_PATH}/msmtp.sh" config pass pass "gmail_shengdishcchen_app"
+            "${SCRIPT_PATH}/msmtp.sh" config pass pass "${_addr}.app"
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 

@@ -18,7 +18,7 @@ __download() {
 }
 
 __token_file() {
-    local _f="${PATH_TOKEN}/${1}.tokens.gpg"
+    local _f="${PATH_TOKEN}/${1}.oauth.gpg"
     if [ -e "${_f}" ]; then
         chmod 600 -- "${_f}"
     fi

@@ -1,16 +1,30 @@
 #!/usr/bin/env dash
 
 __main() {
-    local _dir_mail="${HOME}/.local/share/mail"
+    local _dir_mail_relative=".local/share/mail"
+    local _dir_mail="${HOME}/${_dir_mail_relative}"
+
+    local _dir_mail_local="${_dir_mail}/all"
+
     local _dir_mail_backup="${HOME}/.local/share/mailback"
 
     case "${1}" in
+        "DIR_MAIL_RELATIVE")
+            printf "%s" "${_dir_mail_relative}"
+            ;;
         "DIR_MAIL")
             printf "%s" "${_dir_mail}"
             ;;
         "DIR_MAIL_LOCAL")
-            printf "%s" "${_dir_mail}/all"
+            printf "%s" "${_dir_mail_local}"
             ;;
+        "DIR_MAIL_TRASH")
+            printf "%s" "${_dir_mail_local}/.trash"
+            ;;
+        "DIR_MAIL_HOLD")
+            printf "%s" "${_dir_mail_local}/.hold"
+            ;;
+
         "DIR_MAIL_REMOTE")
             printf "%s" "${_dir_mail}/raw"
             ;;

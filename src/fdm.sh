@@ -1,6 +1,22 @@
 #!/usr/bin/env dash
 
+SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
+
 FDM_CONFIG="${HOME}/.config/fdm/config"
+
+FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
+# DIR_MAIL="$("${FILE_CONST}" DIR_MAIL)"
+# DIR_MAIL_LOCAL="$("${FILE_CONST}" DIR_MAIL_LOCAL)"
+DIR_MAIL_TRASH="$("${FILE_CONST}" DIR_MAIL_TRASH)"
+DIR_MAIL_HOLD="$("${FILE_CONST}" DIR_MAIL_HOLD)"
+DIR_MAIL_REMOTE="$("${FILE_CONST}" DIR_MAIL_REMOTE)"
+unset FILE_CONST
+
+ACTION_DELETE="delete"
+ACTION_TRASH="trash"
+ACTION_HOLD="hold"
+ACTION_KEEP="keep"
+ACTION_PRINT="print"
 
 __tab() {
     local _n="${1-"1"}"
@@ -117,10 +133,8 @@ __main() {
 set no-received
 
 # setup {{{
-\$base_dir = "%h/.local/share/mail"
-\$all_dir = "\${base_dir}/all"
-\$trash_dir = "\${all_dir}/.trash"
-\$hold_dir = "\${all_dir}/.hold"
+\$trash_dir = "${DIR_MAIL_TRASH}"
+\$hold_dir = "${DIR_MAIL_HOLD}"
 
 # account {{{
 account "acc_hold"
@@ -128,11 +142,10 @@ account "acc_hold"
         "\${hold_dir}"
     }
 
-\$raw_dir = "\${base_dir}/raw"
-\$path_xyz = "\${raw_dir}/xyz"
-\$path_eth = "\${raw_dir}/eth"
-\$path_outlook = "\${raw_dir}/outlook"
-\$path_gmail = "\${raw_dir}/gmail"
+\$path_xyz = "${DIR_MAIL_REMOTE}/xyz"
+\$path_eth = "${DIR_MAIL_REMOTE}/eth"
+\$path_outlook = "${DIR_MAIL_REMOTE}/outlook"
+\$path_gmail = "${DIR_MAIL_REMOTE}/gmail"
 account "acc_raw_inbox"
     maildirs {
         "\${path_xyz}/.INBOX"
@@ -157,22 +170,26 @@ account "acc_raw_misc"
         "\${path_gmail}/.[Gmail].Spam"
     }
 # }}}
+STOP
 
+                printf "\n"
+
+                cat <<STOP
 # action {{{
 # in descending order of animosity
-action "delete"
+action "${ACTION_DELETE}"
     drop
 
-action "trash"
+action "${ACTION_TRASH}"
     maildir "\${trash_dir}"
 
-action "hold"
+action "${ACTION_HOLD}"
     maildir "\${hold_dir}"
 
-action "keep"
+action "${ACTION_KEEP}"
     keep
 
-action "print"
+action "${ACTION_PRINT}"
     stdout
 # }}}
 # }}}

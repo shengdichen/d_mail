@@ -57,6 +57,19 @@ __config() {
         printf "}\n"
     }
 
+    __define_action() {
+        printf "action \"%s\" {\n" "${1}"
+        shift
+        if [ "${1}" = "--" ]; then shift; fi
+
+        local _item
+        for _item in "${@}"; do
+            __tab
+            printf "%s\n" "${_item}"
+        done
+        printf "}\n"
+    }
+
     __header_from() {
         if [ "${1}" = "--" ]; then shift; fi
 
@@ -127,6 +140,10 @@ __config() {
         "define-account")
             shift
             __define_account "${@}"
+            ;;
+        "define-action")
+            shift
+            __define_action "${@}"
             ;;
         "header-from")
             shift
@@ -207,23 +224,12 @@ STOP
             }
 
             __action() {
-                cat <<STOP
-# in descending order of animosity
-action "${ACTION_DELETE}"
-    drop
-
-action "${ACTION_TRASH}"
-    maildir "${DIR_MAIL_TRASH}"
-
-action "${ACTION_HOLD}"
-    maildir "${DIR_MAIL_HOLD}"
-
-action "${ACTION_KEEP}"
-    keep
-
-action "${ACTION_PRINT}"
-    stdout
-STOP
+                # in descending order of animosity
+                __config define-action "${ACTION_DELETE}" -- "drop"
+                __config define-action "${ACTION_TRASH}" -- "maildir \"${DIR_MAIL_TRASH}\""
+                __config define-action "${ACTION_HOLD}" -- "maildir \"${DIR_MAIL_HOLD}\""
+                __config define-action "${ACTION_KEEP}" -- "keep"
+                __config define-action "${ACTION_PRINT}" -- "stdout"
             }
 
             __trash() {

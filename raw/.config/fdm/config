@@ -61,21 +61,21 @@ account "acc_raw_misc"
 # }}}
 
 # action {{{
-# in descending order of animosity
-action "delete"
+action "delete" {
     drop
-
-action "trash"
+}
+action "trash" {
     maildir "/home/main/.local/share/mail/all/.trash"
-
-action "hold"
+}
+action "hold" {
     maildir "/home/main/.local/share/mail/all/.hold"
-
-action "keep"
+}
+action "keep" {
     keep
-
-action "print"
+}
+action "print" {
     stdout
+}
 # }}}
 # }}}
 

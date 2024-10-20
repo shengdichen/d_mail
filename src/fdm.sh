@@ -21,10 +21,29 @@ __config() {
             printf "\n"
         done
     }
+
+    __action_delete() {
+        cat <<STOP
+match
+STOP
+
+        cat -
+        printf "\n"
+
+        cat <<STOP
+    actions {
+        "delete"
+    }
+STOP
+    }
+
     case "${1}" in
         "match-from")
             shift
             __match_from "${@}"
+            ;;
+        "action-delete")
+            __action_delete
             ;;
         *)
             exit 3
@@ -215,150 +234,150 @@ match
         "trash"
     }
 # }}}
-
-# direct deletion {{{
-# spam
-match
 STOP
-            printf '    # 1. (bad domain, all accounts)\n'
 
-            __config match-from -- \
-                ".*indiaplays.com.*" \
-                ".*kraftangan.gov.my.*" \
-                ".*kollect.ai.*" \
-                ".*transfiriendo.com.*" \
-                ".*fibrasil.com.*" \
-                ".*norton.com.*" \
-                ".*novaorion.com.*" \
-                ".*apparelsite.net.*" \
-                ".*farmleap.com.*" \
-                ".*yfhuorwa.com.*" \
-                ".*moneypeny.fr.*" \
-                ".*ronquilloassociates.com.*" \
-                ".*preapp1003.com.*" \
-                ".*magnusmonitors.com.*" \
-                ".*oasdehe.com.*" \
-                ".*sion.ais.ne.jp.*" \
-                ".*didareshop.com.*" \
-                ".*catpro.io.*" \
-                ".*mozart.livingopera.org.*" \
-                "fr.redoutes.com" \
-                "vr7uallms.com" \
-                "caboardroom.com.sg" \
-                "esrtech.io" \
-                "watts.com" \
-                "myfolio.im" \
-                "wettbewerbeundgewinnspiele.ch" \
-                "domenca.raviko.com" \
-                "ukrainianbeauty.com" \
-                "try2ascend.com" \
-                "glsthewinners4you.com" \
-                "neugiab.com" \
-                "ac-creteil.fr" \
-                "getaventura.com" \
-                "cootel.com.ni" \
-                "smart.com.ro" \
-                "itlgt.com" \
-                "binafna.huawei.uk.net" \
-                "darecky.pl" \
-                "montenegromade.com" \
-                "divaniesofa.ro" \
-                "easytrott.fr" \
-                "kiswel.com" \
-                "vmiconic.co.tz" \
-                "citizenpath.com" \
-                "doctorgenius.com" \
-                "upscheckoutrotator.com" \
-                "gc-dienstleistungen.de" \
-                "degoldengeniecasinochrismas.com" \
-                "uporalbseriesdmdrogeriemarkt.com" \
-                "complicesdelsonidoradio.com.ar" \
-                "veracity-trading.com" \
-                "deupscheckoutrotator.com" \
-                "deendurancerhctc.com" \
-                "defitsmartdiet.com" \
-                "vqfit.com" \
-                "otyavaf.co.uk" \
-                "fl0ppfy.co.uk" \
-                "irup5nr.co.uk" \
-                "ss-exports.in" \
-                "devigamanver2foryou.com" \
-                "ecomproesurveys.com" \
-                "ukhermesebookiasts.com" \
-                "smokacevipangebote.net" \
-                "ecaprivatedelivery.com" \
-                "server.cedarhallclinic.uk" \
-                "delidlgiftcard.com" \
-                "destanleytoolsetkaufland.com" \
-                "ukbootsjomaloneadventcalendar.com" \
-                "solidsunenergie.cz" \
-                "deupsblackpageverdelivery.com" \
-                "server.light-review.com" \
-                "cc-aglyfenouilledes.fr" \
-                "renovatio.uk.com" \
-                "cliqtechno.com" \
-                "stnicholasprimaryschool.org" \
-                "sense28.com" \
-                "ueh.edu.vn" \
-                "piecedrillset.de" \
-                "usekilo.com" \
-                "hadiethshop.nl" \
-                "connect.liveapps.store" \
-                "impactinglife.co.uk" \
-                "wgo.com.br" \
-                "host.bkauk.org.uk" \
-                "londontrucks.co.uk" \
-                "asb-hamburg.de" \
-                "dfc.discovery.co.za" \
-                "riseinformatics.com" \
-                "ntf.com" \
-                "clikr.com.br" \
-                "rplexelectrical.in" \
-                "mondrian-it.io" \
-                "capacityproviders.com" \
-                "davulga.bel.tr" \
-                "myhoppophop.fr" \
-                "lv09.katyjenkins.shop" \
-                "k4UBCPR8.fr" \
-                "vydehischool.com" \
-                "steibel.be" \
-                "tisknise.cz" \
-                "campaign.eventbrite.com"
+            # direct deletion {{{
+            {
+                __config match-from -- \
+                    "indiaplays.com" \
+                    "kraftangan.gov.my" \
+                    "kollect.ai" \
+                    "transfiriendo.com" \
+                    "fibrasil.com" \
+                    "norton.com" \
+                    "novaorion.com" \
+                    "apparelsite.net" \
+                    "farmleap.com" \
+                    "yfhuorwa.com" \
+                    "moneypeny.fr" \
+                    "ronquilloassociates.com" \
+                    "preapp1003.com" \
+                    "magnusmonitors.com" \
+                    "oasdehe.com" \
+                    "sion.ais.ne.jp" \
+                    "didareshop.com" \
+                    "catpro.io" \
+                    "mozart.livingopera.org" \
+                    "fr.redoutes.com" \
+                    "vr7uallms.com" \
+                    "caboardroom.com.sg" \
+                    "esrtech.io" \
+                    "watts.com" \
+                    "myfolio.im" \
+                    "wettbewerbeundgewinnspiele.ch" \
+                    "domenca.raviko.com" \
+                    "ukrainianbeauty.com" \
+                    "try2ascend.com" \
+                    "glsthewinners4you.com" \
+                    "neugiab.com" \
+                    "ac-creteil.fr" \
+                    "getaventura.com" \
+                    "cootel.com.ni" \
+                    "smart.com.ro" \
+                    "itlgt.com" \
+                    "binafna.huawei.uk.net" \
+                    "darecky.pl" \
+                    "montenegromade.com" \
+                    "divaniesofa.ro" \
+                    "easytrott.fr" \
+                    "kiswel.com" \
+                    "vmiconic.co.tz" \
+                    "citizenpath.com" \
+                    "doctorgenius.com" \
+                    "upscheckoutrotator.com" \
+                    "gc-dienstleistungen.de" \
+                    "degoldengeniecasinochrismas.com" \
+                    "uporalbseriesdmdrogeriemarkt.com" \
+                    "complicesdelsonidoradio.com.ar" \
+                    "veracity-trading.com" \
+                    "deupscheckoutrotator.com" \
+                    "deendurancerhctc.com" \
+                    "defitsmartdiet.com" \
+                    "vqfit.com" \
+                    "otyavaf.co.uk" \
+                    "fl0ppfy.co.uk" \
+                    "irup5nr.co.uk" \
+                    "ss-exports.in" \
+                    "devigamanver2foryou.com" \
+                    "ecomproesurveys.com" \
+                    "ukhermesebookiasts.com" \
+                    "smokacevipangebote.net" \
+                    "ecaprivatedelivery.com" \
+                    "server.cedarhallclinic.uk" \
+                    "delidlgiftcard.com" \
+                    "destanleytoolsetkaufland.com" \
+                    "ukbootsjomaloneadventcalendar.com" \
+                    "solidsunenergie.cz" \
+                    "deupsblackpageverdelivery.com" \
+                    "server.light-review.com" \
+                    "cc-aglyfenouilledes.fr" \
+                    "renovatio.uk.com" \
+                    "cliqtechno.com" \
+                    "stnicholasprimaryschool.org" \
+                    "sense28.com" \
+                    "ueh.edu.vn" \
+                    "piecedrillset.de" \
+                    "usekilo.com" \
+                    "hadiethshop.nl" \
+                    "connect.liveapps.store" \
+                    "impactinglife.co.uk" \
+                    "wgo.com.br" \
+                    "host.bkauk.org.uk" \
+                    "londontrucks.co.uk" \
+                    "asb-hamburg.de" \
+                    "dfc.discovery.co.za" \
+                    "riseinformatics.com" \
+                    "ntf.com" \
+                    "clikr.com.br" \
+                    "rplexelectrical.in" \
+                    "mondrian-it.io" \
+                    "capacityproviders.com" \
+                    "davulga.bel.tr" \
+                    "myhoppophop.fr" \
+                    "lv09.katyjenkins.shop" \
+                    "k4UBCPR8.fr" \
+                    "vydehischool.com" \
+                    "steibel.be" \
+                    "tisknise.cz" \
+                    "campaign.eventbrite.com" \
+                    "insistglobal.com" \
+                    "montagnes-sciences.fr" \
+                    "kenzahn.com" \
+                    "insistglobal.com" \
+                    "affiligate.com" \
+                    "yellowdig.net" \
+                    "smtp.assessment.gr" \
+                    "shadovn.com" \
+                    \
+                    "no-reply@flipboard.com" \
+                    "support@help.instapaper.com" \
+                    \
+                    "email.wolfram.com" \
+                    "go.mathworks.com" \
+                    \
+                    "diversity@ethz.ch" \
+                    "gastro@news.ethz.ch"
 
-            printf '    # 2. (bad subdomain, all accounts)\n'
-            __config match-from -- "email.wolfram.com"
-            __config match-from -- "go.mathworks.com"
+                __config match-from -- \
+                    "okabzne@hotmail.com" \
+                    "davidcostapro@gmail.com" \
+                    "ngoctran071113@gmail.com" \
+                    "nhatnguyen31101993@gmail.com" \
+                    "FreegsmfsdsFDFDmehdii49@gmx.de" \
+                    "Ashish.Biswas@icar.gov.in"
 
-            printf '    # 3. (good domain, bad account)\n'
-            __config match-from -- \
-                "okabzne@hotmail.com" \
-                "diversity@ethz.ch" \
-                "gastro@news.ethz.ch" \
-                "no-reply@flipboard.com" \
-                "support@help.instapaper.com" \
-                "nhatnguyen31101993@gmail.com" \
-                "LYRIS-e.m-2023.10.05-06.16.06@shadovn.com" \
-                "postmaster@smtp.assessment.gr" \
-                "support@affiligate.com" \
-                "dw-1298858contact@insistglobal.com" \
-                "info@montagnes-sciences.fr" \
-                "BDiduxHIFF@yellowdig.net" \
-                "ecotto@kenzahn.com" \
-                "Ashish.Biswas@icar.gov.in" \
-                "davidcostapro@gmail.com" \
-                "ngoctran071113@gmail.com" \
-                "FreegsmfsdsFDFDmehdii49@gmx.de"
-            __blank
+                cat <<STOP
+    "^From:.*[\\\\s<]Fehler bei der Lieferadresse" in headers
+STOP
+            } | __config action-delete
 
             cat <<STOP
-    "^From:.*[\\\\s<]Fehler bei der Lieferadresse" in headers
-    #
-    actions {
-        "delete"
-    }
 # }}}
 # }}}
+STOP
+            # }}}
 
+            cat <<STOP
 match
     accounts {
         "acc_hold"
@@ -377,3 +396,5 @@ STOP
     __make
 }
 __main
+
+# vim: foldmethod=marker foldlevel=1

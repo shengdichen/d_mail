@@ -1,4 +1,4 @@
-#!/usr/bin/env dash
+#!/usr/bin/env bash
 
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 
@@ -136,30 +136,52 @@ set no-received
 \$trash_dir = "${DIR_MAIL_TRASH}"
 \$hold_dir = "${DIR_MAIL_HOLD}"
 
-# account {{{
+STOP
+
+                printf "# account {{{\n"
+                cat <<STOP
 account "acc_hold"
     maildirs {
         "\${hold_dir}"
     }
 
+STOP
+
+                cat <<STOP
 \$path_xyz = "${DIR_MAIL_REMOTE}/xyz"
 \$path_eth = "${DIR_MAIL_REMOTE}/eth"
 \$path_outlook = "${DIR_MAIL_REMOTE}/outlook"
 \$path_gmail = "${DIR_MAIL_REMOTE}/gmail"
-account "acc_raw_inbox"
-    maildirs {
-        "\${path_xyz}/.INBOX"
-        "\${path_eth}/.INBOX"
-        "\${path_outlook}/.INBOX"
-        "\${path_gmail}/.INBOX"
-    }
-account "acc_raw_sent"
-    maildirs {
-        "\${path_xyz}/.Sent"
-        "\${path_eth}/.Sent Items"
-        "\${path_outlook}/.Sent"
-        "\${path_gmail}/.[Gmail].E-mails enviados"
-    }
+STOP
+                printf "account \"acc_raw_inbox\"\n"
+                __tab && printf "maildirs {\n"
+                local _inboxes=(
+                    "${DIR_MAIL_REMOTE}/xyz/.INBOX"
+                    "${DIR_MAIL_REMOTE}/eth/.INBOX"
+                    "${DIR_MAIL_REMOTE}/outlook/.INBOX"
+                    "${DIR_MAIL_REMOTE}/gmail/.INBOX"
+                )
+                local _inbox
+                for _inbox in "${_inboxes[@]}"; do
+                    __tab 2 && printf "\"%s\"\n" "${_inbox}"
+                done
+                __tab && printf "}\n"
+
+                printf "account \"acc_raw_sent\"\n"
+                __tab && printf "maildirs {\n"
+                local _sents=(
+                    "${DIR_MAIL_REMOTE}/xyz/.Sent"
+                    "${DIR_MAIL_REMOTE}/eth/.Sent Items"
+                    "${DIR_MAIL_REMOTE}/outlook/.Sent"
+                    "${DIR_MAIL_REMOTE}/gmail/.[Gmail].E-mails enviados"
+                )
+                local _sent
+                for _sent in "${_sents[@]}"; do
+                    __tab 2 && printf "\"%s\"\n" "${_sent}"
+                done
+                __tab && printf "}\n"
+
+                cat <<STOP
 # other folders that we would like fdm to monitor
 account "acc_raw_misc"
     maildirs {
@@ -169,8 +191,8 @@ account "acc_raw_misc"
         "\${path_outlook}/.Deleted"
         "\${path_gmail}/.[Gmail].Spam"
     }
-# }}}
 STOP
+                printf "# }}}\n"
 
                 printf "\n"
 

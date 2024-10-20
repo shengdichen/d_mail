@@ -4,33 +4,20 @@ FDM_CONFIG="${HOME}/.config/fdm/config"
 
 __config() {
     __match_from() {
-        local _addr_only
-        while [ "${#}" -gt 0 ]; do
-            case "${1}" in
-                "--addr-only")
-                    _addr_only="yes"
-                    shift
-                    ;;
-                "--")
-                    shift && break
-                    ;;
-            esac
-        done
+        if [ "${1}" = "--" ]; then shift; fi
 
         __literal_dot() {
             sed "s/\(\.[^*]\)/\\\\\1/g"
         }
 
-        local _addr
+        local _addr _addr_escaped
         for _addr in "${@}"; do
-            if [ "${_addr_only}" ]; then
-                _addr="$(printf "%s" "${_addr}" | __literal_dot)"
-                printf "    \"^From:.*[\\\\\\s<]%s\" in headers or" "${_addr}"
+            _addr_escaped="$(printf "%s" "${_addr}" | __literal_dot)"
+            if printf "%s" "${_addr}" | grep -q "^.\+@"; then
+                printf "    \"^From:.*[\\\\\\s<]%s\" in headers or" "${_addr_escaped}"
             else
-                _addr="$(printf "%s" "${_addr}" | sed "s/.*@//" | __literal_dot)"
-                printf "    \"^From:.*@%s\" in headers or" "${_addr}"
+                printf "    \"^From:.*@%s\" in headers or" "${_addr_escaped}"
             fi
-
             printf "\n"
         done
     }
@@ -124,54 +111,53 @@ action "print"
 match
 STOP
 
-            __config match-from --addr-only -- "paypal@mail.paypal.de"
-            __config match-from --addr-only -- "ubs_switzerland@mailing.ubs.com"
-            __config match-from --addr-only -- "hello@mail.plex.tv"
-            __config match-from --addr-only -- "no-reply@swissid.ch"
-            __config match-from --addr-only -- "support@nordvpn.com"
-            __config match-from --addr-only -- "no-reply@.*.proton.me"
-            __config match-from --addr-only -- "contact@protonmail.com"
+            __config match-from -- "paypal@mail.paypal.de"
+            __config match-from -- "ubs_switzerland@mailing.ubs.com"
+            __config match-from -- "hello@mail.plex.tv"
+            __config match-from -- "no-reply@swissid.ch"
+            __config match-from -- "support@nordvpn.com"
+            __config match-from -- "no-reply@.*.proton.me" "contact@protonmail.com"
             __config match-from -- "ipvanish.com"
             __config match-from -- "ifttt.com"
 
             __blank
 
-            __config match-from --addr-only -- \
+            __config match-from -- \
                 "noreply-dmarc-support@google.com" \
                 "no-reply@accounts.google.com" \
                 "cloud-noreply@google.com"
-            __config match-from --addr-only -- \
+            __config match-from -- \
                 "notification@facebookmail.com" \
                 "friendupdates@facebookmail.com" \
                 "reminders@facebookmail.com" \
-                "friendsuggestion@facebookmail.com"
-            __config match-from -- "priority.facebookmail.com"
+                "friendsuggestion@facebookmail.com" \
+                "priority.facebookmail.com"
 
-            __config match-from --addr-only -- "hilfe@tutti.ch"
-            __config match-from --addr-only -- "kuiper.sina@bcg.com"
-            __config match-from --addr-only -- \
+            __config match-from -- "hilfe@tutti.ch"
+            __config match-from -- "kuiper.sina@bcg.com"
+            __config match-from -- \
                 "ims@schlosstorgelow.de" "kirstenschreibt@schlosstorgelow.de"
-            __config match-from --addr-only -- "noreply@discord.com"
-            __config match-from --addr-only -- "mozilla@email.mozilla.org"
+            __config match-from -- "noreply@discord.com"
+            __config match-from -- "mozilla@email.mozilla.org"
             __config match-from -- "comm.tutti.ch"
             __config match-from -- "mail.blinkist.com"
             __config match-from -- ".*.instagram..*"
 
             __blank
 
-            __config match-from --addr-only -- "email.campaign@sg.booking.com"
-            __config match-from --addr-only -- \
+            __config match-from -- "email.campaign@sg.booking.com"
+            __config match-from -- \
                 "mail@e.milesandmore.com" \
                 "mail@mailing.milesandmore.com" \
                 "newsletter@mailing.milesandmore.com" \
                 "newsletter@your.lufthansa-group.com"
-            __config match-from --addr-only -- "notice@info.aliexpress.com"
+            __config match-from -- "notice@info.aliexpress.com"
             __config match-from -- "newsletter.swarovski.com"
             __config match-from -- "news.coop.ch"
 
             __blank
 
-            __config match-from --addr-only -- \
+            __config match-from -- \
                 "no-reply@business.amazon.com" \
                 "store-news@amazon.com" \
                 "vfe-campaign-response@amazon.com" \
@@ -180,7 +166,7 @@ STOP
 
             __blank
 
-            __config match-from --addr-only -- \
+            __config match-from -- \
                 "noreply@productnews.galaxus.ch" \
                 "noreply@notifications.galaxus.ch" \
                 "galaxus@community.galaxus.ch" \
@@ -191,15 +177,15 @@ STOP
 
             __blank
 
-            __config match-from --addr-only -- "no-reply@piazza.com"
-            __config match-from --addr-only -- "outgoing@office.iaeste.ch"
-            __config match-from --addr-only -- "careercenter@news.ethz.ch"
+            __config match-from -- "no-reply@piazza.com"
+            __config match-from -- "outgoing@office.iaeste.ch"
+            __config match-from -- "careercenter@news.ethz.ch"
             __config match-from -- "btools.ch" "projektneptun.ch"
             __config match-from -- "sprachen.uzh.ch" "soziologie.uzh.ch"
 
             __blank
 
-            __config match-from --addr-only -- \
+            __config match-from -- \
                 "noreply@moodle-app2.let.ethz.ch" \
                 "treffpunkt@news.ethz.ch" \
                 "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern.ethz.ch" \
@@ -346,23 +332,24 @@ STOP
             __config match-from -- "go.mathworks.com"
 
             printf '    # 3. (good domain, bad account)\n'
-            __config match-from --addr-only -- "okabzne@hotmail.com"
-            __config match-from --addr-only -- "diversity@ethz.ch"
-            __config match-from --addr-only -- "gastro@news.ethz.ch"
-            __config match-from --addr-only -- "no-reply@flipboard.com"
-            __config match-from --addr-only -- "support@help.instapaper.com"
-            __config match-from --addr-only -- "nhatnguyen31101993@gmail.com"
-            __config match-from --addr-only -- "LYRIS-e.m-2023.10.05-06.16.06@shadovn.com"
-            __config match-from --addr-only -- "postmaster@smtp.assessment.gr"
-            __config match-from --addr-only -- "support@affiligate.com"
-            __config match-from --addr-only -- "dw-1298858contact@insistglobal.com"
-            __config match-from --addr-only -- "info@montagnes-sciences.fr"
-            __config match-from --addr-only -- "BDiduxHIFF@yellowdig.net"
-            __config match-from --addr-only -- "ecotto@kenzahn.com"
-            __config match-from --addr-only -- "Ashish.Biswas@icar.gov.in"
-            __config match-from --addr-only -- "davidcostapro@gmail.com"
-            __config match-from --addr-only -- "ngoctran071113@gmail.com"
-            __config match-from --addr-only -- "FreegsmfsdsFDFDmehdii49@gmx.de"
+            __config match-from -- \
+                "okabzne@hotmail.com" \
+                "diversity@ethz.ch" \
+                "gastro@news.ethz.ch" \
+                "no-reply@flipboard.com" \
+                "support@help.instapaper.com" \
+                "nhatnguyen31101993@gmail.com" \
+                "LYRIS-e.m-2023.10.05-06.16.06@shadovn.com" \
+                "postmaster@smtp.assessment.gr" \
+                "support@affiligate.com" \
+                "dw-1298858contact@insistglobal.com" \
+                "info@montagnes-sciences.fr" \
+                "BDiduxHIFF@yellowdig.net" \
+                "ecotto@kenzahn.com" \
+                "Ashish.Biswas@icar.gov.in" \
+                "davidcostapro@gmail.com" \
+                "ngoctran071113@gmail.com" \
+                "FreegsmfsdsFDFDmehdii49@gmx.de"
             __blank
 
             cat <<STOP
@@ -391,7 +378,7 @@ STOP
     }
     __make
 
-    nvim -d "${_output}" "${FDM_CONFIG}"
+    diff "${_output}" "${FDM_CONFIG}"
     rm "${_output}"
 }
 __main

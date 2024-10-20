@@ -2,6 +2,13 @@
 
 FDM_CONFIG="${HOME}/.config/fdm/config"
 
+__tab() {
+    local _n="${1-"1"}"
+    for _ in $(seq "${_n}"); do
+        printf "    "
+    done
+}
+
 __config() {
     __match_from() {
         if [ "${1}" = "--" ]; then shift; fi
@@ -12,29 +19,61 @@ __config() {
 
         local _addr _addr_escaped
         for _addr in "${@}"; do
+            __tab
+
             _addr_escaped="$(printf "%s" "${_addr}" | __literal_dot)"
             if printf "%s" "${_addr}" | grep -q "^.\+@"; then
-                printf "    \"^From:.*[\\\\\\s<]%s\" in headers or" "${_addr_escaped}"
+                printf "\"^From:.*[\\\\\\s<]%s\" in headers or" "${_addr_escaped}"
             else
-                printf "    \"^From:.*@%s\" in headers or" "${_addr_escaped}"
+                printf "\"^From:.*@%s\" in headers or" "${_addr_escaped}"
             fi
+
             printf "\n"
         done
     }
 
-    __action_delete() {
-        cat <<STOP
-match
-STOP
-
+    __match() {
+        printf "match\n"
         cat -
-        printf "\n"
-
-        cat <<STOP
-    actions {
-        "delete"
     }
-STOP
+
+    __accounts() {
+        # NOTE:
+        #   accounts {
+        #       "<ACCOUNT_1>"
+        #       "<ACCOUNT_2>"
+        #       "..."
+        #   }
+
+        if [ "${1}" = "--" ]; then shift; fi
+
+        __tab && printf "accounts {\n"
+        local _account
+        for _account in "${@}"; do
+            __tab 2
+            printf "\"%s\"\n" "${_account}"
+        done
+        __tab && printf "}\n"
+    }
+
+    __actions() {
+        if [ "${1}" = "--" ]; then shift; fi
+
+        __tab && printf "actions {\n"
+        local _action
+        for _action in "${@}"; do
+            __tab 2
+            printf "\"%s\"\n" "${_action}"
+        done
+        __tab && printf "}\n"
+    }
+
+    __act() {
+        {
+            cat -
+            printf "\n"
+            __actions "${@}"
+        } | __match
     }
 
     case "${1}" in
@@ -42,8 +81,26 @@ STOP
             shift
             __match_from "${@}"
             ;;
-        "action-delete")
-            __action_delete
+        "accounts")
+            shift
+            __accounts "${@}"
+            ;;
+        "actions")
+            shift
+            __actions "${@}"
+            ;;
+        "act")
+            shift
+            __act "${@}"
+            ;;
+        "act-trash")
+            __act "trash"
+            ;;
+        "act-delete")
+            __act "delete"
+            ;;
+        "act-keep")
+            __act "keep"
             ;;
         *)
             exit 3
@@ -369,7 +426,7 @@ STOP
                 cat <<STOP
     "^From:.*[\\\\s<]Fehler bei der Lieferadresse" in headers
 STOP
-            } | __config action-delete
+            } | __config act-delete
 
             cat <<STOP
 # }}}
@@ -377,17 +434,9 @@ STOP
 STOP
             # }}}
 
+            __config accounts "acc_hold" "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" | __config act-keep
+
             cat <<STOP
-match
-    accounts {
-        "acc_hold"
-        "acc_raw_inbox"
-        "acc_raw_sent"
-        "acc_raw_misc"
-    }
-    actions {
-        "keep"
-    }
 
 # vim: filetype=conf foldmethod=marker foldlevel=1
 STOP

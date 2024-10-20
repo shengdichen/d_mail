@@ -1,16 +1,12 @@
+# setup {{{
 # do NOT add any |Received| tag
 set no-received
-
-# setup {{{
-$trash_dir = "/home/main/.local/share/mail/all/.trash"
-$hold_dir = "/home/main/.local/share/mail/all/.hold"
 
 # account {{{
 account "acc_hold"
     maildirs {
-        "${hold_dir}"
+        "/home/main/.local/share/mail/all/.hold"
     }
-
 account "acc_raw_inbox"
     maildirs {
         "/home/main/.local/share/mail/raw/xyz/.INBOX"
@@ -70,10 +66,10 @@ action "delete"
     drop
 
 action "trash"
-    maildir "${trash_dir}"
+    maildir "/home/main/.local/share/mail/all/.trash"
 
 action "hold"
-    maildir "${hold_dir}"
+    maildir "/home/main/.local/share/mail/all/.hold"
 
 action "keep"
     keep

@@ -166,21 +166,11 @@ __main() {
                 cat <<STOP
 # do NOT add any |Received| tag
 set no-received
-
-# setup {{{
-\$trash_dir = "${DIR_MAIL_TRASH}"
-\$hold_dir = "${DIR_MAIL_HOLD}"
-
 STOP
+            }
 
-                printf "# account {{{\n"
-                cat <<STOP
-account "acc_hold"
-    maildirs {
-        "\${hold_dir}"
-    }
-
-STOP
+            __account() {
+                __config define-account "acc_hold" "${DIR_MAIL_HOLD}"
 
                 local _inboxes=(
                     "${DIR_MAIL_REMOTE}/xyz/.INBOX"
@@ -214,29 +204,25 @@ STOP
                         done
                         __config define-account "acc_raw_misc" "${_miscs[@]}"
                     }
-                printf "# }}}\n"
+            }
 
-                printf "\n"
-
+            __action() {
                 cat <<STOP
-# action {{{
 # in descending order of animosity
 action "${ACTION_DELETE}"
     drop
 
 action "${ACTION_TRASH}"
-    maildir "\${trash_dir}"
+    maildir "${DIR_MAIL_TRASH}"
 
 action "${ACTION_HOLD}"
-    maildir "\${hold_dir}"
+    maildir "${DIR_MAIL_HOLD}"
 
 action "${ACTION_KEEP}"
     keep
 
 action "${ACTION_PRINT}"
     stdout
-# }}}
-# }}}
 STOP
             }
 
@@ -477,7 +463,17 @@ STOP
 
             }
 
+            printf "# setup {{{\n"
             __base
+            printf "\n"
+            printf "# account {{{\n"
+            __account
+            printf "# }}}\n"
+            printf "\n"
+            printf "# action {{{\n"
+            __action
+            printf "# }}}\n"
+            printf "# }}}\n"
 
             printf "\n"
 

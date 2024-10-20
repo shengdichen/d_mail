@@ -95,6 +95,7 @@ match
     "^From:.*[\\s<]customer-reviews-messages@amazon\.com" in headers or
     "^From:.*[\\s<]marketplace-messages@amazon\.com" in headers or
     "^From:.*[\\s<]noreply@productnews\.galaxus\.ch" in headers or
+    "^From:.*[\\s<]noreply@productnews\.digitec\.ch" in headers or
     "^From:.*[\\s<]noreply@notifications\.galaxus\.ch" in headers or
     "^From:.*[\\s<]galaxus@community\.galaxus\.ch" in headers or
     "^From:.*[\\s<]productnews@galaxus\.ch" in headers or
@@ -110,6 +111,7 @@ match
     "^From:.*@ifttt\.com" in headers or
     "^From:.*@mail\.blinkist\.com" in headers or
     "^From:.*[\\s<]no-reply@swissid\.ch" in headers or
+    "^From:.*[\\s<]info@logistics\.post\.ch" in headers or
     "^From:.*[\\s<]support@nordvpn\.com" in headers or
     "^From:.*@ipvanish\.com" in headers or
     "^From:.*[\\s<]no-reply@.*\.proton\.me" in headers or
@@ -278,18 +280,24 @@ match
     "^From:.*@yellowdig\.net" in headers or
     "^From:.*@smtp\.assessment\.gr" in headers or
     "^From:.*@shadovn\.com" in headers or
+    "^From:.*@send\.sw\.ofbrand\.live" in headers or
+    "^From:.*@client\.whitehousenannies\.com" in headers or
+    "^From:.*@send\.sw\.taipanonline\.com" in headers or
+    "^From:.*@icar\.gov\.in" in headers or
     "^From:.*[\\s<]no-reply@flipboard\.com" in headers or
     "^From:.*[\\s<]support@help\.instapaper\.com" in headers or
+    "^From:.*[\\s<]no-reply@instapaper\.com" in headers or
     "^From:.*@email\.wolfram\.com" in headers or
     "^From:.*@go\.mathworks\.com" in headers or
     "^From:.*[\\s<]diversity@ethz\.ch" in headers or
     "^From:.*[\\s<]gastro@news\.ethz\.ch" in headers or
+    "^From:.*[\\s<]phishing-simulation@id\.ethz\.ch" in headers or
+    "^From:.*@services\.elhz\.ch" in headers or
     "^From:.*[\\s<]okabzne@hotmail\.com" in headers or
     "^From:.*[\\s<]davidcostapro@gmail\.com" in headers or
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]nhatnguyen31101993@gmail\.com" in headers or
     "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or
-    "^From:.*[\\s<]Ashish\.Biswas@icar\.gov\.in" in headers or
     "^From:.*[\\s<]Fehler bei der Lieferadresse" in headers
 
     actions {

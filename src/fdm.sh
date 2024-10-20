@@ -251,6 +251,7 @@ STOP
                         "marketplace-messages@amazon.com" \
                         \
                         "noreply@productnews.galaxus.ch" \
+                        "noreply@productnews.digitec.ch" \
                         "noreply@notifications.galaxus.ch" \
                         "galaxus@community.galaxus.ch" \
                         "productnews@galaxus.ch" \
@@ -269,6 +270,8 @@ STOP
                         "mail.blinkist.com" \
                         \
                         "no-reply@swissid.ch" \
+                        "info@logistics.post.ch" \
+                        \
                         "support@nordvpn.com" \
                         "ipvanish.com" \
                         \
@@ -444,22 +447,28 @@ STOP
                     "yellowdig.net" \
                     "smtp.assessment.gr" \
                     "shadovn.com" \
+                    "send.sw.ofbrand.live" \
+                    "client.whitehousenannies.com" \
+                    "send.sw.taipanonline.com" \
+                    "icar.gov.in" \
                     \
                     "no-reply@flipboard.com" \
                     "support@help.instapaper.com" \
+                    "no-reply@instapaper.com" \
                     \
                     "email.wolfram.com" \
                     "go.mathworks.com" \
                     \
                     "diversity@ethz.ch" \
                     "gastro@news.ethz.ch" \
+                    "phishing-simulation@id.ethz.ch" \
+                    "services.elhz.ch" \
                     \
                     "okabzne@hotmail.com" \
                     "davidcostapro@gmail.com" \
                     "ngoctran071113@gmail.com" \
                     "nhatnguyen31101993@gmail.com" \
-                    "FreegsmfsdsFDFDmehdii49@gmx.de" \
-                    "Ashish.Biswas@icar.gov.in"
+                    "FreegsmfsdsFDFDmehdii49@gmx.de"
 
                 printf "    \"^From:.*[\\\\\\s<]Fehler bei der Lieferadresse\" in headers\n"
             }

@@ -25,7 +25,38 @@ __tab() {
     done
 }
 
+__is_in() {
+    local _target="${1}"
+    shift
+
+    local _candidate
+    for _candidate in "${@}"; do
+        if [ "${_candidate}" = "${_target}" ]; then
+            return
+        fi
+    done
+    return 1
+}
+
 __config() {
+    __define_account() {
+        printf "account \"%s\"\n" "${1}"
+        shift
+        if [ "${1}" = "--" ]; then shift; fi
+
+        __tab
+        printf "maildirs {\n"
+
+        local _item
+        for _item in "${@}"; do
+            __tab 2
+            printf "\"%s\"\n" "${_item}"
+        done
+
+        __tab
+        printf "}\n"
+    }
+
     __header_from() {
         if [ "${1}" = "--" ]; then shift; fi
 
@@ -93,6 +124,10 @@ __config() {
     }
 
     case "${1}" in
+        "define-account")
+            shift
+            __define_account "${@}"
+            ;;
         "header-from")
             shift
             __header_from "${@}"
@@ -147,51 +182,38 @@ account "acc_hold"
 
 STOP
 
-                cat <<STOP
-\$path_xyz = "${DIR_MAIL_REMOTE}/xyz"
-\$path_eth = "${DIR_MAIL_REMOTE}/eth"
-\$path_outlook = "${DIR_MAIL_REMOTE}/outlook"
-\$path_gmail = "${DIR_MAIL_REMOTE}/gmail"
-STOP
-                printf "account \"acc_raw_inbox\"\n"
-                __tab && printf "maildirs {\n"
                 local _inboxes=(
                     "${DIR_MAIL_REMOTE}/xyz/.INBOX"
                     "${DIR_MAIL_REMOTE}/eth/.INBOX"
                     "${DIR_MAIL_REMOTE}/outlook/.INBOX"
                     "${DIR_MAIL_REMOTE}/gmail/.INBOX"
                 )
-                local _inbox
-                for _inbox in "${_inboxes[@]}"; do
-                    __tab 2 && printf "\"%s\"\n" "${_inbox}"
-                done
-                __tab && printf "}\n"
+                __config define-account "acc_raw_inbox" "${_inboxes[@]}"
 
-                printf "account \"acc_raw_sent\"\n"
-                __tab && printf "maildirs {\n"
                 local _sents=(
                     "${DIR_MAIL_REMOTE}/xyz/.Sent"
                     "${DIR_MAIL_REMOTE}/eth/.Sent Items"
                     "${DIR_MAIL_REMOTE}/outlook/.Sent"
                     "${DIR_MAIL_REMOTE}/gmail/.[Gmail].E-mails enviados"
                 )
-                local _sent
-                for _sent in "${_sents[@]}"; do
-                    __tab 2 && printf "\"%s\"\n" "${_sent}"
-                done
-                __tab && printf "}\n"
+                __config define-account "acc_raw_sent" "${_sents[@]}"
 
-                cat <<STOP
-# other folders that we would like fdm to monitor
-account "acc_raw_misc"
-    maildirs {
-        "\${path_xyz}/.Spam"
-        "\${path_xyz}/.Trash"
-        "\${path_outlook}/.Junk"
-        "\${path_outlook}/.Deleted"
-        "\${path_gmail}/.[Gmail].Spam"
-    }
-STOP
+                local _ignores=(
+                    "${DIR_MAIL_REMOTE}/xyz/.Folders.x"
+                    "${DIR_MAIL_REMOTE}/eth/.x"
+                    "${DIR_MAIL_REMOTE}/outlook/.x"
+                )
+                find "${DIR_MAIL_REMOTE}" -mindepth 2 -maxdepth 2 -type d | sort -n |
+                    {
+                        local _miscs=()
+                        local _box
+                        while read -r _box; do
+                            if ! __is_in "${_box}" "${_inboxes[@]}" "${_sents[@]}" "${_ignores[@]}"; then
+                                _miscs+=("${_box}")
+                            fi
+                        done
+                        __config define-account "acc_raw_misc" "${_miscs[@]}"
+                    }
                 printf "# }}}\n"
 
                 printf "\n"

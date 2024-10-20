@@ -61,8 +61,9 @@ action "print"
     stdout
 # }}}
 # }}}
+
 # the undesirables {{{
-# move to trash {{{
+# trash {{{
 match
     "^From:.*[\\s<]paypal@mail\.paypal\.de" in headers or
     "^From:.*[\\s<]ubs_switzerland@mailing\.ubs\.com" in headers or
@@ -134,18 +135,22 @@ match
     "^From:.*@library\.ethz\.ch" in headers or
     "^From:.*@sts\.ethz\.ch" in headers or
     "^From:.*@sl\.ethz\.ch" in headers or
+
     "^From:.*DPD-Paket" in headers
-    #
+
     actions {
         "trash"
     }
 
 match
     "^Subject:.*Test Mail.*" in headers
+
     actions {
         "trash"
     }
 # }}}
+
+# delete {{{
 match
     "^From:.*@indiaplays\.com" in headers or
     "^From:.*@kraftangan\.gov\.my" in headers or
@@ -275,6 +280,7 @@ match
     }
 # }}}
 # }}}
+
 match
     accounts {
         "acc_hold"

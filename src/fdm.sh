@@ -110,12 +110,9 @@ __config() {
 
 __main() {
     __make() {
-        __blank() {
-            printf "    #\n"
-        }
-
         {
-            cat <<STOP
+            __base() {
+                cat <<STOP
 # do NOT add any |Received| tag
 set no-received
 
@@ -180,119 +177,110 @@ action "print"
 # }}}
 # }}}
 STOP
+            }
 
-            cat <<STOP
-# the undesirables {{{
-# move to trash {{{
-match
-STOP
+            __trash() {
+                {
+                    __config header-from -- \
+                        "paypal@mail.paypal.de" \
+                        "ubs_switzerland@mailing.ubs.com" \
+                        \
+                        "email.campaign@sg.booking.com" \
+                        "mail@e.milesandmore.com" \
+                        "mail@mailing.milesandmore.com" \
+                        "newsletter@mailing.milesandmore.com" \
+                        "newsletter@your.lufthansa-group.com" \
+                        \
+                        "no-reply@business.amazon.com" \
+                        "store-news@amazon.com" \
+                        "vfe-campaign-response@amazon.com" \
+                        "customer-reviews-messages@amazon.com" \
+                        "marketplace-messages@amazon.com" \
+                        \
+                        "noreply@productnews.galaxus.ch" \
+                        "noreply@notifications.galaxus.ch" \
+                        "galaxus@community.galaxus.ch" \
+                        "productnews@galaxus.ch" \
+                        "resale@galaxus.ch" \
+                        "resale@notifications.galaxus.ch" \
+                        "ux@digitecgalaxus.ch" \
+                        \
+                        "hilfe@tutti.ch" \
+                        "comm.tutti.ch" \
+                        "notice@info.aliexpress.com" \
+                        "newsletter.swarovski.com" \
+                        "news.coop.ch" \
+                        \
+                        "hello@mail.plex.tv" \
+                        "ifttt.com" \
+                        "mail.blinkist.com" \
+                        \
+                        "no-reply@swissid.ch" \
+                        "support@nordvpn.com" \
+                        "ipvanish.com" \
+                        \
+                        "no-reply@.*.proton.me" \
+                        "contact@protonmail.com" \
+                        \
+                        "noreply-dmarc-support@google.com" \
+                        "no-reply@accounts.google.com" \
+                        "cloud-noreply@google.com" \
+                        \
+                        "notification@facebookmail.com" \
+                        "friendupdates@facebookmail.com" \
+                        "reminders@facebookmail.com" \
+                        "friendsuggestion@facebookmail.com" \
+                        "priority.facebookmail.com" \
+                        \
+                        "noreply@discord.com" \
+                        \
+                        ".*.instagram..*" \
+                        \
+                        "kuiper.sina@bcg.com" \
+                        \
+                        "ims@schlosstorgelow.de" \
+                        "kirstenschreibt@schlosstorgelow.de" \
+                        \
+                        "mozilla@email.mozilla.org" \
+                        \
+                        "no-reply@piazza.com" \
+                        "noreply@moodle-app2.let.ethz.ch" \
+                        \
+                        "outgoing@office.iaeste.ch" \
+                        "btools.ch" \
+                        "projektneptun.ch" \
+                        "sprachen.uzh.ch" \
+                        "soziologie.uzh.ch" \
+                        \
+                        "careercenter@news.ethz.ch" \
+                        "treffpunkt@news.ethz.ch" \
+                        "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern.ethz.ch" \
+                        "descil@ethz.ch" \
+                        "mathbib@math.ethz.ch" \
+                        "evasys@let.ethz.ch" \
+                        "exchange@ethz.ch" \
+                        "president@ethz.ch" \
+                        "sgu_training@ethz.ch" \
+                        "didaktischeausbildung@ethz.ch" \
+                        "entrepreneurship@ethz.ch" \
+                        "nikola.kovacevic@inf.ethz.ch" \
+                        "compicampus@id.ethz.ch" \
+                        "hk.ethz.ch" \
+                        "library.ethz.ch" \
+                        "sts.ethz.ch" \
+                        "sl.ethz.ch"
 
-            __config header-from -- \
-                "paypal@mail.paypal.de" \
-                "ubs_switzerland@mailing.ubs.com" \
-                \
-                "email.campaign@sg.booking.com" \
-                "mail@e.milesandmore.com" \
-                "mail@mailing.milesandmore.com" \
-                "newsletter@mailing.milesandmore.com" \
-                "newsletter@your.lufthansa-group.com" \
-                \
-                "no-reply@business.amazon.com" \
-                "store-news@amazon.com" \
-                "vfe-campaign-response@amazon.com" \
-                "customer-reviews-messages@amazon.com" \
-                "marketplace-messages@amazon.com" \
-                \
-                "noreply@productnews.galaxus.ch" \
-                "noreply@notifications.galaxus.ch" \
-                "galaxus@community.galaxus.ch" \
-                "productnews@galaxus.ch" \
-                "resale@galaxus.ch" \
-                "resale@notifications.galaxus.ch" \
-                "ux@digitecgalaxus.ch" \
-                \
-                "hilfe@tutti.ch" \
-                "comm.tutti.ch" \
-                "notice@info.aliexpress.com" \
-                "newsletter.swarovski.com" \
-                "news.coop.ch" \
-                \
-                "hello@mail.plex.tv" \
-                "ifttt.com" \
-                "mail.blinkist.com" \
-                \
-                "no-reply@swissid.ch" \
-                "support@nordvpn.com" \
-                "ipvanish.com" \
-                \
-                "no-reply@.*.proton.me" \
-                "contact@protonmail.com" \
-                \
-                "noreply-dmarc-support@google.com" \
-                "no-reply@accounts.google.com" \
-                "cloud-noreply@google.com" \
-                \
-                "notification@facebookmail.com" \
-                "friendupdates@facebookmail.com" \
-                "reminders@facebookmail.com" \
-                "friendsuggestion@facebookmail.com" \
-                "priority.facebookmail.com" \
-                \
-                "noreply@discord.com" \
-                \
-                ".*.instagram..*" \
-                \
-                "kuiper.sina@bcg.com" \
-                \
-                "ims@schlosstorgelow.de" \
-                "kirstenschreibt@schlosstorgelow.de" \
-                \
-                "mozilla@email.mozilla.org" \
-                \
-                "no-reply@piazza.com" \
-                "noreply@moodle-app2.let.ethz.ch" \
-                \
-                "outgoing@office.iaeste.ch" \
-                "btools.ch" \
-                "projektneptun.ch" \
-                "sprachen.uzh.ch" \
-                "soziologie.uzh.ch" \
-                \
-                "careercenter@news.ethz.ch" \
-                "treffpunkt@news.ethz.ch" \
-                "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern.ethz.ch" \
-                "descil@ethz.ch" \
-                "mathbib@math.ethz.ch" \
-                "evasys@let.ethz.ch" \
-                "exchange@ethz.ch" \
-                "president@ethz.ch" \
-                "sgu_training@ethz.ch" \
-                "didaktischeausbildung@ethz.ch" \
-                "entrepreneurship@ethz.ch" \
-                "nikola.kovacevic@inf.ethz.ch" \
-                "compicampus@id.ethz.ch" \
-                "hk.ethz.ch" \
-                "library.ethz.ch" \
-                "sts.ethz.ch" \
-                "sl.ethz.ch"
+                    printf "\n"
 
-            cat <<STOP
-    "^From:.*DPD-Paket" in headers
-    #
-    actions {
-        "trash"
-    }
+                    printf "    \"^From:.*DPD-Paket\" in headers\n"
+                } | __config act trash
 
-match
-    "^Subject:.*Test Mail.*" in headers
-    actions {
-        "trash"
-    }
-# }}}
-STOP
+                printf "\n"
 
-            # direct deletion {{{
-            {
+                printf "    \"^Subject:.*Test Mail.*\" in headers\n" | __config act trash
+            }
+
+            __delete() {
                 __config header-from -- \
                     "indiaplays.com" \
                     "kraftangan.gov.my" \
@@ -411,9 +399,8 @@ STOP
                     "go.mathworks.com" \
                     \
                     "diversity@ethz.ch" \
-                    "gastro@news.ethz.ch"
-
-                __config header-from -- \
+                    "gastro@news.ethz.ch" \
+                    \
                     "okabzne@hotmail.com" \
                     "davidcostapro@gmail.com" \
                     "ngoctran071113@gmail.com" \
@@ -421,18 +408,31 @@ STOP
                     "FreegsmfsdsFDFDmehdii49@gmx.de" \
                     "Ashish.Biswas@icar.gov.in"
 
-                cat <<STOP
-    "^From:.*[\\\\s<]Fehler bei der Lieferadresse" in headers
-STOP
-            } | __config act-delete
+                printf "    \"^From:.*[\\\\\\s<]Fehler bei der Lieferadresse\" in headers\n"
+            }
 
-            cat <<STOP
-# }}}
-# }}}
-STOP
-            # }}}
+            __keep() {
+                __config accounts "acc_hold" "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" | __config act-keep
 
-            __config accounts "acc_hold" "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" | __config act-keep
+            }
+
+            __base
+
+            printf "\n"
+
+            printf "# the undesirables {{{\n"
+            printf "# trash {{{\n"
+            __trash
+            printf "# }}}\n"
+            printf "\n"
+            printf "# delete {{{\n"
+            __delete | __config act-delete
+            printf "# }}}\n"
+            printf "# }}}\n"
+
+            printf "\n"
+
+            __keep
 
             cat <<STOP
 

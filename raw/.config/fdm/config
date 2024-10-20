@@ -63,12 +63,6 @@ action "print"
 # }}}
 
 # the undesirables {{{
-# NOTE: (vim-)convert to pattern-criteria
-# 1. specific address
-#   :'<,'>sm/\./\\./g || :'<,'>sm/^\s*\(\S.*\)$/    "^From:.*[\\\\s<]\1" in headers or/
-# 2. entire domain
-#   :'<,'>sm/\./\\./g || :'<,'>sm/^\s*\(\S.*\)\(@.*\)$/    "^From:.*\2" in headers or/
-
 # move to trash {{{
 match
     "^From:.*[\\s<]paypal@mail\.paypal\.de" in headers or
@@ -179,7 +173,7 @@ match
     "^From:.*@.*ronquilloassociates\.com.*" in headers or
     "^From:.*@.*preapp1003\.com.*" in headers or
     "^From:.*@.*magnusmonitors\.com.*" in headers or
-    "^From:.*@.*oasdehe.com.*" in headers or
+    "^From:.*@.*oasdehe\.com.*" in headers or
     "^From:.*@.*sion\.ais\.ne\.jp.*" in headers or
     "^From:.*@.*didareshop\.com.*" in headers or
     "^From:.*@.*catpro\.io.*" in headers or
@@ -283,7 +277,7 @@ match
     "^From:.*[\\s<]info@montagnes-sciences\.fr" in headers or
     "^From:.*[\\s<]BDiduxHIFF@yellowdig\.net" in headers or
     "^From:.*[\\s<]ecotto@kenzahn\.com" in headers or
-    "^From:.*[\\s<]Ashish.Biswas@icar\.gov\.in" in headers or
+    "^From:.*[\\s<]Ashish\.Biswas@icar\.gov\.in" in headers or
     "^From:.*[\\s<]davidcostapro@gmail\.com" in headers or
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or

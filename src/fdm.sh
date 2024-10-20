@@ -33,8 +33,6 @@ __config() {
 }
 
 __main() {
-    local _output="${FDM_CONFIG}_new"
-
     __make() {
         __blank() {
             printf "    #\n"
@@ -374,11 +372,8 @@ match
 
 # vim: filetype=conf foldmethod=marker foldlevel=1
 STOP
-        } >"${_output}"
+        } >"${FDM_CONFIG}"
     }
     __make
-
-    diff "${_output}" "${FDM_CONFIG}"
-    rm "${_output}"
 }
 __main

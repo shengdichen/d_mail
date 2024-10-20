@@ -10,7 +10,7 @@ __tab() {
 }
 
 __config() {
-    __match_from() {
+    __header_from() {
         if [ "${1}" = "--" ]; then shift; fi
 
         __literal_dot() {
@@ -77,9 +77,9 @@ __config() {
     }
 
     case "${1}" in
-        "match-from")
+        "header-from")
             shift
-            __match_from "${@}"
+            __header_from "${@}"
             ;;
         "accounts")
             shift
@@ -179,88 +179,86 @@ action "print"
     stdout
 # }}}
 # }}}
+STOP
 
+            cat <<STOP
 # the undesirables {{{
 # move to trash {{{
 match
 STOP
 
-            __config match-from -- "paypal@mail.paypal.de"
-            __config match-from -- "ubs_switzerland@mailing.ubs.com"
-            __config match-from -- "hello@mail.plex.tv"
-            __config match-from -- "no-reply@swissid.ch"
-            __config match-from -- "support@nordvpn.com"
-            __config match-from -- "no-reply@.*.proton.me" "contact@protonmail.com"
-            __config match-from -- "ipvanish.com"
-            __config match-from -- "ifttt.com"
-
-            __blank
-
-            __config match-from -- \
-                "noreply-dmarc-support@google.com" \
-                "no-reply@accounts.google.com" \
-                "cloud-noreply@google.com"
-            __config match-from -- \
-                "notification@facebookmail.com" \
-                "friendupdates@facebookmail.com" \
-                "reminders@facebookmail.com" \
-                "friendsuggestion@facebookmail.com" \
-                "priority.facebookmail.com"
-
-            __config match-from -- "hilfe@tutti.ch"
-            __config match-from -- "kuiper.sina@bcg.com"
-            __config match-from -- \
-                "ims@schlosstorgelow.de" "kirstenschreibt@schlosstorgelow.de"
-            __config match-from -- "noreply@discord.com"
-            __config match-from -- "mozilla@email.mozilla.org"
-            __config match-from -- "comm.tutti.ch"
-            __config match-from -- "mail.blinkist.com"
-            __config match-from -- ".*.instagram..*"
-
-            __blank
-
-            __config match-from -- "email.campaign@sg.booking.com"
-            __config match-from -- \
+            __config header-from -- \
+                "paypal@mail.paypal.de" \
+                "ubs_switzerland@mailing.ubs.com" \
+                \
+                "email.campaign@sg.booking.com" \
                 "mail@e.milesandmore.com" \
                 "mail@mailing.milesandmore.com" \
                 "newsletter@mailing.milesandmore.com" \
-                "newsletter@your.lufthansa-group.com"
-            __config match-from -- "notice@info.aliexpress.com"
-            __config match-from -- "newsletter.swarovski.com"
-            __config match-from -- "news.coop.ch"
-
-            __blank
-
-            __config match-from -- \
+                "newsletter@your.lufthansa-group.com" \
+                \
                 "no-reply@business.amazon.com" \
                 "store-news@amazon.com" \
                 "vfe-campaign-response@amazon.com" \
                 "customer-reviews-messages@amazon.com" \
-                "marketplace-messages@amazon.com"
-
-            __blank
-
-            __config match-from -- \
+                "marketplace-messages@amazon.com" \
+                \
                 "noreply@productnews.galaxus.ch" \
                 "noreply@notifications.galaxus.ch" \
                 "galaxus@community.galaxus.ch" \
                 "productnews@galaxus.ch" \
                 "resale@galaxus.ch" \
                 "resale@notifications.galaxus.ch" \
-                "ux@digitecgalaxus.ch"
-
-            __blank
-
-            __config match-from -- "no-reply@piazza.com"
-            __config match-from -- "outgoing@office.iaeste.ch"
-            __config match-from -- "careercenter@news.ethz.ch"
-            __config match-from -- "btools.ch" "projektneptun.ch"
-            __config match-from -- "sprachen.uzh.ch" "soziologie.uzh.ch"
-
-            __blank
-
-            __config match-from -- \
+                "ux@digitecgalaxus.ch" \
+                \
+                "hilfe@tutti.ch" \
+                "comm.tutti.ch" \
+                "notice@info.aliexpress.com" \
+                "newsletter.swarovski.com" \
+                "news.coop.ch" \
+                \
+                "hello@mail.plex.tv" \
+                "ifttt.com" \
+                "mail.blinkist.com" \
+                \
+                "no-reply@swissid.ch" \
+                "support@nordvpn.com" \
+                "ipvanish.com" \
+                \
+                "no-reply@.*.proton.me" \
+                "contact@protonmail.com" \
+                \
+                "noreply-dmarc-support@google.com" \
+                "no-reply@accounts.google.com" \
+                "cloud-noreply@google.com" \
+                \
+                "notification@facebookmail.com" \
+                "friendupdates@facebookmail.com" \
+                "reminders@facebookmail.com" \
+                "friendsuggestion@facebookmail.com" \
+                "priority.facebookmail.com" \
+                \
+                "noreply@discord.com" \
+                \
+                ".*.instagram..*" \
+                \
+                "kuiper.sina@bcg.com" \
+                \
+                "ims@schlosstorgelow.de" \
+                "kirstenschreibt@schlosstorgelow.de" \
+                \
+                "mozilla@email.mozilla.org" \
+                \
+                "no-reply@piazza.com" \
                 "noreply@moodle-app2.let.ethz.ch" \
+                \
+                "outgoing@office.iaeste.ch" \
+                "btools.ch" \
+                "projektneptun.ch" \
+                "sprachen.uzh.ch" \
+                "soziologie.uzh.ch" \
+                \
+                "careercenter@news.ethz.ch" \
                 "treffpunkt@news.ethz.ch" \
                 "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern.ethz.ch" \
                 "descil@ethz.ch" \
@@ -272,11 +270,11 @@ STOP
                 "didaktischeausbildung@ethz.ch" \
                 "entrepreneurship@ethz.ch" \
                 "nikola.kovacevic@inf.ethz.ch" \
-                "compicampus@id.ethz.ch"
-            __config match-from -- \
-                "hk.ethz.ch" "library.ethz.ch" "sts.ethz.ch" "sl.ethz.ch"
-
-            __blank
+                "compicampus@id.ethz.ch" \
+                "hk.ethz.ch" \
+                "library.ethz.ch" \
+                "sts.ethz.ch" \
+                "sl.ethz.ch"
 
             cat <<STOP
     "^From:.*DPD-Paket" in headers
@@ -295,7 +293,7 @@ STOP
 
             # direct deletion {{{
             {
-                __config match-from -- \
+                __config header-from -- \
                     "indiaplays.com" \
                     "kraftangan.gov.my" \
                     "kollect.ai" \
@@ -415,7 +413,7 @@ STOP
                     "diversity@ethz.ch" \
                     "gastro@news.ethz.ch"
 
-                __config match-from -- \
+                __config header-from -- \
                     "okabzne@hotmail.com" \
                     "davidcostapro@gmail.com" \
                     "ngoctran071113@gmail.com" \
@@ -445,5 +443,3 @@ STOP
     __make
 }
 __main
-
-# vim: foldmethod=marker foldlevel=1

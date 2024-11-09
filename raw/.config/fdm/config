@@ -79,6 +79,15 @@ action "print" {
 # }}}
 # }}}
 
+match
+    accounts {
+        "acc_hold"
+    }
+
+    actions {
+        "keep"
+    }
+
 # the undesirables {{{
 # trash {{{
 match
@@ -308,7 +317,6 @@ match
 
 match
     accounts {
-        "acc_hold"
         "acc_raw_inbox"
         "acc_raw_sent"
         "acc_raw_misc"

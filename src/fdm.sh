@@ -232,6 +232,10 @@ STOP
                 __config define-action "${ACTION_PRINT}" -- "stdout"
             }
 
+            __hold() {
+                __config condition-accounts "acc_hold" | __config act-keep
+            }
+
             __trash() {
                 {
                     __config header-from -- \
@@ -474,8 +478,7 @@ STOP
             }
 
             __keep() {
-                __config accounts "acc_hold" "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" | __config act-keep
-
+                __config accounts "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" | __config act-keep
             }
 
             printf "# setup {{{\n"
@@ -490,6 +493,9 @@ STOP
             printf "# }}}\n"
             printf "# }}}\n"
 
+            printf "\n"
+
+            __hold
             printf "\n"
 
             printf "# the undesirables {{{\n"

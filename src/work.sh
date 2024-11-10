@@ -5,18 +5,16 @@
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 
 __post() {
-    __fdm() {
-        printf "post> fdm\n"
+    printf "post> fdm\n"
+    "${SCRIPT_PATH}/fdm.sh"
 
-        local _config="${HOME}/.config/fdm/config"
-        chmod 600 -- "${_config}"
-        fdm -f "${_config}" "${@}"
-    }
-
-    __fdm fetch
     __separator
+
+    printf "post> notmuch\n"
     "${SCRIPT_PATH}/notmuch.sh" update
+
     __separator
+
     printf "post> done! "
     read -r _
 }

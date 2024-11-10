@@ -22,6 +22,14 @@ __tab() {
     done
 }
 
+__fdm() {
+    if [ "${#}" -eq 0 ]; then
+        fdm -f "${FDM_CONFIG}" fetch
+        return
+    fi
+    fdm -f "${FDM_CONFIG}" "${@}"
+}
+
 __config() {
     __define_account() {
         printf "account \"%s\"\n" "${1}"
@@ -255,5 +263,9 @@ case "${1}" in
     "config")
         shift
         __config "${@}"
+        ;;
+
+    *)
+        __fdm "${@}"
         ;;
 esac

@@ -1,5 +1,7 @@
 #!/usr/bin/env dash
 
+. "${HOME}/.local/lib/util.sh"
+
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 
 FDM_CONFIG="${HOME}/.config/fdm/config"
@@ -15,13 +17,6 @@ ACTION_HOLD="hold"
 ACTION_KEEP="keep"
 ACTION_PRINT="print"
 
-__tab() {
-    local _n="${1-"1"}"
-    for _ in $(seq "${_n}"); do
-        printf "    "
-    done
-}
-
 __fdm() {
     if [ "${#}" -eq 0 ]; then
         fdm -f "${FDM_CONFIG}" fetch
@@ -36,17 +31,14 @@ __config() {
         shift
         if [ "${1}" = "--" ]; then shift; fi
 
-        __tab
-        printf "maildirs {\n"
+        __tab && printf "maildirs {\n"
 
         local _item
         for _item in "${@}"; do
-            __tab 2
-            printf "\"%s\"\n" "${_item}"
+            __tab --count 2 && printf "\"%s\"\n" "${_item}"
         done
 
-        __tab
-        printf "}\n"
+        __tab && printf "}\n"
     }
 
     __define_action() {

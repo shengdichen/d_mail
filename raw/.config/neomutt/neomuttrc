@@ -8,9 +8,6 @@ source "$my_conf_neomutt/conf/bind.conf"
 source "$my_conf_neomutt/box/common/box.conf"
 source "$my_conf_neomutt/box/common/notmuch.conf"
 source "$my_conf_neomutt/box/specific/multi.conf"
-source "$my_conf_neomutt/box/specific/xyz/auto.conf"
-source "$my_conf_neomutt/box/specific/outlook/auto.conf"
-source "$my_conf_neomutt/box/specific/eth/auto.conf"
 
 source "$my_conf_neomutt/conf/start.conf"
 

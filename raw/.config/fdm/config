@@ -163,15 +163,14 @@ match
     "^From:.*@library\.ethz\.ch" in headers or
     "^From:.*@sts\.ethz\.ch" in headers or
     "^From:.*@sl\.ethz\.ch" in headers or
-
-    "^From:.*DPD-Paket" in headers
+    "^From:\\s*DPD-Paket" in headers
 
     actions {
         "trash"
     }
 
 match
-    "^Subject:.*Test Mail.*" in headers
+    "^Subject:.*Test Mail" in headers
 
     actions {
         "trash"
@@ -307,7 +306,7 @@ match
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]nhatnguyen31101993@gmail\.com" in headers or
     "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or
-    "^From:.*[\\s<]Fehler bei der Lieferadresse" in headers
+    "^From:\\s*Fehler bei der Lieferadresse" in headers
 
     actions {
         "delete"

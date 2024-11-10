@@ -64,40 +64,87 @@ __config() {
 
         local _item
         for _item in "${@}"; do
-            __tab
-            printf "%s\n" "${_item}"
+            __tab && printf "%s\n" "${_item}"
         done
         printf "}\n"
     }
 
-    __header_from() {
-        if [ "${1}" = "--" ]; then shift; fi
+    __condition_regex_header() {
+        local _header="From" _raw=""
+        while [ "${#}" -gt 0 ]; do
+            case "${1}" in
+                "--header")
+                    case "${2}" in
+                        "from")
+                            _header="From"
+                            ;;
+                        "to")
+                            _header="To"
+                            ;;
+                        "subject")
+                            _header="Subject"
+                            ;;
+                    esac
+                    shift 2
+                    ;;
+                "--raw")
+                    _raw="yes"
+                    shift
+                    ;;
+                "--")
+                    shift && break
+                    ;;
+            esac
+        done
 
-        __literal_dot() {
-            sed "s/\(\.[^*]\)/\\\\\1/g"
+        __preserve_literal_dot() {
+            # |.| not followed by |*|, i.e., literal dot -> |\.|
+            printf "%s" "${1}" | sed "s/\(\.[^*]\)/\\\\\1/g"
         }
 
-        local _addr _addr_escaped
-        for _addr in "${@}"; do
-            __tab
+        __process_address() {
+            if printf "%s" "${1}" | grep -q "^.\+@"; then # match by address
+                printf "\"^%s:.*[\\\\\\s<]%s\" in headers" "${_header}" "${1}"
+                return
+            fi
+            if printf "%s" "${1}" | grep -q "^@"; then # match by domain
+                printf "\"^%s:.*%s\" in headers" "${_header}" "${1}"
+                return
+            fi
+            # match by name
+            printf "\"^%s:\\\\\\s*%s\" in headers" "${_header}" "${1}"
+        }
 
-            _addr_escaped="$(printf "%s" "${_addr}" | __literal_dot)"
-            if printf "%s" "${_addr}" | grep -q "^.\+@"; then
-                printf "\"^From:.*[\\\\\\s<]%s\" in headers or" "${_addr_escaped}"
+        __process_subject() {
+            printf "\"^%s:.*%s\" in headers" "${_header}" "${1}"
+        }
+
+        local _item _n_items="${#}" _i=0
+        for _item in "${@}"; do
+            _i=$((_i + 1))
+            _item="$(__preserve_literal_dot "${_item}")"
+
+            if [ "${_raw}" ]; then
+                printf "\"^%s: %s$\" in headers" "${_header}" "${_item}"
             else
-                printf "\"^From:.*@%s\" in headers or" "${_addr_escaped}"
+                case "${_header}" in
+                    "From" | "To")
+                        __process_address "${_item}"
+                        ;;
+                    "Subject")
+                        __process_subject "${_item}"
+                        ;;
+                esac
             fi
 
+            if [ "${_i}" -ne "${_n_items}" ]; then
+                printf " or"
+            fi
             printf "\n"
         done
     }
 
-    __match() {
-        printf "match\n"
-        cat -
-    }
-
-    __accounts() {
+    __condition_accounts() {
         # NOTE:
         #   accounts {
         #       "<ACCOUNT_1>"
@@ -107,33 +154,41 @@ __config() {
 
         if [ "${1}" = "--" ]; then shift; fi
 
-        __tab && printf "accounts {\n"
+        printf "accounts {\n"
         local _account
         for _account in "${@}"; do
-            __tab 2
-            printf "\"%s\"\n" "${_account}"
+            __tab && printf "\"%s\"\n" "${_account}"
         done
-        __tab && printf "}\n"
+        printf "}\n"
     }
 
     __actions() {
         if [ "${1}" = "--" ]; then shift; fi
 
-        __tab && printf "actions {\n"
+        printf "actions {\n"
         local _action
         for _action in "${@}"; do
-            __tab 2
-            printf "\"%s\"\n" "${_action}"
+            __tab && printf "\"%s\"\n" "${_action}"
         done
-        __tab && printf "}\n"
+        printf "}\n"
     }
 
-    __act() {
-        {
-            cat -
-            printf "\n"
-            __actions "${@}"
-        } | __match
+    __do() {
+        local _line
+
+        printf "match\n"
+
+        while IFS="" read -r _line; do
+            [ "${_line}" ] && __tab
+            printf "%s\n" "${_line}"
+        done
+
+        printf "\n"
+
+        __actions "${@}" | while IFS="" read -r _line; do
+            [ "${_line}" ] && __tab
+            printf "%s\n" "${_line}"
+        done
     }
 
     case "${1}" in
@@ -145,31 +200,35 @@ __config() {
             shift
             __define_action "${@}"
             ;;
-        "header-from")
+
+        "condition-regex-header")
             shift
-            __header_from "${@}"
+            __condition_regex_header "${@}"
             ;;
-        "accounts")
+        "condition-accounts")
             shift
-            __accounts "${@}"
+            __condition_accounts "${@}"
             ;;
+
         "actions")
             shift
             __actions "${@}"
             ;;
-        "act")
+
+        "do")
             shift
-            __act "${@}"
+            __do "${@}"
             ;;
-        "act-trash")
-            __act "trash"
+        "do-trash")
+            __do "trash"
             ;;
-        "act-delete")
-            __act "delete"
+        "do-delete")
+            __do "delete"
             ;;
-        "act-keep")
-            __act "keep"
+        "do-keep")
+            __do "keep"
             ;;
+
         *)
             exit 3
             ;;
@@ -233,252 +292,263 @@ STOP
             }
 
             __hold() {
-                __config condition-accounts "acc_hold" | __config act-keep
+                __config condition-accounts -- "acc_hold" | __config do-keep
             }
 
             __trash() {
-                {
-                    __config header-from -- \
-                        "paypal@mail.paypal.de" \
-                        "ubs_switzerland@mailing.ubs.com" \
-                        \
-                        "email.campaign@sg.booking.com" \
-                        "mail@e.milesandmore.com" \
-                        "mail@mailing.milesandmore.com" \
-                        "newsletter@mailing.milesandmore.com" \
-                        "newsletter@your.lufthansa-group.com" \
-                        \
-                        "no-reply@business.amazon.com" \
-                        "store-news@amazon.com" \
-                        "vfe-campaign-response@amazon.com" \
-                        "customer-reviews-messages@amazon.com" \
-                        "marketplace-messages@amazon.com" \
-                        \
-                        "noreply@productnews.galaxus.ch" \
-                        "noreply@productnews.digitec.ch" \
-                        "noreply@notifications.galaxus.ch" \
-                        "galaxus@community.galaxus.ch" \
-                        "productnews@galaxus.ch" \
-                        "resale@galaxus.ch" \
-                        "resale@notifications.galaxus.ch" \
-                        "ux@digitecgalaxus.ch" \
-                        \
-                        "hilfe@tutti.ch" \
-                        "comm.tutti.ch" \
-                        "notice@info.aliexpress.com" \
-                        "newsletter.swarovski.com" \
-                        "news.coop.ch" \
-                        \
-                        "hello@mail.plex.tv" \
-                        "ifttt.com" \
-                        "mail.blinkist.com" \
-                        \
-                        "no-reply@swissid.ch" \
-                        "info@logistics.post.ch" \
-                        \
-                        "support@nordvpn.com" \
-                        "ipvanish.com" \
-                        \
-                        "no-reply@.*.proton.me" \
-                        "contact@protonmail.com" \
-                        \
-                        "noreply-dmarc-support@google.com" \
-                        "no-reply@accounts.google.com" \
-                        "cloud-noreply@google.com" \
-                        \
-                        "notification@facebookmail.com" \
-                        "friendupdates@facebookmail.com" \
-                        "reminders@facebookmail.com" \
-                        "friendsuggestion@facebookmail.com" \
-                        "priority.facebookmail.com" \
-                        \
-                        "noreply@discord.com" \
-                        \
-                        ".*.instagram..*" \
-                        \
-                        "kuiper.sina@bcg.com" \
-                        \
-                        "ims@schlosstorgelow.de" \
-                        "kirstenschreibt@schlosstorgelow.de" \
-                        \
-                        "mozilla@email.mozilla.org" \
-                        \
-                        "no-reply@piazza.com" \
-                        "noreply@moodle-app2.let.ethz.ch" \
-                        \
-                        "outgoing@office.iaeste.ch" \
-                        "btools.ch" \
-                        "projektneptun.ch" \
-                        "sprachen.uzh.ch" \
-                        "soziologie.uzh.ch" \
-                        \
-                        "careercenter@news.ethz.ch" \
-                        "treffpunkt@news.ethz.ch" \
-                        "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern.ethz.ch" \
-                        "descil@ethz.ch" \
-                        "mathbib@math.ethz.ch" \
-                        "evasys@let.ethz.ch" \
-                        "exchange@ethz.ch" \
-                        "president@ethz.ch" \
-                        "sgu_training@ethz.ch" \
-                        "didaktischeausbildung@ethz.ch" \
-                        "entrepreneurship@ethz.ch" \
-                        "nikola.kovacevic@inf.ethz.ch" \
-                        "compicampus@id.ethz.ch" \
-                        "hk.ethz.ch" \
-                        "library.ethz.ch" \
-                        "sts.ethz.ch" \
-                        "sl.ethz.ch"
+                local _addrs=(
+                    "paypal@mail.paypal.de"
+                    "ubs_switzerland@mailing.ubs.com"
 
-                    printf "\n"
+                    "email.campaign@sg.booking.com"
+                    "mail@e.milesandmore.com"
+                    "mail@mailing.milesandmore.com"
+                    "newsletter@mailing.milesandmore.com"
+                    "newsletter@your.lufthansa-group.com"
 
-                    printf "    \"^From:.*DPD-Paket\" in headers\n"
-                } | __config act trash
+                    "no-reply@business.amazon.com"
+                    "store-news@amazon.com"
+                    "vfe-campaign-response@amazon.com"
+                    "customer-reviews-messages@amazon.com"
+                    "marketplace-messages@amazon.com"
+
+                    "noreply@productnews.galaxus.ch"
+                    "noreply@productnews.digitec.ch"
+                    "noreply@notifications.galaxus.ch"
+                    "galaxus@community.galaxus.ch"
+                    "productnews@galaxus.ch"
+                    "resale@galaxus.ch"
+                    "resale@notifications.galaxus.ch"
+                    "ux@digitecgalaxus.ch"
+
+                    "hilfe@tutti.ch"
+                    "@comm.tutti.ch"
+                    "notice@info.aliexpress.com"
+                    "@newsletter.swarovski.com"
+                    "@news.coop.ch"
+
+                    "hello@mail.plex.tv"
+                    "@ifttt.com"
+                    "@mail.blinkist.com"
+
+                    "no-reply@swissid.ch"
+                    "info@logistics.post.ch"
+
+                    "support@nordvpn.com"
+                    "@ipvanish.com"
+
+                    "no-reply@.*.proton.me"
+                    "contact@protonmail.com"
+
+                    "noreply-dmarc-support@google.com"
+                    "no-reply@accounts.google.com"
+                    "cloud-noreply@google.com"
+
+                    "notification@facebookmail.com"
+                    "friendupdates@facebookmail.com"
+                    "reminders@facebookmail.com"
+                    "friendsuggestion@facebookmail.com"
+                    "@priority.facebookmail.com"
+
+                    "noreply@discord.com"
+
+                    "@.*.instagram..*"
+
+                    "kuiper.sina@bcg.com"
+
+                    "ims@schlosstorgelow.de"
+                    "kirstenschreibt@schlosstorgelow.de"
+
+                    "mozilla@email.mozilla.org"
+
+                    "no-reply@piazza.com"
+                    "noreply@moodle-app2.let.ethz.ch"
+
+                    "outgoing@office.iaeste.ch"
+                    "@btools.ch"
+                    "@projektneptun.ch"
+                    "@sprachen.uzh.ch"
+                    "@soziologie.uzh.ch"
+
+                    "careercenter@news.ethz.ch"
+                    "treffpunkt@news.ethz.ch"
+                    "MicrosoftExchange329e71ec88ae4615bbc36ab6ce41109e@intern.ethz.ch"
+                    "descil@ethz.ch"
+                    "mathbib@math.ethz.ch"
+                    "evasys@let.ethz.ch"
+                    "exchange@ethz.ch"
+                    "president@ethz.ch"
+                    "sgu_training@ethz.ch"
+                    "didaktischeausbildung@ethz.ch"
+                    "entrepreneurship@ethz.ch"
+                    "nikola.kovacevic@inf.ethz.ch"
+                    "compicampus@id.ethz.ch"
+                    "@hk.ethz.ch"
+                    "@library.ethz.ch"
+                    "@sts.ethz.ch"
+                    "@sl.ethz.ch"
+                )
+                local _names=(
+                    "DPD-Paket"
+                )
+                __config condition-regex-header -- \
+                    "${_addrs[@]}" "${_names[@]}" |
+                    __config do-trash
 
                 printf "\n"
 
-                printf "    \"^Subject:.*Test Mail.*\" in headers\n" | __config act trash
+                local _subjects=(
+                    "Test Mail"
+                )
+                __config condition-regex-header \
+                    --header subject \
+                    -- "${_subjects[@]}" |
+                    __config do-trash
             }
 
             __delete() {
-                __config header-from -- \
-                    "indiaplays.com" \
-                    "kraftangan.gov.my" \
-                    "kollect.ai" \
-                    "transfiriendo.com" \
-                    "fibrasil.com" \
-                    "norton.com" \
-                    "novaorion.com" \
-                    "apparelsite.net" \
-                    "farmleap.com" \
-                    "yfhuorwa.com" \
-                    "moneypeny.fr" \
-                    "ronquilloassociates.com" \
-                    "preapp1003.com" \
-                    "magnusmonitors.com" \
-                    "oasdehe.com" \
-                    "sion.ais.ne.jp" \
-                    "didareshop.com" \
-                    "catpro.io" \
-                    "mozart.livingopera.org" \
-                    "fr.redoutes.com" \
-                    "vr7uallms.com" \
-                    "caboardroom.com.sg" \
-                    "esrtech.io" \
-                    "watts.com" \
-                    "myfolio.im" \
-                    "wettbewerbeundgewinnspiele.ch" \
-                    "domenca.raviko.com" \
-                    "ukrainianbeauty.com" \
-                    "try2ascend.com" \
-                    "glsthewinners4you.com" \
-                    "neugiab.com" \
-                    "ac-creteil.fr" \
-                    "getaventura.com" \
-                    "cootel.com.ni" \
-                    "smart.com.ro" \
-                    "itlgt.com" \
-                    "binafna.huawei.uk.net" \
-                    "darecky.pl" \
-                    "montenegromade.com" \
-                    "divaniesofa.ro" \
-                    "easytrott.fr" \
-                    "kiswel.com" \
-                    "vmiconic.co.tz" \
-                    "citizenpath.com" \
-                    "doctorgenius.com" \
-                    "upscheckoutrotator.com" \
-                    "gc-dienstleistungen.de" \
-                    "degoldengeniecasinochrismas.com" \
-                    "uporalbseriesdmdrogeriemarkt.com" \
-                    "complicesdelsonidoradio.com.ar" \
-                    "veracity-trading.com" \
-                    "deupscheckoutrotator.com" \
-                    "deendurancerhctc.com" \
-                    "defitsmartdiet.com" \
-                    "vqfit.com" \
-                    "otyavaf.co.uk" \
-                    "fl0ppfy.co.uk" \
-                    "irup5nr.co.uk" \
-                    "ss-exports.in" \
-                    "devigamanver2foryou.com" \
-                    "ecomproesurveys.com" \
-                    "ukhermesebookiasts.com" \
-                    "smokacevipangebote.net" \
-                    "ecaprivatedelivery.com" \
-                    "server.cedarhallclinic.uk" \
-                    "delidlgiftcard.com" \
-                    "destanleytoolsetkaufland.com" \
-                    "ukbootsjomaloneadventcalendar.com" \
-                    "solidsunenergie.cz" \
-                    "deupsblackpageverdelivery.com" \
-                    "server.light-review.com" \
-                    "cc-aglyfenouilledes.fr" \
-                    "renovatio.uk.com" \
-                    "cliqtechno.com" \
-                    "stnicholasprimaryschool.org" \
-                    "sense28.com" \
-                    "ueh.edu.vn" \
-                    "piecedrillset.de" \
-                    "usekilo.com" \
-                    "hadiethshop.nl" \
-                    "connect.liveapps.store" \
-                    "impactinglife.co.uk" \
-                    "wgo.com.br" \
-                    "host.bkauk.org.uk" \
-                    "londontrucks.co.uk" \
-                    "asb-hamburg.de" \
-                    "dfc.discovery.co.za" \
-                    "riseinformatics.com" \
-                    "ntf.com" \
-                    "clikr.com.br" \
-                    "rplexelectrical.in" \
-                    "mondrian-it.io" \
-                    "capacityproviders.com" \
-                    "davulga.bel.tr" \
-                    "myhoppophop.fr" \
-                    "lv09.katyjenkins.shop" \
-                    "k4UBCPR8.fr" \
-                    "vydehischool.com" \
-                    "steibel.be" \
-                    "tisknise.cz" \
-                    "campaign.eventbrite.com" \
-                    "insistglobal.com" \
-                    "montagnes-sciences.fr" \
-                    "kenzahn.com" \
-                    "insistglobal.com" \
-                    "affiligate.com" \
-                    "yellowdig.net" \
-                    "smtp.assessment.gr" \
-                    "shadovn.com" \
-                    "send.sw.ofbrand.live" \
-                    "client.whitehousenannies.com" \
-                    "send.sw.taipanonline.com" \
-                    "icar.gov.in" \
-                    \
-                    "no-reply@flipboard.com" \
-                    "support@help.instapaper.com" \
-                    "no-reply@instapaper.com" \
-                    \
-                    "email.wolfram.com" \
-                    "go.mathworks.com" \
-                    \
-                    "diversity@ethz.ch" \
-                    "gastro@news.ethz.ch" \
-                    "phishing-simulation@id.ethz.ch" \
-                    "services.elhz.ch" \
-                    \
-                    "okabzne@hotmail.com" \
-                    "davidcostapro@gmail.com" \
-                    "ngoctran071113@gmail.com" \
-                    "nhatnguyen31101993@gmail.com" \
+                local _addrs=(
+                    "@indiaplays.com"
+                    "@kraftangan.gov.my"
+                    "@kollect.ai"
+                    "@transfiriendo.com"
+                    "@fibrasil.com"
+                    "@norton.com"
+                    "@novaorion.com"
+                    "@apparelsite.net"
+                    "@farmleap.com"
+                    "@yfhuorwa.com"
+                    "@moneypeny.fr"
+                    "@ronquilloassociates.com"
+                    "@preapp1003.com"
+                    "@magnusmonitors.com"
+                    "@oasdehe.com"
+                    "@sion.ais.ne.jp"
+                    "@didareshop.com"
+                    "@catpro.io"
+                    "@mozart.livingopera.org"
+                    "@fr.redoutes.com"
+                    "@vr7uallms.com"
+                    "@caboardroom.com.sg"
+                    "@esrtech.io"
+                    "@watts.com"
+                    "@myfolio.im"
+                    "@wettbewerbeundgewinnspiele.ch"
+                    "@domenca.raviko.com"
+                    "@ukrainianbeauty.com"
+                    "@try2ascend.com"
+                    "@glsthewinners4you.com"
+                    "@neugiab.com"
+                    "@ac-creteil.fr"
+                    "@getaventura.com"
+                    "@cootel.com.ni"
+                    "@smart.com.ro"
+                    "@itlgt.com"
+                    "@binafna.huawei.uk.net"
+                    "@darecky.pl"
+                    "@montenegromade.com"
+                    "@divaniesofa.ro"
+                    "@easytrott.fr"
+                    "@kiswel.com"
+                    "@vmiconic.co.tz"
+                    "@citizenpath.com"
+                    "@doctorgenius.com"
+                    "@upscheckoutrotator.com"
+                    "@gc-dienstleistungen.de"
+                    "@degoldengeniecasinochrismas.com"
+                    "@uporalbseriesdmdrogeriemarkt.com"
+                    "@complicesdelsonidoradio.com.ar"
+                    "@veracity-trading.com"
+                    "@deupscheckoutrotator.com"
+                    "@deendurancerhctc.com"
+                    "@defitsmartdiet.com"
+                    "@vqfit.com"
+                    "@otyavaf.co.uk"
+                    "@fl0ppfy.co.uk"
+                    "@irup5nr.co.uk"
+                    "@ss-exports.in"
+                    "@devigamanver2foryou.com"
+                    "@ecomproesurveys.com"
+                    "@ukhermesebookiasts.com"
+                    "@smokacevipangebote.net"
+                    "@ecaprivatedelivery.com"
+                    "@server.cedarhallclinic.uk"
+                    "@delidlgiftcard.com"
+                    "@destanleytoolsetkaufland.com"
+                    "@ukbootsjomaloneadventcalendar.com"
+                    "@solidsunenergie.cz"
+                    "@deupsblackpageverdelivery.com"
+                    "@server.light-review.com"
+                    "@cc-aglyfenouilledes.fr"
+                    "@renovatio.uk.com"
+                    "@cliqtechno.com"
+                    "@stnicholasprimaryschool.org"
+                    "@sense28.com"
+                    "@ueh.edu.vn"
+                    "@piecedrillset.de"
+                    "@usekilo.com"
+                    "@hadiethshop.nl"
+                    "@connect.liveapps.store"
+                    "@impactinglife.co.uk"
+                    "@wgo.com.br"
+                    "@host.bkauk.org.uk"
+                    "@londontrucks.co.uk"
+                    "@asb-hamburg.de"
+                    "@dfc.discovery.co.za"
+                    "@riseinformatics.com"
+                    "@ntf.com"
+                    "@clikr.com.br"
+                    "@rplexelectrical.in"
+                    "@mondrian-it.io"
+                    "@capacityproviders.com"
+                    "@davulga.bel.tr"
+                    "@myhoppophop.fr"
+                    "@lv09.katyjenkins.shop"
+                    "@k4UBCPR8.fr"
+                    "@vydehischool.com"
+                    "@steibel.be"
+                    "@tisknise.cz"
+                    "@campaign.eventbrite.com"
+                    "@insistglobal.com"
+                    "@montagnes-sciences.fr"
+                    "@kenzahn.com"
+                    "@insistglobal.com"
+                    "@affiligate.com"
+                    "@yellowdig.net"
+                    "@smtp.assessment.gr"
+                    "@shadovn.com"
+                    "@send.sw.ofbrand.live"
+                    "@client.whitehousenannies.com"
+                    "@send.sw.taipanonline.com"
+                    "@icar.gov.in"
+
+                    "no-reply@flipboard.com"
+                    "support@help.instapaper.com"
+                    "no-reply@instapaper.com"
+
+                    "@email.wolfram.com"
+                    "@go.mathworks.com"
+
+                    "diversity@ethz.ch"
+                    "gastro@news.ethz.ch"
+                    "phishing-simulation@id.ethz.ch"
+                    "@services.elhz.ch"
+
+                    "okabzne@hotmail.com"
+                    "davidcostapro@gmail.com"
+                    "ngoctran071113@gmail.com"
+                    "nhatnguyen31101993@gmail.com"
                     "FreegsmfsdsFDFDmehdii49@gmx.de"
 
-                printf "    \"^From:.*[\\\\\\s<]Fehler bei der Lieferadresse\" in headers\n"
+                    "Fehler bei der Lieferadresse"
+                )
+                __config condition-regex-header -- "${_addrs[@]}" | __config do-delete
             }
 
             __keep() {
-                __config accounts "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" | __config act-keep
+                __config condition-accounts -- \
+                    "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" |
+                    __config do-keep
             }
 
             printf "# setup {{{\n"
@@ -504,7 +574,7 @@ STOP
             printf "# }}}\n"
             printf "\n"
             printf "# delete {{{\n"
-            __delete | __config act-delete
+            __delete
             printf "# }}}\n"
             printf "# }}}\n"
 

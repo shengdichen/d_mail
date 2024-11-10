@@ -138,9 +138,8 @@ __config() {
             fi
 
             if [ "${_i}" -ne "${_n_items}" ]; then
-                printf " or"
+                printf " or\n"
             fi
-            printf "\n"
         done
     }
 
@@ -159,7 +158,7 @@ __config() {
         for _account in "${@}"; do
             __tab && printf "\"%s\"\n" "${_account}"
         done
-        printf "}\n"
+        printf "}"
     }
 
     __actions() {
@@ -178,13 +177,13 @@ __config() {
 
         printf "match\n"
 
+        # condition(s)
         while IFS="" read -r _line; do
             [ "${_line}" ] && __tab
             printf "%s\n" "${_line}"
         done
 
-        printf "\n"
-
+        # action(s)
         __actions "${@}" | while IFS="" read -r _line; do
             [ "${_line}" ] && __tab
             printf "%s\n" "${_line}"
@@ -208,6 +207,15 @@ __config() {
         "condition-accounts")
             shift
             __condition_accounts "${@}"
+            ;;
+        "condition-AND")
+            printf " and\n\n"
+            ;;
+        "condition-OR")
+            printf " or\n\n"
+            ;;
+        "condition-END")
+            printf "\n\n"
             ;;
 
         "actions")
@@ -292,7 +300,10 @@ STOP
             }
 
             __hold() {
-                __config condition-accounts -- "acc_hold" | __config do-keep
+                {
+                    __config condition-accounts -- "acc_hold"
+                    __config condition-END
+                } | __config do-keep
             }
 
             __trash() {
@@ -391,19 +402,27 @@ STOP
                 local _names=(
                     "DPD-Paket"
                 )
-                __config condition-regex-header -- \
-                    "${_addrs[@]}" "${_names[@]}" |
-                    __config do-trash
-
-                printf "\n"
-
                 local _subjects=(
                     "Test Mail"
                 )
-                __config condition-regex-header \
-                    --header subject \
-                    -- "${_subjects[@]}" |
-                    __config do-trash
+
+                {
+                    __config condition-accounts -- \
+                        "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc"
+                    __config condition-AND
+
+                    __config condition-regex-header -- \
+                        "${_addrs[@]}"
+                    __config condition-OR
+                    __config condition-regex-header -- \
+                        "${_names[@]}"
+                    __config condition-OR
+                    __config condition-regex-header \
+                        --header subject \
+                        -- "${_subjects[@]}"
+
+                    __config condition-END
+                } | __config do-trash
             }
 
             __delete() {
@@ -540,19 +559,33 @@ STOP
                     "nhatnguyen31101993@gmail.com"
                     "FreegsmfsdsFDFDmehdii49@gmx.de"
 
+                )
+                local _names=(
                     "Fehler bei der Lieferadresse"
                     "Paket zur Auslieferung bereit <<>>"
                     "Ihre ALDI Vorteile <<>>"
                     "Exklusiv für Amavita Mitglieder <<>>"
                     "Starbucks Geschenke <<>>"
                 )
-                __config condition-regex-header -- "${_addrs[@]}" | __config do-delete
+                {
+                    __config condition-accounts -- \
+                        "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc"
+                    __config condition-AND
+
+                    __config condition-regex-header -- "${_addrs[@]}"
+                    __config condition-OR
+                    __config condition-regex-header -- "${_names[@]}"
+
+                    __config condition-END
+                } | __config do-delete
             }
 
             __keep() {
-                __config condition-accounts -- \
-                    "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc" |
-                    __config do-keep
+                {
+                    __config condition-accounts -- \
+                        "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc"
+                    __config condition-END
+                } | __config do-keep
             }
 
             printf "# setup {{{\n"

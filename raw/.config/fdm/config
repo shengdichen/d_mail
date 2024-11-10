@@ -91,6 +91,12 @@ match
 # the undesirables {{{
 # trash {{{
 match
+    accounts {
+        "acc_raw_inbox"
+        "acc_raw_sent"
+        "acc_raw_misc"
+    } and
+
     "^From:.*[\\s<]paypal@mail\.paypal\.de" in headers or
     "^From:.*[\\s<]ubs_switzerland@mailing\.ubs\.com" in headers or
     "^From:.*[\\s<]email\.campaign@sg\.booking\.com" in headers or
@@ -163,13 +169,9 @@ match
     "^From:.*@library\.ethz\.ch" in headers or
     "^From:.*@sts\.ethz\.ch" in headers or
     "^From:.*@sl\.ethz\.ch" in headers or
-    "^From:\\s*DPD-Paket" in headers
 
-    actions {
-        "trash"
-    }
+    "^From:\\s*DPD-Paket" in headers or
 
-match
     "^Subject:.*Test Mail" in headers
 
     actions {
@@ -179,6 +181,12 @@ match
 
 # delete {{{
 match
+    accounts {
+        "acc_raw_inbox"
+        "acc_raw_sent"
+        "acc_raw_misc"
+    } and
+
     "^From:.*@indiaplays\.com" in headers or
     "^From:.*@kraftangan\.gov\.my" in headers or
     "^From:.*@kollect\.ai" in headers or
@@ -306,6 +314,7 @@ match
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]nhatnguyen31101993@gmail\.com" in headers or
     "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or
+
     "^From:\\s*Fehler bei der Lieferadresse" in headers or
     "^From:\\s*Paket zur Auslieferung bereit <<>>" in headers or
     "^From:\\s*Ihre ALDI Vorteile <<>>" in headers or

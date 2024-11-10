@@ -700,7 +700,7 @@ STOP
 
 # vim: filetype=neomuttrc foldmethod=marker
 STOP
-    } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/specific/multi.conf"
+    } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/multi.conf"
 }
 
 __main() {

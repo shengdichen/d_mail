@@ -629,6 +629,66 @@ STOP
     } | "${SCRIPT_PATH}/fdm.sh" config commit
 }
 
+__neomutt() {
+    local _mail_raw_relative="\$my_mail_raw_relative_path"
+    local _accounts=("xyz" "outlook" "eth" "gmail")
+
+    local _quote_esc="\\\\\""
+
+    __quote() {
+        printf "\\\\\""
+        if [ "${#}" -eq 0 ]; then
+            cat -
+        else
+            printf "%s" "${1}"
+        fi
+
+        printf "\\\\\""
+    }
+
+    {
+        cat <<STOP
+macro index ca "\\
+<enter-command>\\
+virtual-mailboxes \\
+STOP
+        local _account
+        for _account in "${_accounts[@]}"; do
+            __quote "| ${_account}"
+            printf " "
+            __quote "notmuch://?query=folder:/${_mail_raw_relative}/${_account}/\\\\..*/"
+            printf " \\\\\n"
+        done
+        cat <<STOP
+<Return>\\
+<check-stats>\\
+" "box all"
+STOP
+
+        printf "\n"
+
+        cat <<STOP
+macro index cA "\\
+<enter-command>\\
+unvirtual-mailboxes \\
+STOP
+
+        for _account in "${_accounts[@]}"; do
+            __quote "notmuch://?query=folder:/${_mail_raw_relative}/${_account}/\\\\..*/"
+            printf " \\\\\n"
+        done
+        cat <<STOP
+<Return>\\
+<check-stats>\\
+" "unbox all"
+STOP
+        cat <<STOP
+
+# vim: filetype=neomuttrc foldmethod=marker
+STOP
+    } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/specific/multi.conf"
+}
+
 __main() {
     local _account
     case "${1}" in
@@ -639,6 +699,9 @@ __main() {
             ;;
         "fdm")
             __config_fdm
+            ;;
+        "neomutt")
+            __neomutt
             ;;
         "xyz" | "outlook" | "eth" | "gmail")
             _account="${1}"

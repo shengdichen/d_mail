@@ -306,7 +306,11 @@ match
     "^From:.*[\\s<]ngoctran071113@gmail\.com" in headers or
     "^From:.*[\\s<]nhatnguyen31101993@gmail\.com" in headers or
     "^From:.*[\\s<]FreegsmfsdsFDFDmehdii49@gmx\.de" in headers or
-    "^From:\\s*Fehler bei der Lieferadresse" in headers
+    "^From:\\s*Fehler bei der Lieferadresse" in headers or
+    "^From:\\s*Paket zur Auslieferung bereit <<>>" in headers or
+    "^From:\\s*Ihre ALDI Vorteile <<>>" in headers or
+    "^From:\\s*Exklusiv für Amavita Mitglieder <<>>" in headers or
+    "^From:\\s*Starbucks Geschenke <<>>" in headers
 
     actions {
         "delete"

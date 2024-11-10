@@ -541,6 +541,10 @@ STOP
                     "FreegsmfsdsFDFDmehdii49@gmx.de"
 
                     "Fehler bei der Lieferadresse"
+                    "Paket zur Auslieferung bereit <<>>"
+                    "Ihre ALDI Vorteile <<>>"
+                    "Exklusiv für Amavita Mitglieder <<>>"
+                    "Starbucks Geschenke <<>>"
                 )
                 __config condition-regex-header -- "${_addrs[@]}" | __config do-delete
             }

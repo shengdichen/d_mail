@@ -10,15 +10,15 @@ account "acc_hold"
 account "acc_raw_inbox"
     maildirs {
         "/home/main/.local/share/mail/raw/xyz/.INBOX"
-        "/home/main/.local/share/mail/raw/eth/.INBOX"
         "/home/main/.local/share/mail/raw/outlook/.INBOX"
+        "/home/main/.local/share/mail/raw/eth/.INBOX"
         "/home/main/.local/share/mail/raw/gmail/.INBOX"
     }
 account "acc_raw_sent"
     maildirs {
         "/home/main/.local/share/mail/raw/xyz/.Sent"
-        "/home/main/.local/share/mail/raw/eth/.Sent Items"
         "/home/main/.local/share/mail/raw/outlook/.Sent"
+        "/home/main/.local/share/mail/raw/eth/.Sent Items"
         "/home/main/.local/share/mail/raw/gmail/.[Gmail].E-mails enviados"
     }
 account "acc_raw_misc"

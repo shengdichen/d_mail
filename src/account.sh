@@ -630,8 +630,9 @@ STOP
 }
 
 __neomutt() {
+    local _conf_neomutt="\$my_conf_neomutt"
     local _mail_raw_relative="\$my_mail_raw_relative_path"
-    local _accounts=("xyz" "outlook" "eth" "gmail")
+    local _accounts=("xyz" "outlook" "eth" "gmail") _account
 
     local _quote_esc="\\\\\""
 
@@ -646,15 +647,18 @@ __neomutt() {
         printf "\\\\\""
     }
 
+    __account_as_string() {
+        printf "| %s" "${_account}"
+    }
+
     {
         cat <<STOP
 macro index ca "\\
 <enter-command>\\
 virtual-mailboxes \\
 STOP
-        local _account
         for _account in "${_accounts[@]}"; do
-            __quote "| ${_account}"
+            __quote "$(__account_as_string "${_account}")"
             printf " "
             __quote "notmuch://?query=folder:/${_mail_raw_relative}/${_account}/\\\\..*/"
             printf " \\\\\n"
@@ -682,6 +686,16 @@ STOP
 <check-stats>\\
 " "unbox all"
 STOP
+
+        printf "\n"
+
+        local _conf
+        for _account in "${_accounts[@]}"; do
+            _conf="$(__quote "\$my_conf_neomutt/box/specific/${_account}/specific.conf")"
+            printf "folder-hook -noregex \"%s/%s\" \"source %s\"\n" "${_mail_raw_relative}" "${_account}" "${_conf}"
+            printf "folder-hook -noregex \"%s\" \"source %s\"\n" "$(__account_as_string "${_account}")" "${_conf}"
+        done
+
         cat <<STOP
 
 # vim: filetype=neomuttrc foldmethod=marker

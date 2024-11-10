@@ -328,11 +328,7 @@ match
 # }}}
 
 match
-    accounts {
-        "acc_raw_inbox"
-        "acc_raw_sent"
-        "acc_raw_misc"
-    }
+    all
 
     actions {
         "keep"

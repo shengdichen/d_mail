@@ -200,6 +200,9 @@ __config() {
             __define_action "${@}"
             ;;
 
+        "condition-all")
+            printf "all"
+            ;;
         "condition-regex-header")
             shift
             __condition_regex_header "${@}"
@@ -582,8 +585,7 @@ STOP
 
             __keep() {
                 {
-                    __config condition-accounts -- \
-                        "acc_raw_inbox" "acc_raw_sent" "acc_raw_misc"
+                    __config condition-all
                     __config condition-END
                 } | __config do-keep
             }

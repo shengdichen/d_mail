@@ -60,6 +60,9 @@ STOP
     __neomutt_config() {
         {
             "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
         } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
     }
@@ -136,6 +139,9 @@ STOP
     __neomutt_config() {
         {
             "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
         } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
     }
@@ -214,6 +220,9 @@ STOP
             # no longer need a manual copy for sent mails after outlook migration
             # previously: set record = "+.Sent Items"
             "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
         } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
     }
@@ -287,6 +296,9 @@ STOP
     __neomutt_config() {
         {
             "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
         } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
     }

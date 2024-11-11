@@ -725,7 +725,7 @@ STOP
 
         local _conf
         for _account in "${_accounts[@]}"; do
-            _conf="$(__quote "\$my_conf_neomutt/box/specific/${_account}/specific.conf")"
+            _conf="$(__quote "\$my_conf_neomutt/box/specific/${_account}.conf")"
             printf "folder-hook -noregex \"%s/%s\" \"source %s\"\n" "${_mail_raw_relative}" "${_account}" "${_conf}"
             printf "folder-hook -noregex \"%s\" \"source %s\"\n" "$(__account_as_string "${_account}")" "${_conf}"
         done

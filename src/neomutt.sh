@@ -12,7 +12,7 @@ __config() {
 
 # vim: filetype=neomuttrc foldmethod=marker
 STOP
-        } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/specific/${1}/specific.conf"
+        } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/specific/${1}.conf"
     }
 
     __box_base() {

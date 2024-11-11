@@ -91,6 +91,77 @@ STOP
         } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/specific/${1}.conf"
     }
 
+    __multi() {
+        if [ "${1}" = "--" ]; then shift; fi
+
+        __quote() {
+            printf "\\\\\""
+            if [ "${#}" -eq 0 ]; then
+                cat -
+            else
+                printf "%s" "${1}"
+            fi
+
+            printf "\\\\\""
+        }
+
+        __account_as_string() {
+            printf "| %s" "${_account}"
+        }
+
+        local _account
+        {
+            cat <<STOP
+macro index ca "\\
+<enter-command>\\
+virtual-mailboxes \\
+STOP
+            for _account in "${@}"; do
+                __quote "$(__account_as_string "${_account}")"
+                printf " "
+                __quote "notmuch://?query=folder:/${_mail_raw_relative}/${_account}/\\\\..*/"
+                printf " \\\\\n"
+            done
+            cat <<STOP
+<Return>\\
+<check-stats>\\
+" "notmuch> show all"
+STOP
+
+            printf "\n"
+
+            cat <<STOP
+macro index cA "\\
+<enter-command>\\
+unvirtual-mailboxes \\
+STOP
+
+            for _account in "${@}"; do
+                __quote "notmuch://?query=folder:/${_mail_raw_relative}/${_account}/\\\\..*/"
+                printf " \\\\\n"
+            done
+            cat <<STOP
+<Return>\\
+<check-stats>\\
+" "notmuch> hide all"
+STOP
+
+            printf "\n"
+
+            local _conf
+            for _account in "${@}"; do
+                _conf="$(__quote "\$my_conf_neomutt/box/specific/${_account}.conf")"
+                printf "folder-hook -noregex \"%s/%s\" \"source %s\"\n" "${_mail_raw_relative}" "${_account}" "${_conf}"
+                printf "folder-hook -noregex \"%s\" \"source %s\"\n" "$(__account_as_string "${_account}")" "${_conf}"
+            done
+
+            cat <<STOP
+
+# vim: filetype=neomuttrc
+STOP
+        } >"${HOME}/dot/dot/d_mail/raw/.config/neomutt/box/multi.conf"
+    }
+
     case "${1}" in
         "box-base")
             shift
@@ -107,6 +178,10 @@ STOP
         "commit-box")
             shift
             __commit_box "${@}"
+            ;;
+        "multi")
+            shift
+            __multi "${@}"
             ;;
     esac
 

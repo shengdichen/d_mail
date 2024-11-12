@@ -130,10 +130,43 @@ __taggedness() {
         printf "notmuch> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
     }
 
-    __local
-    __remote
-    __untagged
-    __tagged
+    __config_tag_archive() {
+        if [ "${1}" = "--" ]; then shift; fi
+
+        local _TAG_ACTIVE="_ACTIVE"
+        local _TAG_ARCHIVE="_ARCHIVE"
+        {
+            local _archive
+            printf "%s %s -- %s" \
+                "+${_TAG_ACTIVE}" \
+                "-${_TAG_ARCHIVE}" \
+                "${_query_remote}"
+            for _archive in "${@}"; do
+                printf " and not folder:\"raw/%s/\"" "${_archive}"
+            done
+
+            printf "\n"
+
+            printf "%s %s -- %s and not tag:%s" \
+                "+${_TAG_ARCHIVE}" \
+                "-${_TAG_ACTIVE}" \
+                "${_query_remote}" \
+                "${_TAG_ACTIVE}"
+        } >"${DIR_NOTMUCH_CONFIG}/hooks/tag/archive.rule"
+    }
+
+    case "${1}" in
+        "config-tag-archive")
+            shift
+            __config_tag_archive "${@}"
+            ;;
+        *)
+            __local
+            __remote
+            __untagged
+            __tagged
+            ;;
+    esac
 }
 
 __tag_sent() {
@@ -163,5 +196,8 @@ case "${1}" in
     "tag-sent")
         shift
         __tag_sent "${@}"
+        ;;
+    "config-tag-archive")
+        __taggedness "${@}"
         ;;
 esac

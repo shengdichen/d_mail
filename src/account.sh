@@ -2,7 +2,8 @@
 
 . "${HOME}/.local/lib/util.sh"
 
-INBOXES=() SENTS=() REMOTE_ARCHIVES=() SENDERS=()
+INBOXES=() SENTS=() REMOTE_ARCHIVES=()
+NOTMUCH_SENDERS=() NOTMUCH_REMOTE_ARCHIVES=()
 
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
@@ -12,11 +13,12 @@ unset FILE_CONST
 
 INBOXES+=("${DIR_MAIL_REMOTE}/xyz/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/xyz/.Sent")
-REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/xyz/.Folders.x")
-SENDERS+=(
+NOTMUCH_SENDERS+=(
     "me@shengdichen.xyz"
     "shengdichen@pm.me"
 )
+REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/xyz/.Folders.x")
+NOTMUCH_REMOTE_ARCHIVES+=("xyz/.Folders.x")
 __xyz() {
     local _account="xyz"
     local _addr="me@shengdichen.xyz"
@@ -95,13 +97,14 @@ STOP
 
 INBOXES+=("${DIR_MAIL_REMOTE}/outlook/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/outlook/.Sent")
-REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/outlook/.x")
-SENDERS+=(
+NOTMUCH_SENDERS+=(
     "/[sS]hengdi@outlook.de/"
     "/[sS]id[cC]han@outlook.com/"
     "floriansidney@hotmail.com"
     "IMCEAEX-_O=FIRST+20ORGANIZATION_OU=EXCHANGE+20ADMINISTRATIVE+20GROUP+28FYDIBOHF23SPDLT+29_CN=RECIPIENTS_CN=00064000C313C699@sct-15-20-4755-11-msonline-outlook-ab7de.templateTenant"
 )
+REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/outlook/.x")
+NOTMUCH_REMOTE_ARCHIVES+=("outlook/.x")
 __outlook() {
     local _account="outlook"
     local _addr="shengdi@outlook.de"
@@ -180,11 +183,12 @@ STOP
 
 INBOXES+=("${DIR_MAIL_REMOTE}/eth/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/eth/.Sent Items")
-REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/eth/.x")
-SENDERS+=(
+NOTMUCH_SENDERS+=(
     "shenchen@ethz.ch"
     "shenchen@student.ethz.ch"
 )
+REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/eth/.x")
+NOTMUCH_REMOTE_ARCHIVES+=("eth/.x")
 __eth() {
     local _account="eth"
     local _addr="shenchen@ethz.ch"
@@ -267,7 +271,7 @@ STOP
 
 INBOXES+=("${DIR_MAIL_REMOTE}/gmail/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/gmail/.[Gmail].E-mails enviados")
-SENDERS+=("shengdishcchen@gmail.com")
+NOTMUCH_SENDERS+=("shengdishcchen@gmail.com")
 __gmail() {
     local _account="gmail"
     local _addr="shengdishcchen@gmail.com"
@@ -703,7 +707,8 @@ __config_neomutt() {
 }
 
 __config_notmuch() {
-    "${SCRIPT_PATH}/notmuch.sh" tag-sent -- "${SENDERS[@]}"
+    "${SCRIPT_PATH}/notmuch.sh" tag-sent -- "${NOTMUCH_SENDERS[@]}"
+    "${SCRIPT_PATH}/notmuch.sh" config-tag-archive -- "${NOTMUCH_REMOTE_ARCHIVES[@]}"
 }
 
 __main() {

@@ -1,4 +1,2 @@
-+_SYS -_X -- not folder:/\.x$/
-+_X -_SYS -- folder:/\.x$/
-
-# vim: filetype=conf
++_ACTIVE -_ARCHIVE -- folder:"/raw/.*/" and not folder:"raw/xyz/.Folders.x/" and not folder:"raw/outlook/.x/" and not folder:"raw/eth/.x/"
++_ARCHIVE -_ACTIVE -- folder:"/raw/.*/" and not tag:_ACTIVE

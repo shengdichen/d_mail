@@ -541,6 +541,8 @@ __config_fdm() {
             "@client.whitehousenannies.com"
             "@send.sw.taipanonline.com"
             "@icar.gov.in"
+            "@lv04.ggoopp.shop"
+            "@deXtremeBio.com"
 
             "no-reply@flipboard.com"
             "support@help.instapaper.com"

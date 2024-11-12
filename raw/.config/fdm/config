@@ -300,6 +300,8 @@ match
     "^From:.*@client\.whitehousenannies\.com" in headers or
     "^From:.*@send\.sw\.taipanonline\.com" in headers or
     "^From:.*@icar\.gov\.in" in headers or
+    "^From:.*@lv04\.ggoopp\.shop" in headers or
+    "^From:.*@deXtremeBio\.com" in headers or
     "^From:.*[\\s<]no-reply@flipboard\.com" in headers or
     "^From:.*[\\s<]support@help\.instapaper\.com" in headers or
     "^From:.*[\\s<]no-reply@instapaper\.com" in headers or

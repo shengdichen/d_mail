@@ -74,6 +74,8 @@ __taggedness() {
     local _TAG_REMOTE="_REMOTE"
     local _TAG_LOCAL_UNTAGGED="_UNTAGGED"
     local _TAG_LOCAL_TAGGED="_TAGGED"
+    local _TAG_ACTIVE="_ACTIVE"
+    local _TAG_ARCHIVE="_ARCHIVE"
 
     __local() {
         local _query="${_query_local}"
@@ -130,11 +132,20 @@ __taggedness() {
         printf "notmuch> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
     }
 
+    __archive() {
+        local _query="${_query_local} and folder:\"all/.x/\""
+        printf "notmuch/local> #archive := [%s]\n" "$(notmuch count "${_query}")"
+        printf "notmuch/local> marking archive...\n"
+        eval notmuch tag \
+            "+${_TAG_ARCHIVE}" \
+            "-${_TAG_ACTIVE}" \
+            "${_query}"
+        printf "notmuch/local> done! (#archive := [%s])\n" "$(eval notmuch count "${_query}")"
+    }
+
     __config_tag_archive() {
         if [ "${1}" = "--" ]; then shift; fi
 
-        local _TAG_ACTIVE="_ACTIVE"
-        local _TAG_ARCHIVE="_ARCHIVE"
         {
             local _archive
             printf "%s %s -- %s" \
@@ -165,6 +176,7 @@ __taggedness() {
             __remote
             __untagged
             __tagged
+            __archive
             ;;
     esac
 }

@@ -1,4 +1,4 @@
-source "~/.config/neomutt/definition.conf"
+source "$HOME/.config/neomutt/definition.conf"
 
 source "$my_conf_neomutt/conf/visual.conf"
 source "$my_conf_neomutt/conf/read.conf"

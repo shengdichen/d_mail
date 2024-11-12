@@ -60,6 +60,50 @@ __import() {
     notmuch restore --input "${_dump}"
 }
 
+__list_tags() {
+    notmuch search --output tags "*"
+}
+
+__taggedness() {
+    local _query_local="folder:\"/all/.*/\""
+    local _TAG_LOCAL_UNTAGGED="_UNTAGGED"
+    local _TAG_LOCAL_TAGGED="_TAGGED"
+
+    __untagged() {
+        __list_tags | {
+            local _query="${_query_local}"
+
+            local _tag
+            while read -r _tag; do
+                if [ ! "$(printf "%s" "${_tag}" | head -c "+1")" = "_" ]; then
+                    _query="${_query} and not tag:${_tag}"
+                fi
+            done
+
+            printf "notmuch/local> marking UNtagged...\n"
+            eval notmuch tag \
+                "+${_TAG_LOCAL_UNTAGGED}" \
+                "-${_TAG_LOCAL_TAGGED}" \
+                "${_query}"
+            printf "notmuch/local> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+        }
+    }
+
+    __tagged() {
+        local _query="${_query_local} and not tag:${_TAG_LOCAL_UNTAGGED}"
+        printf "notmuch/local> #tagged := [%s]\n" "$(notmuch count "${_query}")"
+        printf "notmuch/local> marking tagged...\n"
+        eval notmuch tag \
+            "+${_TAG_LOCAL_TAGGED}" \
+            "-${_TAG_LOCAL_UNTAGGED}" \
+            "${_query}"
+        printf "notmuch/local> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+    }
+
+    __untagged
+    __tagged
+}
+
 if [ "${#}" -eq 0 ]; then return; fi
 case "${1}" in
     "update")
@@ -71,5 +115,8 @@ case "${1}" in
     "import")
         shift
         __import "${@}"
+        ;;
+    "tag")
+        __taggedness
         ;;
 esac

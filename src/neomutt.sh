@@ -245,16 +245,17 @@ set folder = "${_mail_raw_absolute}/${_account}"
 
 STOP
 
-        local _boxes_str=() _boxes=()
+        local _names_urls_box=() _urls_box=()
         __box() {
             if [ "${1}" = "--alias" ]; then
-                _boxes_str+=("$(__box_as_string "${2}")")
+                _names_urls_box+=("$(__box_as_string "${2}")")
                 shift 2
             else
-                _boxes_str+=("$(__box_as_string "${1}")")
+                _names_urls_box+=("$(__box_as_string "${1}")")
             fi
-            _boxes_str+=("${_mail_raw_relative}/${_account}/\\${1}.*")
-            _boxes+=("${_mail_raw_relative}/${_account}/\\${1}.*")
+            _url="$(__notmuch_query "$(__notmuch_atom_folder --mode box -- "${_mail_raw_relative}/${_account}/${1}")")"
+            _names_urls_box+=("${_url}")
+            _urls_box+=("${_url}")
         }
         [ "${_inbox}" ] && __box --alias "INBOX" "${_inbox}"
         [ "${_sent}" ] && __box --alias "SENT" "${_sent}"
@@ -271,15 +272,17 @@ STOP
         local _accounts_else=() _account_else
         for _account_else in "${ACCOUNTS[@]}"; do
             if [ "${_account_else}" != "${_account}" ]; then
-                _accounts_else+=("${_mail_raw_relative}/${_account_else}/\\..*")
+                _accounts_else+=("$(__notmuch_query "$(__notmuch_atom_folder -- "${_mail_raw_relative}/${_account_else}")")")
             fi
         done
 
-        local _account_this="${_mail_raw_relative}/${_account}/\\..*"
+        local _account_this_raw _account_this
+        _account_this_raw="$(__notmuch_atom_folder -- "${_mail_raw_relative}/${_account}")"
+        _account_this="$(__notmuch_query "${_account_this_raw}")"
 
         {
             __run --exec "exec vfolder-from-query" && LINECONT
-            __notmuch_atom_folder "${_mail_raw_relative}/${_account}.*" && printf " and" && LINECONT
+            printf "%s and" "${_account_this_raw}" && LINECONT
         } | __bind --key "/b" --mode "index" --description "notmuch> folder:[${_account}]"
 
         printf "\n"
@@ -287,14 +290,14 @@ STOP
         {
             __notmuch_show "$(__account_as_string --prompt ">" -- "${_account}")" "${_account_this}" | __run --exec && LINECONT
             __notmuch_hide "${_accounts_else[@]}" | __run --exec && LINECONT
-            __notmuch_show "${_boxes_str[@]}" | __run --exec && LINECONT
+            __notmuch_show "${_names_urls_box[@]}" | __run --exec && LINECONT
             __run "check-stats" && LINECONT
         } | __bind --key "cb" --mode "index" --description "notmuch> folder:[${_account}]/*"
 
         printf "\n"
 
         {
-            __notmuch_hide "${_boxes[@]}" | __run --exec && LINECONT
+            __notmuch_hide "${_urls_box[@]}" | __run --exec && LINECONT
             # HACK:
             #   first hide all accounts, then use key-bind |ca| to re-show
             #   ->  order of accounts guaranteed

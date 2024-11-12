@@ -707,8 +707,8 @@ __config_neomutt() {
 }
 
 __config_notmuch() {
-    "${SCRIPT_PATH}/notmuch.sh" tag-sent -- "${NOTMUCH_SENDERS[@]}"
-    "${SCRIPT_PATH}/notmuch.sh" config-tag-archive -- "${NOTMUCH_REMOTE_ARCHIVES[@]}"
+    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-sent -- "${NOTMUCH_SENDERS[@]}"
+    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-archive -- "${NOTMUCH_REMOTE_ARCHIVES[@]}"
 }
 
 __main() {

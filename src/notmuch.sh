@@ -66,7 +66,7 @@ __list_tags() {
     notmuch search --output tags "*"
 }
 
-__taggedness() {
+__tag() {
     local _query_all="mid:\"/.*/\""
     local _query_local="folder:\"/all/.*/\""
     local _query_remote="folder:\"/raw/.*/\""
@@ -111,39 +111,48 @@ __taggedness() {
                 _query="${_query} and not tag:${_tag}"
             done
 
-            printf "notmuch> marking UNtagged...\n"
+            printf "notmuch/tag> marking UNtagged...\n"
             eval notmuch tag \
                 "+${_TAG_LOCAL_UNTAGGED}" \
                 "-${_TAG_LOCAL_TAGGED}" \
                 "${_query}"
-            printf "notmuch> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+            printf "notmuch/tag> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
         }
     }
 
     __tagged() {
         local _query="${_query_all} and not tag:${_TAG_LOCAL_UNTAGGED}"
-        printf "notmuch> #tagged := [%s]\n" "$(notmuch count "${_query}")"
-        printf "notmuch> marking tagged...\n"
+        printf "notmuch/tag> #tagged := [%s]\n" "$(notmuch count "${_query}")"
+        printf "notmuch/tag> marking tagged...\n"
         eval notmuch tag \
             "+${_TAG_LOCAL_TAGGED}" \
             "-${_TAG_LOCAL_UNTAGGED}" \
             "${_query}"
-        printf "notmuch> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+        printf "notmuch/tag> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
     }
 
     __archive() {
         local _query="${_query_local} and folder:\"all/.x/\""
-        printf "notmuch/local> #archive := [%s]\n" "$(notmuch count "${_query}")"
-        printf "notmuch/local> marking archive...\n"
+        printf "notmuch/tag> #archive := [%s]\n" "$(notmuch count "${_query}")"
+        printf "notmuch/tag> marking archive...\n"
         eval notmuch tag \
             "+${_TAG_ARCHIVE}" \
             "${_query}"
-        printf "notmuch/local> done! (#archive := [%s])\n" "$(eval notmuch count "${_query}")"
+        printf "notmuch/tag> done! (#archive := [%s])\n" "$(eval notmuch count "${_query}")"
 
         local _query_negative="${_query_local} and not folder:\"all/.x/\""
         eval notmuch tag \
             "-${_TAG_ARCHIVE}" \
             "${_query_local} and not folder:\"all/.x/\""
+    }
+
+    __config_tag_sent() {
+        if [ "${1}" = "--" ]; then shift; fi
+
+        local _from
+        for _from in "${@}"; do
+            printf "+_SENT -- from:%s\n" "${_from}"
+        done >"${DIR_NOTMUCH_CONFIG}/hooks/tag/sent.rule"
     }
 
     __config_tag_archive() {
@@ -166,6 +175,10 @@ __taggedness() {
     }
 
     case "${1}" in
+        "config-tag-sent")
+            shift
+            __config_tag_sent "${@}"
+            ;;
         "config-tag-archive")
             shift
             __config_tag_archive "${@}"
@@ -178,15 +191,6 @@ __taggedness() {
             __archive
             ;;
     esac
-}
-
-__tag_sent() {
-    if [ "${1}" = "--" ]; then shift; fi
-
-    local _from
-    for _from in "${@}"; do
-        printf "+_SENT -- from:%s\n" "${_from}"
-    done >"${DIR_NOTMUCH_CONFIG}/hooks/tag/sent.rule"
 }
 
 if [ "${#}" -eq 0 ]; then return; fi
@@ -202,13 +206,7 @@ case "${1}" in
         __import "${@}"
         ;;
     "tag")
-        __taggedness
-        ;;
-    "tag-sent")
         shift
-        __tag_sent "${@}"
-        ;;
-    "config-tag-archive")
-        __taggedness "${@}"
+        __tag "${@}"
         ;;
 esac

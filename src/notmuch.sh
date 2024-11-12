@@ -76,6 +76,25 @@ __tag() {
     local _TAG_LOCAL_TAGGED="_TAGGED"
     local _TAG_ARCHIVE="_ARCHIVE"
 
+    __builtin() {
+        notmuch tag +"_ATTACHMENT" -"attachment" -- tag:"attachment"
+        notmuch tag +"_SIGNED" -"signed" -- tag:"signed"
+        notmuch tag +"_ENCRYPTED" -"encrypted" -- tag:"encrypted"
+
+        # remove completely
+        notmuch tag -"inbox" -- tag:"inbox"
+
+        notmuch tag +"draft" -- folder:"\"all/.draft/\""
+        notmuch tag -"draft" -- not folder:"\"all/.draft/\""
+
+        # these builtin tags are left as is:
+        #   unread
+        #   flagged
+        #   draft
+        #   replied
+        #   passed
+    }
+
     __local() {
         local _query="${_query_local}"
         printf "notmuch/tag> local...\n"
@@ -184,6 +203,7 @@ __tag() {
             __config_tag_archive "${@}"
             ;;
         *)
+            __builtin
             __local
             __remote
             __untagged

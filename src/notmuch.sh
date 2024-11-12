@@ -65,6 +65,7 @@ __list_tags() {
 }
 
 __taggedness() {
+    local _query_all="mid:\"/.*/\""
     local _query_local="folder:\"/all/.*/\""
     local _query_remote="folder:\"/raw/.*/\""
     local _TAG_LOCAL="_LOCAL"
@@ -94,33 +95,37 @@ __taggedness() {
 
     __untagged() {
         __list_tags | {
-            local _query="${_query_local}"
+            local _query="${_query_all}"
 
             local _tag
             while read -r _tag; do
-                if [ ! "$(printf "%s" "${_tag}" | head -c "+1")" = "_" ]; then
-                    _query="${_query} and not tag:${_tag}"
+                if [ "$(printf "%s" "${_tag}" | head -c "+1")" = "_" ]; then
+                    continue
                 fi
+                if __is_in "${_tag}" "unread" "replied" "draft" "flagged" "passed"; then
+                    continue
+                fi
+                _query="${_query} and not tag:${_tag}"
             done
 
-            printf "notmuch/local> marking UNtagged...\n"
+            printf "notmuch> marking UNtagged...\n"
             eval notmuch tag \
                 "+${_TAG_LOCAL_UNTAGGED}" \
                 "-${_TAG_LOCAL_TAGGED}" \
                 "${_query}"
-            printf "notmuch/local> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+            printf "notmuch> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
         }
     }
 
     __tagged() {
-        local _query="${_query_local} and not tag:${_TAG_LOCAL_UNTAGGED}"
-        printf "notmuch/local> #tagged := [%s]\n" "$(notmuch count "${_query}")"
-        printf "notmuch/local> marking tagged...\n"
+        local _query="${_query_all} and not tag:${_TAG_LOCAL_UNTAGGED}"
+        printf "notmuch> #tagged := [%s]\n" "$(notmuch count "${_query}")"
+        printf "notmuch> marking tagged...\n"
         eval notmuch tag \
             "+${_TAG_LOCAL_TAGGED}" \
             "-${_TAG_LOCAL_UNTAGGED}" \
             "${_query}"
-        printf "notmuch/local> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+        printf "notmuch> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
     }
 
     __local

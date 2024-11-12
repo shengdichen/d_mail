@@ -59,7 +59,9 @@ STOP
 
     __neomutt_config() {
         {
-            "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            "${SCRIPT_PATH}/neomutt.sh" config box-base \
+                --account "${_account}" \
+                --archive ".Folders.x"
             printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
             printf "\n"
@@ -219,7 +221,9 @@ STOP
             # NOTE:
             # no longer need a manual copy for sent mails after outlook migration
             # previously: set record = "+.Sent Items"
-            "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            "${SCRIPT_PATH}/neomutt.sh" config box-base \
+                --account "${_account}" \
+                --sent ".Sent Items"
             printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
             printf "\n"
@@ -295,7 +299,10 @@ STOP
 
     __neomutt_config() {
         {
-            "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            "${SCRIPT_PATH}/neomutt.sh" config box-base \
+                --account "${_account}" \
+                --sent ".[Gmail].E-mails enviados" \
+                --archive ""
             printf "\n"
             "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
             printf "\n"

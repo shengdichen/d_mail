@@ -1,8 +1,21 @@
 #!/usr/bin/env bash
 
+. "${HOME}/.local/lib/util.sh"
+
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
 DIR_MAIL_REMOTE="$("${FILE_CONST}" DIR_MAIL_REMOTE)"
+
+ACCOUNTS=()
+__discover_accounts() {
+    local _account
+    while read -r _account; do
+        ACCOUNTS+=("${_account}")
+    done < <(
+        find "${DIR_MAIL_REMOTE}" -mindepth 1 -maxdepth 1 -type d -printf "%P\n"
+    )
+}
+__discover_accounts
 
 LINECONT() {
     printf "\\\\\n"
@@ -40,7 +53,25 @@ __config() {
     }
 
     __account_as_string() {
-        printf "| %s" "${1}"
+        local _prompt="|"
+        while [ "${#}" -gt 0 ]; do
+            case "${1}" in
+                "--prompt")
+                    _prompt="${2}"
+                    shift 2
+                    ;;
+                "--")
+                    shift && break
+                    ;;
+            esac
+        done
+        printf -- "%s %s" "${_prompt}" "${1}"
+    }
+
+    __box_as_string() {
+        local _box
+        _box="$(printf "%s" "${1}" | sed "s/^\.//")" # truncate leading |.| of maildir
+        printf "  /%s" "${_box}"
     }
 
     __notmuch_atom_folder() {
@@ -145,11 +176,23 @@ __config() {
     }
 
     __box_base() {
-        local _account
+        local _account _inbox=".INBOX" _sent=".Sent" _archive=".x"
         while [ "${#}" -gt 0 ]; do
             case "${1}" in
                 "--account")
                     _account="${2}"
+                    shift 2
+                    ;;
+                "--inbox")
+                    _inbox="${2}"
+                    shift 2
+                    ;;
+                "--sent")
+                    _inbox="${2}"
+                    shift 2
+                    ;;
+                "--archive")
+                    _archive="${2}"
                     shift 2
                     ;;
             esac
@@ -159,10 +202,63 @@ __config() {
 set folder = "${_mail_raw_absolute}/${_account}"
 
 STOP
+
+        local _boxes_str=() _boxes=()
+        __box() {
+            if [ "${1}" = "--alias" ]; then
+                _boxes_str+=("$(__box_as_string "${2}")")
+                shift 2
+            else
+                _boxes_str+=("$(__box_as_string "${1}")")
+            fi
+            _boxes_str+=("${_mail_raw_relative}/${_account}/\\${1}.*")
+            _boxes+=("${_mail_raw_relative}/${_account}/\\${1}.*")
+        }
+        [ "${_inbox}" ] && __box --alias "INBOX" "${_inbox}"
+        [ "${_sent}" ] && __box --alias "SENT" "${_sent}"
+        [ "${_archive}" ] && __box --alias "ARCHIVE" "${_archive}"
+        local _box
+        while read -r _box; do
+            __box "${_box}"
+        done < <(
+            find "${DIR_MAIL_REMOTE}/${_account}" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" |
+                grep -v "${_inbox}" | grep -v "${_sent}" | grep -v "${_archive}" |
+                sort -n
+        )
+
+        local _accounts_else=() _account_else
+        for _account_else in "${ACCOUNTS[@]}"; do
+            if [ "${_account_else}" != "${_account}" ]; then
+                _accounts_else+=("${_mail_raw_relative}/${_account_else}/\\..*")
+            fi
+        done
+
+        local _account_this="${_mail_raw_relative}/${_account}/\\..*"
+
         {
             __run --exec "exec vfolder-from-query" && LINECONT
             __notmuch_atom_folder "${_mail_raw_relative}/${_account}.*" && printf " and" && LINECONT
         } | __bind --key "/b" --mode "index" --description "notmuch> folder:[${_account}]"
+
+        printf "\n"
+
+        {
+            __notmuch_show "$(__account_as_string --prompt ">" -- "${_account}")" "${_account_this}" | __run --exec && LINECONT
+            __notmuch_hide "${_accounts_else[@]}" | __run --exec && LINECONT
+            __notmuch_show "${_boxes_str[@]}" | __run --exec && LINECONT
+            __run "check-stats" && LINECONT
+        } | __bind --key "cb" --mode "index" --description "notmuch> folder:[${_account}]/*"
+
+        printf "\n"
+
+        {
+            __notmuch_hide "${_boxes[@]}" | __run --exec && LINECONT
+            # HACK:
+            #   first hide all accounts, then use key-bind |ca| to re-show
+            #   ->  order of accounts guaranteed
+            __notmuch_hide "${_account_this}" | __run --exec && LINECONT
+            printf "ca" && LINECONT
+        } | __bind --key "cB" --mode "index" --description "notmuch> folder:[${_account}]/*"
     }
 
     __box_sync() {
@@ -235,7 +331,7 @@ STOP
                 {
                     local _args=()
                     for _account in "${@}"; do
-                        _args+=("$(__account_as_string "${_account}")")
+                        _args+=("$(__account_as_string -- "${_account}")")
                         _args+=("${_mail_raw_relative}/${_account}/\\..*")
                     done
                     __notmuch_show "${_args[@]}"
@@ -262,7 +358,7 @@ STOP
             for _account in "${@}"; do
                 _conf="$(__quote "\$my_conf_neomutt/box/specific/${_account}.conf")"
                 printf "folder-hook -noregex \"%s/%s\" \"source %s\"\n" "${_mail_raw_relative}" "${_account}" "${_conf}"
-                printf "folder-hook -noregex \"%s\" \"source %s\"\n" "$(__account_as_string "${_account}")" "${_conf}"
+                printf "folder-hook -noregex \"%s\" \"source %s\"\n" "$(__account_as_string -- "${_account}")" "${_conf}"
             done
 
             cat <<STOP

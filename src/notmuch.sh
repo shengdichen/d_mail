@@ -66,8 +66,31 @@ __list_tags() {
 
 __taggedness() {
     local _query_local="folder:\"/all/.*/\""
+    local _query_remote="folder:\"/raw/.*/\""
+    local _TAG_LOCAL="_LOCAL"
+    local _TAG_REMOTE="_REMOTE"
     local _TAG_LOCAL_UNTAGGED="_UNTAGGED"
     local _TAG_LOCAL_TAGGED="_TAGGED"
+
+    __local() {
+        local _query="${_query_local}"
+        printf "notmuch/tag> local...\n"
+        eval notmuch tag \
+            "+${_TAG_LOCAL}" \
+            "-${_TAG_REMOTE}" \
+            "${_query}"
+        printf "notmuch/tag> done! (#local := [%s])\n" "$(eval notmuch count "${_query}")"
+    }
+
+    __remote() {
+        local _query="${_query_remote}"
+        printf "notmuch/tag> remote...\n"
+        eval notmuch tag \
+            "+${_TAG_REMOTE}" \
+            "-${_TAG_LOCAL}" \
+            "${_query}"
+        printf "notmuch/tag> done! (#remote := [%s])\n" "$(eval notmuch count "${_query}")"
+    }
 
     __untagged() {
         __list_tags | {
@@ -100,6 +123,8 @@ __taggedness() {
         printf "notmuch/local> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
     }
 
+    __local
+    __remote
     __untagged
     __tagged
 }

@@ -74,7 +74,6 @@ __taggedness() {
     local _TAG_REMOTE="_REMOTE"
     local _TAG_LOCAL_UNTAGGED="_UNTAGGED"
     local _TAG_LOCAL_TAGGED="_TAGGED"
-    local _TAG_ACTIVE="_ACTIVE"
     local _TAG_ARCHIVE="_ARCHIVE"
 
     __local() {
@@ -138,31 +137,31 @@ __taggedness() {
         printf "notmuch/local> marking archive...\n"
         eval notmuch tag \
             "+${_TAG_ARCHIVE}" \
-            "-${_TAG_ACTIVE}" \
             "${_query}"
         printf "notmuch/local> done! (#archive := [%s])\n" "$(eval notmuch count "${_query}")"
+
+        local _query_negative="${_query_local} and not folder:\"all/.x/\""
+        eval notmuch tag \
+            "-${_TAG_ARCHIVE}" \
+            "${_query_local} and not folder:\"all/.x/\""
     }
 
     __config_tag_archive() {
         if [ "${1}" = "--" ]; then shift; fi
 
         {
+            local _base="+${_TAG_ARCHIVE} -- ${_query_remote}"
             local _archive
-            printf "%s %s -- %s" \
-                "+${_TAG_ACTIVE}" \
-                "-${_TAG_ARCHIVE}" \
-                "${_query_remote}"
             for _archive in "${@}"; do
-                printf " and not folder:\"raw/%s/\"" "${_archive}"
+                printf "%s and folder:\"raw/%s/\"\n" "${_base}" "${_archive}"
             done
 
             printf "\n"
 
-            printf "%s %s -- %s and not tag:%s" \
-                "+${_TAG_ARCHIVE}" \
-                "-${_TAG_ACTIVE}" \
-                "${_query_remote}" \
-                "${_TAG_ACTIVE}"
+            printf "%s -- %s" "-${_TAG_ARCHIVE}" "${_query_remote}"
+            for _archive in "${@}"; do
+                printf " and not folder:\"raw/%s/\"" "${_archive}"
+            done
         } >"${DIR_NOTMUCH_CONFIG}/hooks/tag/archive.rule"
     }
 

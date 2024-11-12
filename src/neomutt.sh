@@ -368,7 +368,21 @@ STOP
     }
 
     __multi() {
-        if [ "${1}" = "--" ]; then shift; fi
+        local _account_default
+        while [ "${#}" -gt 0 ]; do
+            case "${1}" in
+                "--default")
+                    _account_default="${2}"
+                    shift 2
+                    ;;
+                "--")
+                    shift && break
+                    ;;
+            esac
+        done
+        if [ ! "${_account_default}" ]; then
+            _account_default="${1}"
+        fi
 
         local _names_urls=() _urls=()
         local _account _url
@@ -390,6 +404,11 @@ STOP
                 __notmuch_hide "${_urls[@]}" | __run --exec && LINECONT
                 __run "check-stats" && LINECONT
             } | __bind --key "cA" --mode "index" --description "notmuch> hide all"
+
+            printf "\n"
+
+            _conf_default="$(__quote "\$my_conf_neomutt/box/specific/${_account_default}.conf")"
+            printf "startup-hook \"source %s\"\n" "${_conf_default}"
 
             printf "\n"
 

@@ -76,9 +76,54 @@ __config() {
 
     __notmuch_atom_folder() {
         # REF:
-        #   https://notmuch.readthedocs.io/en/latest/man7/notmuch-search-terms.html#quoting
-        # folder:\"/<${1}>/\"
-        printf "folder:\\\\\"/%s/\\\\\"" "${1}"
+        #   https://notmuch.readthedocs.io/en/latest/man7/notmuch-search-terms.html
+        # NOTE:
+        #   $ notmuch count 'folder:"/<REGEX>/"'
+        #   $ notmuch count 'folder:"<EXACT_PATH_ENDING_WITH_/>"'
+        # 1. NOT box-level (leaf) -> REGEX
+        #   $ notmuch count 'folder:"/.*/"'
+        #   $ notmuch count 'folder:"/raw/.*/"'
+        #   $ notmuch count 'folder:"/raw/.*/\..*/"'
+        #   $ notmuch count 'folder:"/raw/xyz/\..*/"'
+        # 2. box-level (leaf) -> REGEX OR EXACT
+        #   $ notmuch count 'folder:"raw/xyz/.INBOX/"'
+        #   $ notmuch count 'folder:"/raw/xyz/\.INBOX/"'
+
+        local _mode="account"
+        while [ "${#}" -gt 0 ]; do
+            case "${1}" in
+                "--mode")
+                    _mode="${2}"
+                    shift 2
+                    ;;
+                "--")
+                    shift && break
+                    ;;
+            esac
+        done
+
+        local _query="${1}" _use_regex="yes"
+        case "${_mode}" in
+            "root")
+                _query="${1}/.*"
+                ;;
+            "account")
+                _query="${1}/\\\\..*"
+                ;;
+            "box")
+                _query="${1}/"
+                _use_regex=""
+                ;;
+        esac
+        if [ "${_use_regex}" ]; then
+            printf "folder:\\\\\"/%s/\\\\\"" "${_query}"
+            return
+        fi
+        printf "folder:\\\\\"%s\\\\\"" "${_query}"
+    }
+
+    __notmuch_query() {
+        __quote --single "notmuch://?query=${1}"
     }
 
     __notmuch_query_folder() {
@@ -89,9 +134,7 @@ __config() {
         printf "virtual-mailboxes " && LINECONT
 
         while [ "${#}" -gt 0 ]; do
-            __quote "${1}" && printf " " &&
-                __notmuch_query_folder "${2}" && printf " " &&
-                LINECONT
+            __quote "${1}" && printf " %s " "${2}" && LINECONT
             shift 2
         done
     }
@@ -99,10 +142,9 @@ __config() {
     __notmuch_hide() {
         printf "unvirtual-mailboxes " && LINECONT
 
-        local _account
-        for _account in "${@}"; do
-            __notmuch_query_folder "${_account}" && printf " " &&
-                LINECONT
+        local _url
+        for _url in "${@}"; do
+            printf "%s " "${_url}" && LINECONT
         done
     }
 
@@ -325,30 +367,24 @@ STOP
     __multi() {
         if [ "${1}" = "--" ]; then shift; fi
 
-        local _account
+        local _names_urls=() _urls=()
+        local _account _url
+        for _account in "${@}"; do
+            _url="$(__notmuch_query "$(__notmuch_atom_folder -- "${_mail_raw_relative}/${_account}")")"
+            _names_urls+=("$(__account_as_string -- "${_account}")")
+            _names_urls+=("${_url}")
+            _urls+=("${_url}")
+        done
         {
             {
-                {
-                    local _args=()
-                    for _account in "${@}"; do
-                        _args+=("$(__account_as_string -- "${_account}")")
-                        _args+=("${_mail_raw_relative}/${_account}/\\..*")
-                    done
-                    __notmuch_show "${_args[@]}"
-                } | __run --exec && LINECONT
+                __notmuch_show "${_names_urls[@]}" | __run --exec && LINECONT
                 __run "check-stats" && LINECONT
             } | __bind --key "ca" --mode "index" --description "notmuch> show all"
 
             printf "\n"
 
             {
-                {
-                    local _accounts=()
-                    for _account in "${@}"; do
-                        _accounts+=("${_mail_raw_relative}/${_account}/\\..*")
-                    done
-                    __notmuch_hide "${_accounts[@]}"
-                } | __run --exec && LINECONT
+                __notmuch_hide "${_urls[@]}" | __run --exec && LINECONT
                 __run "check-stats" && LINECONT
             } | __bind --key "cA" --mode "index" --description "notmuch> hide all"
 

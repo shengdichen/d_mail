@@ -4,8 +4,10 @@
 
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 
-DIR_NOTMUCH="$("$(realpath "${SCRIPT_PATH}/..")/const.sh" DIR_NOTMUCH)"
+FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
+DIR_NOTMUCH="$("${FILE_CONST}" DIR_NOTMUCH)"
 DIR_DUMP="${DIR_NOTMUCH}/default"
+DIR_NOTMUCH_CONFIG="$("${FILE_CONST}" DIR_NOTMUCH_CONFIG)"
 
 __update() {
     notmuch new 2>&1 |
@@ -134,6 +136,15 @@ __taggedness() {
     __tagged
 }
 
+__tag_sent() {
+    if [ "${1}" = "--" ]; then shift; fi
+
+    local _from
+    for _from in "${@}"; do
+        printf "+_SENT -- from:%s\n" "${_from}"
+    done >"${DIR_NOTMUCH_CONFIG}/hooks/tag/sent.rule"
+}
+
 if [ "${#}" -eq 0 ]; then return; fi
 case "${1}" in
     "update")
@@ -148,5 +159,9 @@ case "${1}" in
         ;;
     "tag")
         __taggedness
+        ;;
+    "tag-sent")
+        shift
+        __tag_sent "${@}"
         ;;
 esac

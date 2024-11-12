@@ -35,6 +35,9 @@ __main() {
         "DIR_NOTMUCH")
             printf "%s" "${HOME}/.local/share/notmuch"
             ;;
+        "DIR_NOTMUCH_CONFIG")
+            printf "%s" "${HOME}/.config/notmuch/default"
+            ;;
     esac
 }
 __main "${1}"

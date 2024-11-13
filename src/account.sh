@@ -9,7 +9,6 @@ SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
 DIR_MAIL_HOLD="$("${FILE_CONST}" DIR_MAIL_HOLD)"
 DIR_MAIL_REMOTE="$("${FILE_CONST}" DIR_MAIL_REMOTE)"
-unset FILE_CONST
 
 INBOXES+=("${DIR_MAIL_REMOTE}/xyz/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/xyz/.Sent")
@@ -709,6 +708,23 @@ __config_neomutt() {
 __config_notmuch() {
     "${SCRIPT_PATH}/notmuch.sh" tag config-tag-sent -- "${NOTMUCH_SENDERS[@]}"
     "${SCRIPT_PATH}/notmuch.sh" tag config-tag-archive -- "${NOTMUCH_REMOTE_ARCHIVES[@]}"
+
+    local _dir_hooks
+    _dir_hooks="$("${FILE_CONST}" DIR_NOTMUCH_CONFIG)/hooks"
+    local _hook_post_new="${_dir_hooks}/post-new"
+    {
+        printf "#!/usr/bin/env dash\n\n"
+
+        local _f
+        find "${_dir_hooks}/tag" -mindepth 1 | while read -r _f; do
+            printf "notmuch tag --batch <\"%s\"\n" "${_f}"
+        done
+
+        printf "\n"
+
+        printf "\"%s\" tag\n" "${SCRIPT_PATH}/notmuch.sh"
+    } >"${_hook_post_new}"
+    chmod +x -- "${_hook_post_new}"
 }
 
 __main() {

@@ -15,7 +15,8 @@ __report_count() {
 __update() {
     notmuch new 2>&1 |
         grep -v "^Note: Ignoring non-mail file: .*/\.mbsyncstate$" |
-        grep -v "^Note: Ignoring non-mail file: .*/\.uidvalidity$"
+        grep -v "^Note: Ignoring non-mail file: .*/\.uidvalidity$" |
+        grep -v "^No new mail.$" # not exactly useful information
     printf "\n"
     __report_count
 }

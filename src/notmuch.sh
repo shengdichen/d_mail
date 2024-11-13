@@ -82,21 +82,34 @@ __tag() {
     local _TAG_LOCAL_TAGGED="_TAGGED"
     local _TAG_ARCHIVE="_ARCHIVE"
 
+    __tag_copy() {
+        notmuch tag +"${2}" -- tag:"${1}"
+        notmuch tag -"${2}" -- not tag:"${1}"
+    }
+
+    __tag_rename() {
+        notmuch tag +"${2}" -"${1}" -- tag:"${1}"
+        notmuch tag -"${2}" -- not tag:"${1}"
+    }
+
+    __tag_delete() {
+        notmuch tag -"${1}" -- tag:"${1}"
+    }
+
     __builtin() {
         local _tag
+
         for _tag in "attachment" "signed" "encrypted"; do
-            notmuch tag +"__$(__to_upper "${_tag}")" -"${_tag}" -- tag:"${_tag}"
+            __tag_rename "${_tag}" "__$(__to_upper "${_tag}")"
         done
 
-        # remove completely
-        notmuch tag -"inbox" -- tag:"inbox"
-        notmuch tag -"draft" -- tag:"draft"
+        for _tag in "inbox" "draft"; do
+            __tag_delete "${_tag}"
+        done
 
-        # these builtin tags are left as is:
-        #   unread
-        #   flagged
-        #   replied
-        #   passed
+        for _tag in "unread" "flagged" "replied" "passed"; do
+            __tag_copy "${_tag}" "__$(__to_upper "${_tag}")"
+        done
     }
 
     __local_remote() {

@@ -17,8 +17,6 @@ __update() {
         grep -v "^Note: Ignoring non-mail file: .*/\.mbsyncstate$" |
         grep -v "^Note: Ignoring non-mail file: .*/\.uidvalidity$" |
         grep -v "^No new mail.$" # not exactly useful information
-    printf "\n"
-    __report_count
 }
 
 __export() {
@@ -222,6 +220,8 @@ __tag() {
             __config_tag_archive "${@}"
             ;;
         *)
+            printf "\n"
+            __report_count
             __builtin
             __local_remote
             __taggedness

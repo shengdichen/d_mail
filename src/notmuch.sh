@@ -119,7 +119,7 @@ __tag() {
     }
 
     __taggedness() {
-        local _query_tagged="${_query_all} and not tag:${_TAG_LOCAL_UNTAGGED}"
+        local _query_tagged="${_query_all}"
 
         __list_tags | {
             local _query_untagged="${_query_all}"
@@ -133,6 +133,11 @@ __tag() {
                     continue
                 fi
                 _query_untagged="${_query_untagged} and not tag:${_tag}"
+                # NOTE:
+                #   exploit implicit OR joining between (same) query-terms
+                # REF:
+                #   https://notmuch.readthedocs.io/en/latest/man7/notmuch-search-terms.html#operators
+                _query_tagged="${_query_tagged} tag:${_tag}"
             done
 
             printf "notmuch/tag> [tagged'ness]..."

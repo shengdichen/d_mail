@@ -92,29 +92,30 @@ __tag() {
         #   passed
     }
 
-    __local() {
-        local _query="${_query_local}"
-        printf "notmuch/tag> local...\n"
-        eval notmuch tag \
+    __local_remote() {
+        local _query_local="${_query_local}"
+        printf "notmuch/tag> [local--remote]..."
+
+        notmuch tag \
             "+${_TAG_LOCAL}" \
             "-${_TAG_REMOTE}" \
-            "${_query}"
-        printf "notmuch/tag> done! (#local := [%s])\n" "$(eval notmuch count "${_query}")"
-    }
-
-    __remote() {
-        local _query="${_query_remote}"
-        printf "notmuch/tag> remote...\n"
-        eval notmuch tag \
+            -- "${_query_local}"
+        local _query_remote="${_query_remote}"
+        notmuch tag \
             "+${_TAG_REMOTE}" \
             "-${_TAG_LOCAL}" \
-            "${_query}"
-        printf "notmuch/tag> done! (#remote := [%s])\n" "$(eval notmuch count "${_query}")"
+            -- "${_query_remote}"
+
+        printf "; done! (%s--%s)\n" \
+            "$(notmuch count -- "${_query_local}")" \
+            "$(notmuch count -- "${_query_remote}")"
     }
 
-    __untagged() {
+    __taggedness() {
+        local _query_tagged="${_query_all} and not tag:${_TAG_LOCAL_UNTAGGED}"
+
         __list_tags | {
-            local _query="${_query_all}"
+            local _query_untagged="${_query_all}"
 
             local _tag
             while read -r _tag; do
@@ -124,42 +125,35 @@ __tag() {
                 if __is_in "${_tag}" "unread" "replied" "flagged" "passed"; then
                     continue
                 fi
-                _query="${_query} and not tag:${_tag}"
+                _query_untagged="${_query_untagged} and not tag:${_tag}"
             done
 
-            printf "notmuch/tag> marking UNtagged...\n"
-            eval notmuch tag \
+            printf "notmuch/tag> [tagged'ness]..."
+            notmuch tag \
                 "+${_TAG_LOCAL_UNTAGGED}" \
                 "-${_TAG_LOCAL_TAGGED}" \
-                "${_query}"
-            printf "notmuch/tag> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
+                -- "${_query_untagged}"
+            notmuch tag \
+                "+${_TAG_LOCAL_TAGGED}" \
+                "-${_TAG_LOCAL_UNTAGGED}" \
+                -- "${_query_tagged}"
+            printf "; done! (%s tagged, %s untagged)\n" \
+                "$(notmuch count -- "${_query_tagged}")" \
+                "$(notmuch count -- "${_query_untagged}")"
         }
-    }
-
-    __tagged() {
-        local _query="${_query_all} and not tag:${_TAG_LOCAL_UNTAGGED}"
-        printf "notmuch/tag> #tagged := [%s]\n" "$(notmuch count "${_query}")"
-        printf "notmuch/tag> marking tagged...\n"
-        eval notmuch tag \
-            "+${_TAG_LOCAL_TAGGED}" \
-            "-${_TAG_LOCAL_UNTAGGED}" \
-            "${_query}"
-        printf "notmuch/tag> done! (#UNtagged := [%s])\n" "$(eval notmuch count "${_query}")"
     }
 
     __archive() {
         local _query="${_query_local} and folder:\"all/.x/\""
-        printf "notmuch/tag> #archive := [%s]\n" "$(notmuch count "${_query}")"
-        printf "notmuch/tag> marking archive...\n"
-        eval notmuch tag \
-            "+${_TAG_ARCHIVE}" \
-            "${_query}"
-        printf "notmuch/tag> done! (#archive := [%s])\n" "$(eval notmuch count "${_query}")"
-
         local _query_negative="${_query_local} and not folder:\"all/.x/\""
-        eval notmuch tag \
+        printf "notmuch/tag> [archive]..."
+        notmuch tag \
+            "+${_TAG_ARCHIVE}" \
+            -- "${_query}"
+        notmuch tag \
             "-${_TAG_ARCHIVE}" \
-            "${_query_local} and not folder:\"all/.x/\""
+            -- "${_query_local} and not folder:\"all/.x/\""
+        printf "; done! (%s)\n" "$(notmuch count -- "${_query}")"
     }
 
     __draft() {
@@ -204,10 +198,8 @@ __tag() {
             ;;
         *)
             __builtin
-            __local
-            __remote
-            __untagged
-            __tagged
+            __local_remote
+            __taggedness
             __archive
             __draft
             ;;

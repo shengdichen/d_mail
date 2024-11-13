@@ -8,10 +8,16 @@ FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
 DIR_NOTMUCH="$("${FILE_CONST}" DIR_NOTMUCH)"
 DIR_DUMP="${DIR_NOTMUCH}/default"
 
+__report_count() {
+    printf "notmuch> #%s\n" "$(notmuch count -- "*")"
+}
+
 __update() {
     notmuch new 2>&1 |
-        grep -v "^Note: Ignoring non-mail file: .*/\.mbsyncstate" |
-        grep -v "Note: Ignoring non-mail file: .*/\.uidvalidity"
+        grep -v "^Note: Ignoring non-mail file: .*/\.mbsyncstate$" |
+        grep -v "^Note: Ignoring non-mail file: .*/\.uidvalidity$"
+    printf "\n"
+    __report_count
 }
 
 __export() {

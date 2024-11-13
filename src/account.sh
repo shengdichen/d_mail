@@ -706,25 +706,30 @@ __config_neomutt() {
 }
 
 __config_notmuch() {
-    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-sent -- "${NOTMUCH_SENDERS[@]}"
-    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-archive -- "${NOTMUCH_REMOTE_ARCHIVES[@]}"
-
     local _dir_hooks
     _dir_hooks="$("${FILE_CONST}" DIR_NOTMUCH_CONFIG)/hooks"
-    local _hook_post_new="${_dir_hooks}/post-new"
+
+    local _dir_post_new="${_dir_hooks}/post_new"
+    mkdir -p "${_dir_post_new}"
+    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-sent -- \
+        "${NOTMUCH_SENDERS[@]}" >"${_dir_post_new}/sent.rule"
+    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-archive -- \
+        "${NOTMUCH_REMOTE_ARCHIVES[@]}" >"${_dir_post_new}/archive.rule"
+
+    local _f_post_new="${_dir_hooks}/post-new"
     {
         printf "#!/usr/bin/env dash\n\n"
 
-        local _f
-        find "${_dir_hooks}/tag" -mindepth 1 | while read -r _f; do
-            printf "notmuch tag --batch <\"%s\"\n" "${_f}"
-        done
+        printf "\"%s\" tag\n" "${SCRIPT_PATH}/notmuch.sh"
 
         printf "\n"
 
-        printf "\"%s\" tag\n" "${SCRIPT_PATH}/notmuch.sh"
-    } >"${_hook_post_new}"
-    chmod +x -- "${_hook_post_new}"
+        local _f
+        find "${_dir_post_new}" -mindepth 1 | grep "\.rule$" | while read -r _f; do
+            printf "notmuch tag --batch <\"%s\"\n" "${_f}"
+        done
+    } >"${_f_post_new}"
+    chmod +x -- "${_f_post_new}"
 }
 
 __main() {

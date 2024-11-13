@@ -1,7 +1,6 @@
 #!/usr/bin/env dash
 
-notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/tag/archive.rule"
-notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/tag/sent.rule"
-notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/tag/builtin.rule"
-
 "/home/main/dot/dot/d_mail/src/notmuch.sh" tag
+
+notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/post_new/archive.rule"
+notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/post_new/sent.rule"

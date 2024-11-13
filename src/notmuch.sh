@@ -7,7 +7,6 @@ SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
 DIR_NOTMUCH="$("${FILE_CONST}" DIR_NOTMUCH)"
 DIR_DUMP="${DIR_NOTMUCH}/default"
-DIR_NOTMUCH_CONFIG="$("${FILE_CONST}" DIR_NOTMUCH_CONFIG)"
 
 __update() {
     notmuch new 2>&1 |
@@ -79,7 +78,7 @@ __tag() {
     __builtin() {
         local _tag
         for _tag in "attachment" "signed" "encrypted"; do
-            notmuch tag +"_auto_${_tag}" -"${_tag}" -- tag:"${_tag}"
+            notmuch tag +"__$(__to_upper "${_tag}")" -"${_tag}" -- tag:"${_tag}"
         done
 
         # remove completely
@@ -174,26 +173,24 @@ __tag() {
         local _from
         for _from in "${@}"; do
             printf "+_SENT -- from:%s\n" "${_from}"
-        done >"${DIR_NOTMUCH_CONFIG}/hooks/tag/sent.rule"
+        done
     }
 
     __config_tag_archive() {
         if [ "${1}" = "--" ]; then shift; fi
 
-        {
-            local _base="+${_TAG_ARCHIVE} -- ${_query_remote}"
-            local _archive
-            for _archive in "${@}"; do
-                printf "%s and folder:\"raw/%s/\"\n" "${_base}" "${_archive}"
-            done
+        local _base="+${_TAG_ARCHIVE} -- ${_query_remote}"
+        local _archive
+        for _archive in "${@}"; do
+            printf "%s and folder:\"raw/%s/\"\n" "${_base}" "${_archive}"
+        done
 
-            printf "\n"
+        printf "\n"
 
-            printf "%s -- %s" "-${_TAG_ARCHIVE}" "${_query_remote}"
-            for _archive in "${@}"; do
-                printf " and not folder:\"raw/%s/\"" "${_archive}"
-            done
-        } >"${DIR_NOTMUCH_CONFIG}/hooks/tag/archive.rule"
+        printf "%s -- %s" "-${_TAG_ARCHIVE}" "${_query_remote}"
+        for _archive in "${@}"; do
+            printf " and not folder:\"raw/%s/\"" "${_archive}"
+        done
     }
 
     case "${1}" in

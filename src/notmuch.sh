@@ -77,20 +77,18 @@ __tag() {
     local _TAG_ARCHIVE="_ARCHIVE"
 
     __builtin() {
-        notmuch tag +"_ATTACHMENT" -"attachment" -- tag:"attachment"
-        notmuch tag +"_SIGNED" -"signed" -- tag:"signed"
-        notmuch tag +"_ENCRYPTED" -"encrypted" -- tag:"encrypted"
+        local _tag
+        for _tag in "attachment" "signed" "encrypted"; do
+            notmuch tag +"_auto_${_tag}" -"${_tag}" -- tag:"${_tag}"
+        done
 
         # remove completely
         notmuch tag -"inbox" -- tag:"inbox"
-
-        notmuch tag +"draft" -- folder:"\"all/.draft/\""
-        notmuch tag -"draft" -- not folder:"\"all/.draft/\""
+        notmuch tag -"draft" -- tag:"draft"
 
         # these builtin tags are left as is:
         #   unread
         #   flagged
-        #   draft
         #   replied
         #   passed
     }
@@ -124,7 +122,7 @@ __tag() {
                 if [ "$(printf "%s" "${_tag}" | head -c "+1")" = "_" ]; then
                     continue
                 fi
-                if __is_in "${_tag}" "unread" "replied" "draft" "flagged" "passed"; then
+                if __is_in "${_tag}" "unread" "replied" "flagged" "passed"; then
                     continue
                 fi
                 _query="${_query} and not tag:${_tag}"
@@ -163,6 +161,11 @@ __tag() {
         eval notmuch tag \
             "-${_TAG_ARCHIVE}" \
             "${_query_local} and not folder:\"all/.x/\""
+    }
+
+    __draft() {
+        notmuch tag +"_DRAFT" -- folder:"\"all/.draft/\""
+        notmuch tag -"_DRAFT" -- not folder:"\"all/.draft/\""
     }
 
     __config_tag_sent() {
@@ -209,6 +212,7 @@ __tag() {
             __untagged
             __tagged
             __archive
+            __draft
             ;;
     esac
 }

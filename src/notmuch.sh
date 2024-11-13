@@ -122,7 +122,7 @@ __tag() {
                 if [ "$(printf "%s" "${_tag}" | head -c "+1")" = "_" ]; then
                     continue
                 fi
-                if __is_in "${_tag}" "unread" "replied" "flagged" "passed"; then
+                if __is_in "${_tag}" "MAIN" "unread" "replied" "flagged" "passed"; then
                     continue
                 fi
                 _query_untagged="${_query_untagged} and not tag:${_tag}"

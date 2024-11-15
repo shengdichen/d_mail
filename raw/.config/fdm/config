@@ -2,10 +2,10 @@
 set no-received
 
 # setup {{{
-$base_dir = "%h/.local/share/mail/"
-$all_dir = "${base_dir}/all/"
-$trash_dir = "${all_dir}/.trash/"
-$hold_dir = "${all_dir}/.hold/"
+$base_dir = "%h/.local/share/mail"
+$all_dir = "${base_dir}/all"
+$trash_dir = "${all_dir}/.trash"
+$hold_dir = "${all_dir}/.hold"
 
 # account {{{
 account "acc_hold"
@@ -13,33 +13,33 @@ account "acc_hold"
         "${hold_dir}"
     }
 
-$raw_dir = "${base_dir}/raw/"
+$raw_dir = "${base_dir}/raw"
 $path_xyz = "${raw_dir}/xyz"
 $path_eth = "${raw_dir}/eth"
 $path_outlook = "${raw_dir}/outlook"
 $path_gmail = "${raw_dir}/gmail"
 account "acc_raw_inbox"
     maildirs {
-        "${path_xyz}/.INBOX/"
-        "${path_eth}/.INBOX/"
-        "${path_outlook}/.INBOX/"
-        "${path_gmail}/.INBOX/"
+        "${path_xyz}/.INBOX"
+        "${path_eth}/.INBOX"
+        "${path_outlook}/.INBOX"
+        "${path_gmail}/.INBOX"
     }
 account "acc_raw_sent"
     maildirs {
-        "${path_xyz}/.Sent/"
-        "${path_eth}/.Skickat/"
-        "${path_outlook}/.Sent/"
-        "${path_gmail}/.[Gmail].E-mails enviados/"
+        "${path_xyz}/.Sent"
+        "${path_eth}/.Sent Items"
+        "${path_outlook}/.Sent"
+        "${path_gmail}/.[Gmail].E-mails enviados"
     }
 # other folders that we would like fdm to monitor
 account "acc_raw_misc"
     maildirs {
-        "${path_xyz}/.Spam/"
-        "${path_xyz}/.Trash/"
-        "${path_outlook}/.Junk/"
-        "${path_outlook}/.Deleted/"
-        "${path_gmail}/.[Gmail].Spam/"
+        "${path_xyz}/.Spam"
+        "${path_xyz}/.Trash"
+        "${path_outlook}/.Junk"
+        "${path_outlook}/.Deleted"
+        "${path_gmail}/.[Gmail].Spam"
     }
 # }}}
 

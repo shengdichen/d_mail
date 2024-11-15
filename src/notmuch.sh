@@ -8,8 +8,6 @@ DIR_NOTMUCH="$("$(realpath "${SCRIPT_PATH}/..")/const.sh" DIR_NOTMUCH)"
 DIR_DUMP="${DIR_NOTMUCH}/default"
 
 __update() {
-    printf "post> notmuch\n"
-
     notmuch new 2>&1 |
         grep -v "^Note: Ignoring non-mail file: .*/\.mbsyncstate" |
         grep -v "Note: Ignoring non-mail file: .*/\.uidvalidity"

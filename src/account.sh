@@ -57,10 +57,23 @@ STOP
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
+    __neomutt_config() {
+        {
+            "${SCRIPT_PATH}/neomutt.sh" config box-base \
+                --account "${_account}" \
+                --archive ".Folders.x"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
+        } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
+    }
+
     case "${1}" in
         "config")
             __mbsync_config
             __msmtp_config
+            __neomutt_config
             ;;
         "test")
             __mbsync_config
@@ -125,10 +138,21 @@ STOP
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
+    __neomutt_config() {
+        {
+            "${SCRIPT_PATH}/neomutt.sh" config box-base --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
+        } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
+    }
+
     case "${1}" in
         "config")
             __mbsync_config
             __msmtp_config
+            __neomutt_config
             ;;
         "test")
             __mbsync_config
@@ -192,10 +216,26 @@ STOP
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
+    __neomutt_config() {
+        {
+            # NOTE:
+            # no longer need a manual copy for sent mails after outlook migration
+            # previously: set record = "+.Sent Items"
+            "${SCRIPT_PATH}/neomutt.sh" config box-base \
+                --account "${_account}" \
+                --sent ".Sent Items"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
+        } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
+    }
+
     case "${1}" in
         "config")
             __mbsync_config
             __msmtp_config
+            __neomutt_config
             ;;
         "test")
             __mbsync_config
@@ -257,10 +297,24 @@ STOP
         } | "${SCRIPT_PATH}/msmtp.sh" config commit "${_account}"
     }
 
+    __neomutt_config() {
+        {
+            "${SCRIPT_PATH}/neomutt.sh" config box-base \
+                --account "${_account}" \
+                --sent ".[Gmail].E-mails enviados" \
+                --archive ""
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-sync --account "${_account}"
+            printf "\n"
+            "${SCRIPT_PATH}/neomutt.sh" config box-send --account "${_account}" --addr "${_addr}"
+        } | "${SCRIPT_PATH}/neomutt.sh" config commit-box "${_account}"
+    }
+
     case "${1}" in
         "config")
             __mbsync_config
             __msmtp_config
+            __neomutt_config
             ;;
         "test")
             __mbsync_config
@@ -629,6 +683,10 @@ STOP
     } | "${SCRIPT_PATH}/fdm.sh" config commit
 }
 
+__config_neomutt() {
+    "${SCRIPT_PATH}/neomutt.sh" config multi -- "xyz" "outlook" "eth" "gmail"
+}
+
 __main() {
     local _account
     case "${1}" in
@@ -639,6 +697,9 @@ __main() {
             ;;
         "fdm")
             __config_fdm
+            ;;
+        "neomutt")
+            __config_neomutt
             ;;
         "xyz" | "outlook" | "eth" | "gmail")
             _account="${1}"

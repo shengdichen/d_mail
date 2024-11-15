@@ -1,0 +1,5 @@
++_ARCHIVE -- folder:"/raw/.*/" and folder:"raw/xyz/.Folders.x/"
++_ARCHIVE -- folder:"/raw/.*/" and folder:"raw/outlook/.x/"
++_ARCHIVE -- folder:"/raw/.*/" and folder:"raw/eth/.x/"
+
+-_ARCHIVE -- folder:"/raw/.*/" and not folder:"raw/xyz/.Folders.x/" and not folder:"raw/outlook/.x/" and not folder:"raw/eth/.x/"

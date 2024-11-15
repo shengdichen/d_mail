@@ -1,18 +1,6 @@
 #!/usr/bin/env dash
 
-tag() {
-    local script_path
-    script_path="$HOME/.config/notmuch/default/hooks/tag/"
+"/home/main/dot/dot/d_mail/src/notmuch.sh" tag
 
-    notmuch tag --batch <"${script_path}/builtin.rule"
-    notmuch tag --batch <"${script_path}/archive.rule"
-    notmuch tag --batch <"${script_path}/sent.rule"
-}
-
-main() {
-    tag
-
-    unset -f tag
-}
-main
-unset -f main
+notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/post_new/archive.rule"
+notmuch tag --batch <"/home/main/.config/notmuch/default/hooks/post_new/sent.rule"

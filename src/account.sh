@@ -3,16 +3,21 @@
 . "${HOME}/.local/lib/util.sh"
 
 INBOXES=() SENTS=() REMOTE_ARCHIVES=()
+NOTMUCH_SENDERS=() NOTMUCH_REMOTE_ARCHIVES=()
 
 SCRIPT_PATH="$(realpath "$(dirname "${0}")")"
 FILE_CONST="$(realpath "${SCRIPT_PATH}/..")/const.sh"
 DIR_MAIL_HOLD="$("${FILE_CONST}" DIR_MAIL_HOLD)"
 DIR_MAIL_REMOTE="$("${FILE_CONST}" DIR_MAIL_REMOTE)"
-unset FILE_CONST
 
 INBOXES+=("${DIR_MAIL_REMOTE}/xyz/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/xyz/.Sent")
+NOTMUCH_SENDERS+=(
+    "me@shengdichen.xyz"
+    "shengdichen@pm.me"
+)
 REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/xyz/.Folders.x")
+NOTMUCH_REMOTE_ARCHIVES+=("xyz/.Folders.x")
 __xyz() {
     local _account="xyz"
     local _addr="me@shengdichen.xyz"
@@ -91,7 +96,14 @@ STOP
 
 INBOXES+=("${DIR_MAIL_REMOTE}/outlook/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/outlook/.Sent")
+NOTMUCH_SENDERS+=(
+    "/[sS]hengdi@outlook.de/"
+    "/[sS]id[cC]han@outlook.com/"
+    "floriansidney@hotmail.com"
+    "IMCEAEX-_O=FIRST+20ORGANIZATION_OU=EXCHANGE+20ADMINISTRATIVE+20GROUP+28FYDIBOHF23SPDLT+29_CN=RECIPIENTS_CN=00064000C313C699@sct-15-20-4755-11-msonline-outlook-ab7de.templateTenant"
+)
 REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/outlook/.x")
+NOTMUCH_REMOTE_ARCHIVES+=("outlook/.x")
 __outlook() {
     local _account="outlook"
     local _addr="shengdi@outlook.de"
@@ -170,7 +182,12 @@ STOP
 
 INBOXES+=("${DIR_MAIL_REMOTE}/eth/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/eth/.Sent Items")
+NOTMUCH_SENDERS+=(
+    "shenchen@ethz.ch"
+    "shenchen@student.ethz.ch"
+)
 REMOTE_ARCHIVES+=("${DIR_MAIL_REMOTE}/eth/.x")
+NOTMUCH_REMOTE_ARCHIVES+=("eth/.x")
 __eth() {
     local _account="eth"
     local _addr="shenchen@ethz.ch"
@@ -253,6 +270,7 @@ STOP
 
 INBOXES+=("${DIR_MAIL_REMOTE}/gmail/.INBOX")
 SENTS+=("${DIR_MAIL_REMOTE}/gmail/.[Gmail].E-mails enviados")
+NOTMUCH_SENDERS+=("shengdishcchen@gmail.com")
 __gmail() {
     local _account="gmail"
     local _addr="shengdishcchen@gmail.com"
@@ -687,6 +705,33 @@ __config_neomutt() {
     "${SCRIPT_PATH}/neomutt.sh" config multi -- "xyz" "outlook" "eth" "gmail"
 }
 
+__config_notmuch() {
+    local _dir_hooks
+    _dir_hooks="$("${FILE_CONST}" DIR_NOTMUCH_CONFIG)/hooks"
+
+    local _dir_post_new="${_dir_hooks}/post_new"
+    mkdir -p "${_dir_post_new}"
+    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-sent -- \
+        "${NOTMUCH_SENDERS[@]}" >"${_dir_post_new}/sent.rule"
+    "${SCRIPT_PATH}/notmuch.sh" tag config-tag-archive -- \
+        "${NOTMUCH_REMOTE_ARCHIVES[@]}" >"${_dir_post_new}/archive.rule"
+
+    local _f_post_new="${_dir_hooks}/post-new"
+    {
+        printf "#!/usr/bin/env dash\n\n"
+
+        printf "\"%s\" tag\n" "${SCRIPT_PATH}/notmuch.sh"
+
+        printf "\n"
+
+        local _f
+        find "${_dir_post_new}" -mindepth 1 | grep "\.rule$" | while read -r _f; do
+            printf "notmuch tag --batch <\"%s\"\n" "${_f}"
+        done
+    } >"${_f_post_new}"
+    chmod +x -- "${_f_post_new}"
+}
+
 __main() {
     local _account
     case "${1}" in
@@ -700,6 +745,9 @@ __main() {
             ;;
         "neomutt")
             __config_neomutt
+            ;;
+        "notmuch")
+            __config_notmuch
             ;;
         "xyz" | "outlook" | "eth" | "gmail")
             _account="${1}"
